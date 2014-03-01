@@ -18,7 +18,7 @@ dockspawn.DockGraphSerializer.prototype._buildGraphInfo = function(node)
 
     var childrenInfo = [];
     var self = this;
-    node.childNodes.forEach(function(childNode) {
+    node.children.forEach(function(childNode) {
         childrenInfo.push(self._buildGraphInfo(childNode));
     });
 

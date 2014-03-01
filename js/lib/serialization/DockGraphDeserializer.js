@@ -6,7 +6,7 @@ dockspawn.DockGraphDeserializer = function(dockManager)
     this.dockManager = dockManager;
 };
 
-dockspawn.DockGraphDeserializer.prototype.deserialize = function(json)
+dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
 {
     var graphInfo = JSON.parse(_json);
     var model = new dockspawn.DockModel();
@@ -44,10 +44,12 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
 
     var childContainers = [];
     children.forEach(function(childNode) { childContainers.push(childNode.container); });
-    childContainers = [];
 
-    if (containerType == "panel")
+
+    if (containerType == "panel"){
         container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+         container.prepareForDocking();
+    }
     else if (containerType == "horizontal")
         container = new dockspawn.HorizontalDockContainer(this.dockManager, childContainers);
     else if (containerType == "vertical")
@@ -60,7 +62,7 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
         // called document_manager and have to resort to this hack. use RTTI in layout engine
         var typeDocumentManager = containerState.documentManager;
         if (typeDocumentManager)
-            container = new DocumentManagerContainer(this.dockManager);
+            container = new dockspawn.DocumentManagerContainer(this.dockManager);
         else
             container = new dockspawn.FillDockContainer(this.dockManager);
     }

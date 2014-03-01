@@ -52,12 +52,18 @@
     <div id="outline_window" caption="Outline" class="outline-window">
     </div>
     <script>
+    var dockManager;
         window.onload = function()
         {
             // Convert a div to the dock manager.  Panels can then be docked on to it
             var divDockManager = document.getElementById("my_dock_manager");
-            var dockManager = new dockspawn.DockManager(divDockManager);
+            dockManager = new dockspawn.DockManager(divDockManager);
             dockManager.initialize();
+            // var lastState = '{"containerType":"horizontal","state":{"width":1264,"height":728},"children":[{"containerType":"panel","state":{"element":"outline_window","width":189,"height":728},"children":[]},{"containerType":"fill","state":{"width":1070,"height":728,"documentManager":true},"children":[]}]}';
+            // var lastState = '{"containerType":"horizontal","state":{"width":1319,"height":728},"children":[{"containerType":"vertical","state":{"width":197,"height":728},"children":[{"containerType":"fill","state":{"width":197,"height":286},"children":[{"containerType":"panel","state":{"element":"outline_window","width":197,"height":728},"children":[]},{"containerType":"panel","state":{"element":"solution_window","width":197,"height":260},"children":[]}]},{"containerType":"panel","state":{"element":"properties_window","width":197,"height":437},"children":[]}]},{"containerType":"vertical","state":{"width":1117,"height":728},"children":[{"containerType":"horizontal","state":{"width":1117,"height":577},"children":[{"containerType":"fill","state":{"width":888,"height":577,"documentManager":true},"children":[{"containerType":"panel","state":{"element":"editor1_window","width":888,"height":551},"children":[]},{"containerType":"panel","state":{"element":"editor2_window","width":888,"height":551},"children":[]},{"containerType":"panel","state":{"element":"infovis","width":888,"height":551},"children":[]}]},{"containerType":"panel","state":{"element":"toolbox_window","width":224,"height":577},"children":[]}]},{"containerType":"horizontal","state":{"width":1117,"height":146},"children":[{"containerType":"panel","state":{"element":"output_window","width":665,"height":146},"children":[]},{"containerType":"panel","state":{"element":"problems_window","width":447,"height":146},"children":[]}]}]}]}';
+            var lastState = localStorage['lastState'];
+            if(lastState != undefined && lastState !== '')
+                dockManager.loadState(lastState);
             // Let the dock manager element fill in the entire screen
             var onResized = function(e)
             {
@@ -65,7 +71,23 @@
             }
             window.onresize = onResized;
             onResized(null);
-
+             dockManager.addLayoutListener({
+                    onDock: function(self, dockNode){
+                        console.log('onDock: ' + self + dockNode);
+                         localStorage['lastState'] = dockManager.saveState();
+                    },
+                   onUndock:function(self, dockNode){
+                       console.log('onUndock: ' +self + dockNode);
+                        localStorage['lastState'] = dockManager.saveState();
+                    },
+                    onResumeLayout:function(self){
+                        console.log('onResumeLayout: ' +self);
+                         localStorage['lastState'] = dockManager.saveState();
+                   }
+                
+            });
+            if(lastState != undefined && lastState !== '' )
+                return;
             // Convert existing elements on the page into "Panels".
             // They can then be docked on to the dock manager
             // Panels get a titlebar and a close button, and can also be
@@ -93,7 +115,7 @@
             var infovisNode = dockManager.dockFill(documentNode, infovis);
 			
 			// Initialize infovis (for dock tree visualization)
-			InitDebugTreeVis(dockManager);
+			// InitDebugTreeVis(dockManager);
         }
     </script>
 

@@ -96,6 +96,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
         referenceNode.addChild(newNode);
         referenceNode.performLayout();
         referenceNode.container.setActiveChild(newNode.container);
+        this.dockManager.notifyOnDock(newNode);
         return;
     }
 
@@ -121,6 +122,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
 		this.dockManager.setRootNode(compositeNode);
         this.dockManager.rebuildLayout(this.dockManager.context.model.rootNode);
         compositeNode.container.setActiveChild(newNode.container);
+        this.dockManager.notifyOnDock(newNode);
         return;
     }
 

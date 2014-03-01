@@ -1274,6 +1274,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
         referenceNode.addChild(newNode);
         referenceNode.performLayout();
         referenceNode.container.setActiveChild(newNode.container);
+        this.dockManager.notifyOnDock(newNode);
         return;
     }
 
@@ -1299,6 +1300,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
 		this.dockManager.setRootNode(compositeNode);
         this.dockManager.rebuildLayout(this.dockManager.context.model.rootNode);
         compositeNode.container.setActiveChild(newNode.container);
+        this.dockManager.notifyOnDock(newNode);
         return;
     }
 
@@ -1869,15 +1871,27 @@ dockspawn.FillDockContainer.prototype.loadState = function(state)
 {
     this.width = state.width;
     this.height = state.height;
+    this.stateWidth = state.width;
+    this.stateHeight = state.height;
 };
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "width", {
-    get: function() { return this.element.clientWidth; },
-    set: function(value) { this.element.style.width = value + "px" }
+    get: function() { 
+        if(this.element.clientWidth === 0 && this.stateWidth !== 0)
+            return this.stateWidth;
+        return this.element.clientWidth; 
+    },
+    set: function(value) {
+     this.element.style.width = value + "px" 
+        }
 });
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "height", {
-    get: function() { return this.element.clientHeight; },
+    get: function() {
+        if(this.element.clientHeight === 0 && this.stateHeight !== 0)
+            return this.stateHeight;
+     return this.element.clientHeight;
+      },
     set: function(value) { this.element.style.height = value + "px" }
 });
 
@@ -2105,6 +2119,8 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
         var original = this.stackedVertical ?
             child.containerElement.clientHeight :
             child.containerElement.clientWidth;
+        if(original === 0)
+            continue;
 
         var newSize = Math.floor(original * scaleMultiplier);
         updatedTotalChildPanelSize += newSize;
@@ -2562,7 +2578,7 @@ dockspawn.DockGraphDeserializer = function(dockManager)
     this.dockManager = dockManager;
 };
 
-dockspawn.DockGraphDeserializer.prototype.deserialize = function(json)
+dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
 {
     var graphInfo = JSON.parse(_json);
     var model = new dockspawn.DockModel();
@@ -2600,10 +2616,12 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
 
     var childContainers = [];
     children.forEach(function(childNode) { childContainers.push(childNode.container); });
-    childContainers = [];
 
-    if (containerType == "panel")
+
+    if (containerType == "panel"){
         container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+         container.prepareForDocking();
+    }
     else if (containerType == "horizontal")
         container = new dockspawn.HorizontalDockContainer(this.dockManager, childContainers);
     else if (containerType == "vertical")
@@ -2616,7 +2634,7 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
         // called document_manager and have to resort to this hack. use RTTI in layout engine
         var typeDocumentManager = containerState.documentManager;
         if (typeDocumentManager)
-            container = new DocumentManagerContainer(this.dockManager);
+            container = new dockspawn.DocumentManagerContainer(this.dockManager);
         else
             container = new dockspawn.FillDockContainer(this.dockManager);
     }
@@ -2648,7 +2666,7 @@ dockspawn.DockGraphSerializer.prototype._buildGraphInfo = function(node)
 
     var childrenInfo = [];
     var self = this;
-    node.childNodes.forEach(function(childNode) {
+    node.children.forEach(function(childNode) {
         childrenInfo.push(self._buildGraphInfo(childNode));
     });
 
