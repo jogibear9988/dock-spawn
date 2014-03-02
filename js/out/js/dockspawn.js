@@ -2258,8 +2258,6 @@ dockspawn.PanelContainer.loadFromState = function(state, dockManager)
     var elementName = state.element;
     var elementContent = document.getElementById(elementName);
     var ret = new dockspawn.PanelContainer(elementContent, dockManager);
-    ret.elementContent = elementContent;
-    ret._initialize();
     ret.loadState(state);
     return ret;
 };
@@ -2604,13 +2602,10 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     // Build the node for this container and attach it's children
     var node = new dockspawn.DockNode(container);
     node.children = children;
-    node.children.forEach(function(childNode) { 
-       
+    node.children.reverse().forEach(function(childNode) { 
+        node.container.setActiveChild(childNode.container);
         childNode.parent = node; 
     });
-    node.children.reverse().forEach(function(childNode) { 
-      node.container.setActiveChild(childNode.container);
-   });
     node.children.reverse();
     // node.container.setActiveChild(node.container);
     return node;
@@ -2629,6 +2624,7 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
     if (containerType == "panel"){
         container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
          container.prepareForDocking();
+         removeNode(container.elementPanel);
     }
     else if (containerType == "horizontal")
         container = new dockspawn.HorizontalDockContainer(this.dockManager, childContainers);

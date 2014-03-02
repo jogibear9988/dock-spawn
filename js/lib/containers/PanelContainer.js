@@ -30,8 +30,6 @@ dockspawn.PanelContainer.loadFromState = function(state, dockManager)
     var elementName = state.element;
     var elementContent = document.getElementById(elementName);
     var ret = new dockspawn.PanelContainer(elementContent, dockManager);
-    ret.elementContent = elementContent;
-    ret._initialize();
     ret.loadState(state);
     return ret;
 };
