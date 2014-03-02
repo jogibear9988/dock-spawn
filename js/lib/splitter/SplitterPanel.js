@@ -150,6 +150,7 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
     totalChildPanelSize = Math.max(totalChildPanelSize, 1);
     var scaleMultiplier = targetTotalChildPanelSize / totalChildPanelSize;
 
+
     // Update the size with this multiplier
     var updatedTotalChildPanelSize = 0;
     for (var i = 0; i < this.childContainers.length; i++)
@@ -161,8 +162,9 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
         //TODO: Do something
         if(original === 0)
             continue;
-
-        var newSize = Math.floor(original * scaleMultiplier);
+var newSize = original * scaleMultiplier;
+        // var newSize =  scaleMultiplier < 1 ? Math.ceil(original * scaleMultiplier) :
+        // Math.floor(original * scaleMultiplier);
         updatedTotalChildPanelSize += newSize;
 
         // If this is the last node, add any extra pixels to fix the rounding off errors and match the requested size
