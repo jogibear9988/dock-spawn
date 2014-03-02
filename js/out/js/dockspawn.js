@@ -2605,9 +2605,13 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     var node = new dockspawn.DockNode(container);
     node.children = children;
     node.children.forEach(function(childNode) { 
-        node.container.setActiveChild(childNode.container);
+       
         childNode.parent = node; 
     });
+    node.children.reverse().forEach(function(childNode) { 
+      node.container.setActiveChild(childNode.container);
+   });
+    node.children.reverse();
     // node.container.setActiveChild(node.container);
     return node;
 };
