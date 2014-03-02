@@ -31,8 +31,11 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     // Build the node for this container and attach it's children
     var node = new dockspawn.DockNode(container);
     node.children = children;
-    node.children.forEach(function(childNode) { childNode.parent = node; });
-
+    node.children.forEach(function(childNode) { 
+        node.container.setActiveChild(childNode.container);
+        childNode.parent = node; 
+    });
+    // node.container.setActiveChild(node.container);
     return node;
 };
 
@@ -70,7 +73,9 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
         throw new dockspawn.Exception("Cannot create dock container of unknown type: " + containerType);
 
     // Restore the state of the container
+
     container.loadState(containerState);
+
     container.performLayout(childContainers);
     return container;
 };

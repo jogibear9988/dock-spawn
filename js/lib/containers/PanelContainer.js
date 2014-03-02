@@ -165,11 +165,11 @@ Object.defineProperty(dockspawn.PanelContainer.prototype, "height", {
 
 dockspawn.PanelContainer.prototype.resize = function(width,  height)
 {
-    if (this._cachedWidth == width && this._cachedHeight == height)
-    {
-        // Already in the desired size
-        return;
-    }
+    // if (this._cachedWidth == width && this._cachedHeight == height)
+    // {
+    //     // Already in the desired size
+    //     return;
+    // }
     this._setPanelDimensions(width, height);
     this._cachedWidth = width;
     this._cachedHeight = height;

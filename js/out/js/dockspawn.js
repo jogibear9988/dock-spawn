@@ -2119,6 +2119,7 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
         var original = this.stackedVertical ?
             child.containerElement.clientHeight :
             child.containerElement.clientWidth;
+        //TODO: Do something
         if(original === 0)
             continue;
 
@@ -2392,11 +2393,11 @@ Object.defineProperty(dockspawn.PanelContainer.prototype, "height", {
 
 dockspawn.PanelContainer.prototype.resize = function(width,  height)
 {
-    if (this._cachedWidth == width && this._cachedHeight == height)
-    {
-        // Already in the desired size
-        return;
-    }
+    // if (this._cachedWidth == width && this._cachedHeight == height)
+    // {
+    //     // Already in the desired size
+    //     return;
+    // }
     this._setPanelDimensions(width, height);
     this._cachedWidth = width;
     this._cachedHeight = height;
@@ -2603,8 +2604,11 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     // Build the node for this container and attach it's children
     var node = new dockspawn.DockNode(container);
     node.children = children;
-    node.children.forEach(function(childNode) { childNode.parent = node; });
-
+    node.children.forEach(function(childNode) { 
+        node.container.setActiveChild(childNode.container);
+        childNode.parent = node; 
+    });
+    // node.container.setActiveChild(node.container);
     return node;
 };
 
@@ -2642,7 +2646,9 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
         throw new dockspawn.Exception("Cannot create dock container of unknown type: " + containerType);
 
     // Restore the state of the container
+
     container.loadState(containerState);
+
     container.performLayout(childContainers);
     return container;
 };
