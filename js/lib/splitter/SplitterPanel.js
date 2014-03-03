@@ -173,9 +173,9 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
 
         // Set the size of the panel
         if (this.stackedVertical)
-            child.resize(child.width, newSize);
+            child.resize(child.width, newSize == 0 ? 1 : newSize);
         else
-            child.resize(newSize, child.height);
+            child.resize( newSize == 0 ? 1 : newSize, child.height);
     }
 
     this.panelElement.style.width = width + "px";
