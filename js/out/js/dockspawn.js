@@ -873,7 +873,7 @@ dockspawn.DockManager.prototype.setModel = function(model)
 
     this.rebuildLayout(model.rootNode);
     this.loadResize(model.rootNode);
-    this.invalidate();
+    // this.invalidate();
 };
 
 dockspawn.DockManager.prototype.loadResize = function(node)
@@ -1030,7 +1030,7 @@ dockspawn.DockManager.prototype._requestDockDialog = function(referenceNode, dia
     panel.prepareForDocking();
     dialog.destroy();
     layoutDockFunction(referenceNode, newNode);
-    this.invalidate();
+    // this.invalidate();
     return newNode;
 };
 
@@ -1291,6 +1291,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
         referenceNode.addChild(newNode);
         referenceNode.performLayout();
         referenceNode.container.setActiveChild(newNode.container);
+        this.dockManager.invalidate();
         this.dockManager.notifyOnDock(newNode);
         return;
     }
@@ -1317,6 +1318,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
 		this.dockManager.setRootNode(compositeNode);
         this.dockManager.rebuildLayout(this.dockManager.context.model.rootNode);
         compositeNode.container.setActiveChild(newNode.container);
+        this.dockManager.invalidate();
         this.dockManager.notifyOnDock(newNode);
         return;
     }
@@ -1375,6 +1377,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newN
     var containerHeight = newNode.container.containerElement.clientHeight;
     newNode.container.resize(containerWidth, containerHeight);
 	
+    this.dockManager.invalidate();
 	this.dockManager.notifyOnDock(newNode);
 };
 
@@ -1917,6 +1920,7 @@ Object.defineProperty(dockspawn.FillDockContainer.prototype, "height", {
  * This is where more important panels are placed (e.g. the text editor in an IDE,
  * 3D view in a modelling package etc
  */
+ 
 dockspawn.DocumentManagerContainer = function(dockManager)
 {
     dockspawn.FillDockContainer.call(this, dockManager, dockspawn.TabHost.DIRECTION_TOP);

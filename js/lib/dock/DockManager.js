@@ -62,7 +62,7 @@ dockspawn.DockManager.prototype.setModel = function(model)
 
     this.rebuildLayout(model.rootNode);
     this.loadResize(model.rootNode);
-    this.invalidate();
+    // this.invalidate();
 };
 
 dockspawn.DockManager.prototype.loadResize = function(node)
@@ -219,7 +219,7 @@ dockspawn.DockManager.prototype._requestDockDialog = function(referenceNode, dia
     panel.prepareForDocking();
     dialog.destroy();
     layoutDockFunction(referenceNode, newNode);
-    this.invalidate();
+    // this.invalidate();
     return newNode;
 };
 

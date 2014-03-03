@@ -5,6 +5,7 @@ import "FillDockContainer";
  * This is where more important panels are placed (e.g. the text editor in an IDE,
  * 3D view in a modelling package etc
  */
+ 
 dockspawn.DocumentManagerContainer = function(dockManager)
 {
     dockspawn.FillDockContainer.call(this, dockManager, dockspawn.TabHost.DIRECTION_TOP);
