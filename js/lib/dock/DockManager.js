@@ -32,8 +32,11 @@ dockspawn.DockManager.prototype.initialize = function()
 dockspawn.DockManager.prototype.rebuildLayout = function(node)
 {
     var self = this;
-    node.children.forEach(function(child) { self.rebuildLayout(child); });
+    node.children.forEach(function(child) { 
+        self.rebuildLayout(child); 
+    });
     node.performLayout();
+
 };
 
 dockspawn.DockManager.prototype.invalidate = function()
@@ -58,7 +61,21 @@ dockspawn.DockManager.prototype.setModel = function(model)
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);
+    this.loadResize(model.rootNode);
     this.invalidate();
+};
+
+dockspawn.DockManager.prototype.loadResize = function(node)
+{
+    var self = this;
+    node.children.reverse().forEach(function(child) {
+    self.loadResize(child); 
+     node.container.setActiveChild(child.container);
+    });
+    node.children.reverse();
+    node.container.resize(node.container.state.width, node.container.state.height);
+
+    // node.performLayout();
 };
 
 dockspawn.DockManager.prototype.setRootNode = function(node)

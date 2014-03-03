@@ -56,7 +56,8 @@ dockspawn.SplitterDockContainer.prototype.saveState = function(state)
 
 dockspawn.SplitterDockContainer.prototype.loadState = function(state)
 {
-    this.resize(state.width, state.height);
+    this.state = {width: state.width, height: state.height};
+    // this.resize(state.width, state.height);
 };
 
 Object.defineProperty(dockspawn.SplitterDockContainer.prototype, "width", {

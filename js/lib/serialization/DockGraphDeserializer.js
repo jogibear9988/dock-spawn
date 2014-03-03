@@ -32,7 +32,6 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     var node = new dockspawn.DockNode(container);
     node.children = children;
     node.children.reverse().forEach(function(childNode) { 
-        node.container.setActiveChild(childNode.container);
         childNode.parent = node; 
     });
     node.children.reverse();
@@ -77,7 +76,7 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
     // Restore the state of the container
 
     container.loadState(containerState);
-
-    container.performLayout(childContainers);
+    
+    // container.performLayout(childContainers);
     return container;
 };

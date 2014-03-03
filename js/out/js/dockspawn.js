@@ -843,8 +843,11 @@ dockspawn.DockManager.prototype.initialize = function()
 dockspawn.DockManager.prototype.rebuildLayout = function(node)
 {
     var self = this;
-    node.children.forEach(function(child) { self.rebuildLayout(child); });
+    node.children.forEach(function(child) { 
+        self.rebuildLayout(child); 
+    });
     node.performLayout();
+
 };
 
 dockspawn.DockManager.prototype.invalidate = function()
@@ -869,7 +872,21 @@ dockspawn.DockManager.prototype.setModel = function(model)
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);
+    this.loadResize(model.rootNode);
     this.invalidate();
+};
+
+dockspawn.DockManager.prototype.loadResize = function(node)
+{
+    var self = this;
+    node.children.reverse().forEach(function(child) {
+    self.loadResize(child); 
+     node.container.setActiveChild(child.container);
+    });
+    node.children.reverse();
+    node.container.resize(node.container.state.width, node.container.state.height);
+
+    // node.performLayout();
 };
 
 dockspawn.DockManager.prototype.setRootNode = function(node)
@@ -1869,16 +1886,16 @@ dockspawn.FillDockContainer.prototype.saveState = function(state)
 
 dockspawn.FillDockContainer.prototype.loadState = function(state)
 {
-    this.width = state.width;
-    this.height = state.height;
-    this.stateWidth = state.width;
-    this.stateHeight = state.height;
+    // this.resize(state.width, state.height);
+    // this.width = state.width;
+    // this.height = state.height;
+    this.state = {width: state.width, height: state.height};
 };
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "width", {
     get: function() { 
-        if(this.element.clientWidth === 0 && this.stateWidth !== 0)
-            return this.stateWidth;
+        // if(this.element.clientWidth === 0 && this.stateWidth !== 0)
+        //     return this.stateWidth;
         return this.element.clientWidth; 
     },
     set: function(value) {
@@ -1888,8 +1905,8 @@ Object.defineProperty(dockspawn.FillDockContainer.prototype, "width", {
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "height", {
     get: function() {
-        if(this.element.clientHeight === 0 && this.stateHeight !== 0)
-            return this.stateHeight;
+        // if(this.element.clientHeight === 0 && this.stateHeight !== 0)
+        //     return this.stateHeight;
      return this.element.clientHeight;
       },
     set: function(value) { this.element.style.height = value + "px" }
@@ -2120,10 +2137,7 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
         var original = this.stackedVertical ?
             child.containerElement.clientHeight :
             child.containerElement.clientWidth;
-        //TODO: Do something
-        if(original === 0)
-            continue;
-// var newSize = original * scaleMultiplier;
+
         var newSize = scaleMultiplier > 1 ? Math.floor(original * scaleMultiplier) :
         Math.ceil(original * scaleMultiplier);
         updatedTotalChildPanelSize += newSize;
@@ -2134,9 +2148,9 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
 
         // Set the size of the panel
         if (this.stackedVertical)
-            child.resize(child.width, newSize == 0 ? 1 : newSize);
+            child.resize(child.width, newSize );
         else
-            child.resize( newSize == 0 ? 1 : newSize, child.height);
+            child.resize( newSize, child.height);
     }
 
     this.panelElement.style.width = width + "px";
@@ -2199,7 +2213,8 @@ dockspawn.SplitterDockContainer.prototype.saveState = function(state)
 
 dockspawn.SplitterDockContainer.prototype.loadState = function(state)
 {
-    this.resize(state.width, state.height);
+    this.state = {width: state.width, height: state.height};
+    // this.resize(state.width, state.height);
 };
 
 Object.defineProperty(dockspawn.SplitterDockContainer.prototype, "width", {
@@ -2275,7 +2290,8 @@ dockspawn.PanelContainer.prototype.loadState = function(state)
 {
     this.width = state.width;
     this.height = state.height;
-    this.resize(this.width, this.height);
+    this.state = {width: state.width, height: state.height};
+    // this.resize(this.width, this.height);
 };
 
 dockspawn.PanelContainer.prototype.setActiveChild = function(child)
@@ -2605,7 +2621,6 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     var node = new dockspawn.DockNode(container);
     node.children = children;
     node.children.reverse().forEach(function(childNode) { 
-        node.container.setActiveChild(childNode.container);
         childNode.parent = node; 
     });
     node.children.reverse();
@@ -2650,8 +2665,8 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
     // Restore the state of the container
 
     container.loadState(containerState);
-
-    container.performLayout(childContainers);
+    
+    // container.performLayout(childContainers);
     return container;
 };
 /**

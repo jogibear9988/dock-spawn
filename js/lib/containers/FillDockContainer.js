@@ -52,16 +52,16 @@ dockspawn.FillDockContainer.prototype.saveState = function(state)
 
 dockspawn.FillDockContainer.prototype.loadState = function(state)
 {
-    this.width = state.width;
-    this.height = state.height;
-    this.stateWidth = state.width;
-    this.stateHeight = state.height;
+    // this.resize(state.width, state.height);
+    // this.width = state.width;
+    // this.height = state.height;
+    this.state = {width: state.width, height: state.height};
 };
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "width", {
     get: function() { 
-        if(this.element.clientWidth === 0 && this.stateWidth !== 0)
-            return this.stateWidth;
+        // if(this.element.clientWidth === 0 && this.stateWidth !== 0)
+        //     return this.stateWidth;
         return this.element.clientWidth; 
     },
     set: function(value) {
@@ -71,8 +71,8 @@ Object.defineProperty(dockspawn.FillDockContainer.prototype, "width", {
 
 Object.defineProperty(dockspawn.FillDockContainer.prototype, "height", {
     get: function() {
-        if(this.element.clientHeight === 0 && this.stateHeight !== 0)
-            return this.stateHeight;
+        // if(this.element.clientHeight === 0 && this.stateHeight !== 0)
+        //     return this.stateHeight;
      return this.element.clientHeight;
       },
     set: function(value) { this.element.style.height = value + "px" }

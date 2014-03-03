@@ -1,0 +1,401 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"re",
+				"resize"
+			],
+			[
+				"W",
+				"width"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockLayoutEngine.js",
+			"settings":
+			{
+				"buffer_size": 12379,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/lib/tab/TabHost.js",
+			"settings":
+			{
+				"buffer_size": 5159,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "- (void)setRawValue:(NSData *)rawData {\n    uint16_t raw;\n    [rawData getBytes:&raw length:2];\n\n    self.value = [NSNumber numberWithUnsignedShort:raw];\n}",
+			"settings":
+			{
+				"buffer_size": 155,
+				"line_ending": "Unix",
+				"name": "- (void)setRawValue:(NSData *)rawData {"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"Insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 160.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/out/js/dockspawn.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockManager.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dialog/Dialog.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/out/demos/ide/demo.html",
+		"/Volumes/Projects/DockSpawn/js/out/js/dockspawn.js",
+		"/Volumes/Projects/DockSpawn/js/out/demos/ide/demo.html",
+		"/Volumes/Projects/DockSpawn/js/lib/dock/DockManager.js",
+		"/Volumes/Projects/DockSpawn/js/lib/serialization/DockGraphDeserializer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/PanelContainer.js",
+		"/Volumes/Projects/DockSpawn/js/out/css/dock-manager.css",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/SplitterDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/FillDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/splitter/SplitterPanel.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/FillDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/serialization/DockGraphSerializer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/dock/DockLayoutEngine.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/DockGraphDeserializer.js",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/dock_spawn_demo_ide.html",
+		"/Users/georgebuhanov/Dropbox/Documents/js/out/js/dockspawn.js",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/lib/containers/fill_dock_container.dart",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/lib/dock_spawn.dart",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/dock_spawn_demo_ide.dart.js.deps",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/ide/spawn_ide.dart",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/combine.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/PanelContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/DockGraphSerializer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/splitter/SplitterPanel.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/HorizontalDockContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/VerticalDockContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/index.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/build.bat",
+		"/Users/georgebuhanov/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"setModel",
+			"rebuildLayout",
+			"invalidate",
+			"setModel",
+			"==",
+			"container",
+			"Math.floor",
+			"this.elementTitle",
+			"var original = this.stackedVertical",
+			"if(original === 0)",
+			"+        if(original === 0)\n+            continue;",
+			"childrenInfo.push",
+			"childNodes",
+			"_buildGraphInfo",
+			"this.stateWidth = state.width;",
+			"this.dockManager.notifyOnDock(newNode);",
+			"UndockInitiator",
+			"onMouseDown",
+			"undock",
+			"layoutEngine.undock",
+			"requestUndock",
+			"undock",
+			"this.context.model",
+			"DockManager",
+			"saveState",
+			"saveSta\nsaveSta\nsaveSta\nsaveState",
+			"saveSta\nsaveSta\nsaveState",
+			"saveSta\nsaveSta",
+			"Object",
+			"PanelContainer.loadFromState",
+			"PanelContainer.loadFromState ",
+			"PanelContainer.prototype.resize",
+			"setContainerRatio",
+			"_requestDockContainer",
+			"dockLeft",
+			"loadState",
+			"resize",
+			"dockLeft",
+			"layoutDockFunction",
+			"setContainerRatio",
+			"this.rebuildLayout",
+			"this.rebuildLayout(model.rootNode);\n    this.invalidate();",
+			"setModel",
+			"deserialize",
+			"DockGraphDeserializer",
+			"loadState",
+			"deserialize",
+			"setModel",
+			"_requestDockContainer",
+			"dockLeft",
+			"performLayout",
+			"_performDock",
+			"dockLeft",
+			"loadState",
+			"prototype.loadState",
+			"FillDockContainer",
+			"var original = this.stackedVertical",
+			"prototype.resize",
+			"resize",
+			"clientHeight",
+			"HorizontalDockContainer",
+			"SplitterDockContainer",
+			"SplitterPanel",
+			"childContainers",
+			"containerState",
+			";\n",
+			"dockspawn.FillDockContainer",
+			"prototype.loadState",
+			"this.element.style.height",
+			"layoutEventListeners",
+			"iconName",
+			"HorizontalDockContainer"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockLayoutEngine.js",
+					"settings":
+					{
+						"buffer_size": 12379,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3325,
+								3276
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1020.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "js/lib/tab/TabHost.js",
+					"settings":
+					{
+						"buffer_size": 5159,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2080,
+								2109
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"settings":
+					{
+						"buffer_size": 155,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								155,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "- (void)setRawValue:(NSData *)rawData {",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.519869373251,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 185.0,
+	"status_bar_visible": true
+}

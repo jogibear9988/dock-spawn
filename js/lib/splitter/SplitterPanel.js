@@ -159,10 +159,7 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
         var original = this.stackedVertical ?
             child.containerElement.clientHeight :
             child.containerElement.clientWidth;
-        //TODO: Do something
-        if(original === 0)
-            continue;
-// var newSize = original * scaleMultiplier;
+
         var newSize = scaleMultiplier > 1 ? Math.floor(original * scaleMultiplier) :
         Math.ceil(original * scaleMultiplier);
         updatedTotalChildPanelSize += newSize;
@@ -173,9 +170,9 @@ dockspawn.SplitterPanel.prototype.resize = function(width, height)
 
         // Set the size of the panel
         if (this.stackedVertical)
-            child.resize(child.width, newSize == 0 ? 1 : newSize);
+            child.resize(child.width, newSize );
         else
-            child.resize( newSize == 0 ? 1 : newSize, child.height);
+            child.resize( newSize, child.height);
     }
 
     this.panelElement.style.width = width + "px";

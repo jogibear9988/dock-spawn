@@ -45,7 +45,8 @@ dockspawn.PanelContainer.prototype.loadState = function(state)
 {
     this.width = state.width;
     this.height = state.height;
-    this.resize(this.width, this.height);
+    this.state = {width: state.width, height: state.height};
+    // this.resize(this.width, this.height);
 };
 
 dockspawn.PanelContainer.prototype.setActiveChild = function(child)
