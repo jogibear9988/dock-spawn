@@ -174,9 +174,9 @@
 	background-color: #666; 
 }
 
-.tab-content * {
+/*.tab-content * {
     margin: 0px;
-}
+}*/
 
 .tab-handle {
 	position: relative;
