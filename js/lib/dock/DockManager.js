@@ -20,6 +20,7 @@ dockspawn.DockManager.prototype.initialize = function()
     var documentNode = new dockspawn.DockNode(this.context.documentManagerView);
     this.context.model.rootNode = documentNode;
     this.context.model.documentManagerNode = documentNode;
+    this.context.model.dialogs = [];
     this.setRootNode(this.context.model.rootNode);
     // Resize the layout
     this.resize(this.element.clientWidth, this.element.clientHeight);
@@ -58,6 +59,7 @@ dockspawn.DockManager.prototype.setModel = function(model)
 {
     removeNode(this.context.documentManagerView.containerElement);
     this.context.model = model;
+    this.context.model.dialogs = [];
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);

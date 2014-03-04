@@ -1,6 +1,6 @@
 (function()
 {
-    dockspawn = {version: "0.0.2"};
+    dockspawn = {version: "0.0.3"};
 
 import "tab/";
 import "dialog/";

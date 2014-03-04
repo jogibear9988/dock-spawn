@@ -18,6 +18,7 @@
     <div class="demo-header" id="header" style="width:100%">
         <div class="demo-header-title">Dock Spawn IDE Demo [Javascript]</div>
         <div class="demo-header-description">Pull a panel out from it's title bar and dock it elsewhere</div>
+        <div style="padding: 15px"><a href="javascript:refresh()" style="text-decoration: none; color: white;">Refresh</a></div>
     </div>
     <div id="my_dock_manager" class="my-dock-manager"></div>
     <div id="solution_window" caption="Solution Explorer" icon="icon-circle-arrow-right" class="solution-window">
@@ -53,6 +54,10 @@
     </div>
     <script>
     var dockManager;
+        function refresh () {
+             localStorage['lastState'] = '';
+             location.reload();
+        }
         window.onload = function()
         {
             // Convert a div to the dock manager.  Panels can then be docked on to it

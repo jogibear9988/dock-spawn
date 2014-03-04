@@ -83,6 +83,7 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
         }
     }
     this.dockManager.invalidate();
+   
 	this.dockManager.notifyOnUnDock(node);
 };
 

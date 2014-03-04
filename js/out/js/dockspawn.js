@@ -1,6 +1,6 @@
 (function()
 {
-    dockspawn = {version: "0.0.2"};
+    dockspawn = {version: "0.0.3"};
 
 /**
  * A tab handle represents the tab button on the tab strip
@@ -331,6 +331,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.dockManager = dockManager;
     this.eventListener = dockManager;
     this._initialize();
+    this.dockManager.context.model.dialogs.push(this);
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)
@@ -379,6 +380,7 @@ dockspawn.Dialog.prototype.destroy = function()
     removeNode(this.elementDialog);
     this.draggable.removeDecorator();
     removeNode(this.panel.elementPanel);
+     this.dockManager.context.model.dialogs.remove(this);
     delete this.panel.floatingDialog;
 };
 
@@ -831,6 +833,7 @@ dockspawn.DockManager.prototype.initialize = function()
     var documentNode = new dockspawn.DockNode(this.context.documentManagerView);
     this.context.model.rootNode = documentNode;
     this.context.model.documentManagerNode = documentNode;
+    this.context.model.dialogs = [];
     this.setRootNode(this.context.model.rootNode);
     // Resize the layout
     this.resize(this.element.clientWidth, this.element.clientHeight);
@@ -869,6 +872,7 @@ dockspawn.DockManager.prototype.setModel = function(model)
 {
     removeNode(this.context.documentManagerView.containerElement);
     this.context.model = model;
+    this.context.model.dialogs = [];
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);
@@ -1278,6 +1282,7 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
         }
     }
     this.dockManager.invalidate();
+   
 	this.dockManager.notifyOnUnDock(node);
 };
 
@@ -2880,5 +2885,12 @@ dockspawn.UndockInitiator.prototype._requestUndock = function(e)
     var dragOffset = new Point(dragOffsetX, dragOffsetY);
     this.listener(e, dragOffset);
 };
+Array.prototype.remove = function(value) {
+  var idx = this.indexOf(value);
+  if (idx != -1) {
+      return this.splice(idx, 1); // The second parameter is the number of elements to remove.
+  }
+  return false;
+}
 
 })();

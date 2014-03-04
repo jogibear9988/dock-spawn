@@ -5,6 +5,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.dockManager = dockManager;
     this.eventListener = dockManager;
     this._initialize();
+    this.dockManager.context.model.dialogs.push(this);
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)
@@ -53,6 +54,7 @@ dockspawn.Dialog.prototype.destroy = function()
     removeNode(this.elementDialog);
     this.draggable.removeDecorator();
     removeNode(this.panel.elementPanel);
+     this.dockManager.context.model.dialogs.remove(this);
     delete this.panel.floatingDialog;
 };
 
