@@ -90,6 +90,10 @@
                        console.log('onCreateDialog: ' + self + dialog);
                         localStorage['lastState'] = dockManager.saveState();
                     },
+                    onChangeDialogPosition:function(self, dialog, x, y){
+                       console.log('onCreateDialog: ' + self + dialog + x + y);
+                        localStorage['lastState'] = dockManager.saveState();
+                    },
                     onResumeLayout:function(self){
                         console.log('onResumeLayout: ' +self);
                          localStorage['lastState'] = dockManager.saveState();

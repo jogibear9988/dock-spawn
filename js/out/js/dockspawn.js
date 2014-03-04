@@ -333,6 +333,8 @@ dockspawn.Dialog = function(panel, dockManager)
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
     this.dockManager.notifyOnCreateDialog(this);
+    this.x = 0;
+    this.y = 0;
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)
@@ -360,8 +362,16 @@ dockspawn.Dialog.prototype._initialize = function()
 
 dockspawn.Dialog.prototype.setPosition = function(x, y)
 {
+    this.x = x;
+    this.y = y;
     this.elementDialog.style.left = x + "px";
     this.elementDialog.style.top = y + "px";
+    this.dockManager.notifyOnChangeDialogPosition(this, x, y);
+};
+
+dockspawn.Dialog.prototype.getPosition = function()
+{
+    return { left:  this.x , top: this.y };
 };
 
 dockspawn.Dialog.prototype.onMouseDown = function(e)
@@ -873,7 +883,6 @@ dockspawn.DockManager.prototype.setModel = function(model)
 {
     removeNode(this.context.documentManagerView.containerElement);
     this.context.model = model;
-    this.context.model.dialogs = [];
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);
@@ -1182,6 +1191,16 @@ dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
     this.layoutEventListeners.forEach(function(listener) { 
         if (listener.onCreateDialog) {
             listener.onCreateDialog(self, dialog); 
+        }
+    });
+};
+
+dockspawn.DockManager.prototype.notifyOnChangeDialogPosition = function(dialog, x, y)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onChangeDialogPosition) {
+            listener.onChangeDialogPosition(self, dialog, x, y); 
         }
     });
 };
@@ -2620,6 +2639,7 @@ dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
     var info = JSON.parse(_json);
     var model = new dockspawn.DockModel();
     model.rootNode = this._buildGraph(info.graphInfo);
+    model.dialogs = this._buildDialogs(info.dialogsInfo);
     return model;
 };
 
@@ -2689,6 +2709,25 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
     // container.performLayout(childContainers);
     return container;
 };
+
+dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
+{
+    var dialogs = [];
+    dialogsInfo.forEach(function(dialogInfo) {
+        var containerType = dialogInfo.containerType;
+        var containerState = dialogInfo.state;
+        var container;
+        if (containerType == "panel"){
+            container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+            removeNode(container.elementPanel);
+            var dialog = new dockspawn.Dialog(container, this.dockManager);
+            dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
+            dialogs.push(dialog);
+        }
+
+    });
+    return dialogs; 
+}
 /**
  * The serializer saves / loads the state of the dock layout hierarchy
  */
@@ -2733,7 +2772,7 @@ dockspawn.DockGraphSerializer.prototype._buildDialogsInfo = function(dialogs)
         panelInfo.containerType = panelContainer.containerType;
         panelInfo.state = panelState;
         panelInfo.children = [];
-
+        panelInfo.position = dialog.getPosition();
         dialogsInfo.push(panelInfo)
     })
     return dialogsInfo;

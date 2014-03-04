@@ -42,7 +42,7 @@ dockspawn.DockGraphSerializer.prototype._buildDialogsInfo = function(dialogs)
         panelInfo.containerType = panelContainer.containerType;
         panelInfo.state = panelState;
         panelInfo.children = [];
-
+        panelInfo.position = dialog.getPosition();
         dialogsInfo.push(panelInfo)
     })
     return dialogsInfo;

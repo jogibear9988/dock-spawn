@@ -59,7 +59,6 @@ dockspawn.DockManager.prototype.setModel = function(model)
 {
     removeNode(this.context.documentManagerView.containerElement);
     this.context.model = model;
-    this.context.model.dialogs = [];
     this.setRootNode(model.rootNode);
 
     this.rebuildLayout(model.rootNode);
@@ -368,6 +367,16 @@ dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
     this.layoutEventListeners.forEach(function(listener) { 
         if (listener.onCreateDialog) {
             listener.onCreateDialog(self, dialog); 
+        }
+    });
+};
+
+dockspawn.DockManager.prototype.notifyOnChangeDialogPosition = function(dialog, x, y)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onChangeDialogPosition) {
+            listener.onChangeDialogPosition(self, dialog, x, y); 
         }
     });
 };

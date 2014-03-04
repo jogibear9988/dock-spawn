@@ -11,6 +11,7 @@ dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
     var info = JSON.parse(_json);
     var model = new dockspawn.DockModel();
     model.rootNode = this._buildGraph(info.graphInfo);
+    model.dialogs = this._buildDialogs(info.dialogsInfo);
     return model;
 };
 
@@ -80,3 +81,22 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
     // container.performLayout(childContainers);
     return container;
 };
+
+dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
+{
+    var dialogs = [];
+    dialogsInfo.forEach(function(dialogInfo) {
+        var containerType = dialogInfo.containerType;
+        var containerState = dialogInfo.state;
+        var container;
+        if (containerType == "panel"){
+            container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+            removeNode(container.elementPanel);
+            var dialog = new dockspawn.Dialog(container, this.dockManager);
+            dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
+            dialogs.push(dialog);
+        }
+
+    });
+    return dialogs; 
+}
