@@ -8,9 +8,9 @@ dockspawn.DockGraphDeserializer = function(dockManager)
 
 dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
 {
-    var graphInfo = JSON.parse(_json);
+    var info = JSON.parse(_json);
     var model = new dockspawn.DockModel();
-    model.rootNode = this._buildGraph(graphInfo);
+    model.rootNode = this._buildGraph(info.graphInfo);
     return model;
 };
 

@@ -332,6 +332,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
+    this.dockManager.notifyOnCreateDialog(this);
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)
@@ -1173,6 +1174,16 @@ dockspawn.DockManager.prototype.notifyOnUnDock = function(dockNode)
 			listener.onUndock(self, dockNode); 
 		}
 	});
+};
+
+dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onCreateDialog) {
+            listener.onCreateDialog(self, dialog); 
+        }
+    });
 };
 
 dockspawn.DockManager.prototype.saveState = function()
@@ -2606,9 +2617,9 @@ dockspawn.DockGraphDeserializer = function(dockManager)
 
 dockspawn.DockGraphDeserializer.prototype.deserialize = function(_json)
 {
-    var graphInfo = JSON.parse(_json);
+    var info = JSON.parse(_json);
     var model = new dockspawn.DockModel();
-    model.rootNode = this._buildGraph(graphInfo);
+    model.rootNode = this._buildGraph(info.graphInfo);
     return model;
 };
 
@@ -2688,7 +2699,8 @@ dockspawn.DockGraphSerializer = function()
 dockspawn.DockGraphSerializer.prototype.serialize = function(model)
 {
     var graphInfo = this._buildGraphInfo(model.rootNode);
-    return JSON.stringify(graphInfo);
+    var dialogs = this._buildDialogsInfo(model.dialogs);
+    return JSON.stringify({graphInfo: graphInfo, dialogsInfo: dialogs});
 };
 
 dockspawn.DockGraphSerializer.prototype._buildGraphInfo = function(node)
@@ -2707,6 +2719,24 @@ dockspawn.DockGraphSerializer.prototype._buildGraphInfo = function(node)
     nodeInfo.state = nodeState;
     nodeInfo.children = childrenInfo;
     return nodeInfo;
+};
+
+dockspawn.DockGraphSerializer.prototype._buildDialogsInfo = function(dialogs)
+{
+    var dialogsInfo = [];
+    dialogs.forEach(function(dialog) {
+        var panelState = {};
+        var panelContainer = dialog.panel;
+        panelContainer.saveState(panelState);
+
+        var panelInfo = {};
+        panelInfo.containerType = panelContainer.containerType;
+        panelInfo.state = panelState;
+        panelInfo.children = [];
+
+        dialogsInfo.push(panelInfo)
+    })
+    return dialogsInfo;
 };
 function getPixels(pixels)
 {

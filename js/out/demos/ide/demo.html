@@ -86,6 +86,10 @@
                        console.log('onUndock: ' +self + dockNode);
                         localStorage['lastState'] = dockManager.saveState();
                     },
+                    onCreateDialog:function(self, dialog){
+                       console.log('onCreateDialog: ' + self + dialog);
+                        localStorage['lastState'] = dockManager.saveState();
+                    },
                     onResumeLayout:function(self){
                         console.log('onResumeLayout: ' +self);
                          localStorage['lastState'] = dockManager.saveState();

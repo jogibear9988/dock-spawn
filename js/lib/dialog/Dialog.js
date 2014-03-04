@@ -6,6 +6,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
+    this.dockManager.notifyOnCreateDialog(this);
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)

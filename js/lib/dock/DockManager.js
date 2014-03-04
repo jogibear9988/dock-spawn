@@ -362,6 +362,16 @@ dockspawn.DockManager.prototype.notifyOnUnDock = function(dockNode)
 	});
 };
 
+dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onCreateDialog) {
+            listener.onCreateDialog(self, dialog); 
+        }
+    });
+};
+
 dockspawn.DockManager.prototype.saveState = function()
 {
     var serializer = new dockspawn.DockGraphSerializer();
