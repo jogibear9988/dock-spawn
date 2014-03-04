@@ -6,9 +6,14 @@ dockspawn.Dialog = function(panel, dockManager)
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
+        this.position = {x: 0, y: 0};
     this.dockManager.notifyOnCreateDialog(this);
-    this.x = 0;
-    this.y = 0;
+
+};
+
+dockspawn.Dialog.prototype.saveState = function(x, y){
+    this.position = {x: x, y: y};
+    this.dockManager.notifyOnChangeDialogPosition(this, x, y);
 };
 
 dockspawn.Dialog.fromElement = function(id, dockManager)
@@ -36,8 +41,7 @@ dockspawn.Dialog.prototype._initialize = function()
 
 dockspawn.Dialog.prototype.setPosition = function(x, y)
 {
-    this.x = x;
-    this.y = y;
+    this.position = {x: x, y: y};
     this.elementDialog.style.left = x + "px";
     this.elementDialog.style.top = y + "px";
     this.dockManager.notifyOnChangeDialogPosition(this, x, y);
@@ -45,7 +49,7 @@ dockspawn.Dialog.prototype.setPosition = function(x, y)
 
 dockspawn.Dialog.prototype.getPosition = function()
 {
-    return { left:  this.x , top: this.y };
+    return { left:  this.position.x , top: this.position.y };
 };
 
 dockspawn.Dialog.prototype.onMouseDown = function(e)

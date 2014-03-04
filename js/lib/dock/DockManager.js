@@ -117,6 +117,7 @@ dockspawn.DockManager.prototype.onDialogDragEnded = function(sender, e)
     this.dockWheel.onDialogDropped(sender);
     this.dockWheel.hideWheel();
     delete this.dockWheel.activeDialog;
+    sender.saveState(e.x, e.y);
 };
 
 dockspawn.DockManager.prototype.onMouseMoved = function(e)
