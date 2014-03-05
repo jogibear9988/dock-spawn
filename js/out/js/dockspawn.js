@@ -1224,6 +1224,31 @@ dockspawn.DockManager.prototype.loadState = function(json)
     this.setModel(this.context.model);
 };
 
+dockspawn.DockManager.prototype.getPanels = function()
+{
+    var panels = [];
+    //all visible nodes
+    this._allPanels(this.context.model.rootNode, panels);
+
+    //all visible or not dialogs
+    this.context.model.dialogs.forEach(function(dialog) {
+        //TODO: check visible
+        panels.push(dialog.panel);
+    });
+
+    return panels;
+};
+
+dockspawn.DockManager.prototype._allPanels = function(node, panels)
+{
+     var self = this;
+    node.children.forEach(function(child) {
+       self._allPanels(child, panels); 
+    });
+    if (node.container.containerType == "panel"){
+        panels.push(node.container);
+    }
+};
 //typedef void LayoutEngineDockFunction(dockspawn.DockNode referenceNode, dockspawn.DockNode newNode);
 
 /**

@@ -10,6 +10,10 @@
 	<!-- Info Vis graphing lib. Used for dock tree visualization -->
 	<link type="text/css" rel="stylesheet" href="infovis/jit-base.css" />
 	<link type="text/css" rel="stylesheet" href="infovis/Spacetree.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.kendostatic.com/2012.3.1114/styles/kendo.common.min.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.kendostatic.com/2012.3.1114/styles/kendo.blueopal.min.css">
+    <script type="text/javascript" src="http://cdn.kendostatic.com/2012.3.1114/js/kendo.web.min.js"></script>
 	<script language="javascript" type="text/javascript" src="infovis/jit.js"></script>
 	<script language="javascript" type="text/javascript" src="infovis/dock_tree_vis.js"></script>
 </head>
@@ -18,7 +22,8 @@
     <div class="demo-header" id="header" style="width:100%">
         <div class="demo-header-title">Dock Spawn IDE Demo [Javascript]</div>
         <div class="demo-header-description">Pull a panel out from it's title bar and dock it elsewhere</div>
-        <div style="padding: 15px"><a href="javascript:refresh()" style="text-decoration: none; color: white;">Refresh</a></div>
+        <div style="padding: 15px; float: left;"><a href="javascript:refresh()" style="text-decoration: none; color: white;">Refresh</a></div>
+         <div style="padding: 15px;"><input id="windows" /></div>
     </div>
     <div id="my_dock_manager" class="my-dock-manager"></div>
     <div id="solution_window" caption="Solution Explorer" icon="icon-circle-arrow-right" class="solution-window">
@@ -53,6 +58,131 @@
     <div id="outline_window" caption="Outline" class="outline-window">
     </div>
     <script>
+    (function($) {
+
+    // shorten references to variables. this is better for uglification
+    var kendo = window.kendo,
+        ui = kendo.ui,
+        DropDownList = ui.DropDownList,
+        SELECT = "select",
+        SELECTED = "k-state-selected";
+
+    var MultiSelectBox = DropDownList.extend({
+
+        init: function(element, options) {
+            
+            options.template = kendo.template(
+                kendo.format('<span data-value="#= {0} #">#= {1} #</span>',
+                    options.dataValueField,
+                    options.dataTextField
+                )
+            );           
+            
+            // base call to widget initialization
+            DropDownList.fn.init.call(this, element, options);
+        },
+
+        current: function(candidate) {
+            return this._current;
+        },
+  
+        options: {
+            name: "MultiSelectBox",
+            index: -1
+        },
+        
+        _focus: function(li) {
+            var that = this
+            if (that.popup.visible() && li && that.trigger(SELECT, {item: li})) {
+                 that.close();
+                 return;
+            }
+            that._select(li);
+        },
+
+        _select: function(li) {
+            var that = this,
+                 current = that._current,
+                 data = that._data(),
+                 value,
+                 text,
+                 idx;
+
+            li = that._get(li);
+
+            if (li && li[0]) {
+                 idx = ui.List.inArray(li[0], that.ul[0]);
+                 if (idx > -1) {
+
+                    if(li.hasClass(SELECTED))
+                        li.removeClass(SELECTED);
+                    else{
+                        li.addClass(SELECTED);
+                        that.current(li);
+                    }
+
+                    var selecteditems = $(that.ul[0]).children("li."+SELECTED);
+                    value = [];
+                    text = [];
+                    $.each(selecteditems, function (indx, item) {
+                        var obj = $(item).children("span").first();
+                        value.push(obj.attr("data-value"));
+                        text.push(obj.text());
+                    });
+
+                    that.text(text.join(", "));
+                    that._accessor(value !== undefined ? value : text, idx);
+                }
+            }
+
+        },
+
+        value: function(value) {
+            var that = this,
+                idx,
+                valuesList=[];
+
+            if (value !== undefined) {
+
+                if(!$.isArray(value)){
+                    valuesList.push(value);
+                }
+                else{
+                    valuesList = value;
+                }
+
+                $(that.ul[0]).children("li."+SELECTED).removeClass(SELECTED);
+
+
+                $.each(valuesList, function(indx, item){
+                    if (item !== null) {
+                      item = item.toString();
+                    }
+
+                    that._valueCalled = true;
+
+                    if (item && that._valueOnFetch(item)) {
+                      return;
+                    }
+
+                    idx = that._index(item);
+
+                    that.select(idx > -1 ? idx : 0);
+
+                });
+
+            }
+            else {
+                return that._accessor();
+            }
+        }
+
+    });
+
+    ui.plugin(MultiSelectBox);
+
+})(jQuery); 
+
     var dockManager;
         function refresh () {
              localStorage['lastState'] = '';
@@ -100,38 +230,56 @@
                    }
                 
             });
-            if(lastState != undefined && lastState !== '' )
-                return;
-            // Convert existing elements on the page into "Panels".
-            // They can then be docked on to the dock manager
-            // Panels get a titlebar and a close button, and can also be
-            // converted to a floating dialog box which can be dragged / resized
-            var solution = new dockspawn.PanelContainer(document.getElementById("solution_window"), dockManager);
-            var properties = new dockspawn.PanelContainer(document.getElementById("properties_window"), dockManager);
-            var toolbox = new dockspawn.PanelContainer(document.getElementById("toolbox_window"), dockManager);
-            var outline = new dockspawn.PanelContainer(document.getElementById("outline_window"), dockManager);
-            var problems = new dockspawn.PanelContainer(document.getElementById("problems_window"), dockManager);
-            var output = new dockspawn.PanelContainer(document.getElementById("output_window"), dockManager);
-            var editor1 = new dockspawn.PanelContainer(document.getElementById("editor1_window"), dockManager);
-            var editor2 = new dockspawn.PanelContainer(document.getElementById("editor2_window"), dockManager);
-            var infovis = new dockspawn.PanelContainer(document.getElementById("infovis"), dockManager);
 
-            // Dock the panels on the dock manager
-            var documentNode = dockManager.context.model.documentManagerNode;
-            var outlineNode = dockManager.dockLeft(documentNode, outline, 0.15);
-            var solutionNode = dockManager.dockFill(outlineNode, solution);
-            var propertiesNode = dockManager.dockDown(outlineNode, properties, 0.6);
-            var outputNode = dockManager.dockDown(documentNode, output, 0.2);
-            var problemsNode = dockManager.dockRight(outputNode, problems, 0.40);
-            var toolboxNode = dockManager.dockRight(documentNode, toolbox, 0.20);
-            var editor1Node = dockManager.dockFill(documentNode, editor1);
-            var editor2Node = dockManager.dockFill(documentNode, editor2);
-            var infovisNode = dockManager.dockFill(documentNode, infovis);
-			
+        
+            if(lastState == undefined || lastState == '' )
+              {
+                // Convert existing elements on the page into "Panels".
+                // They can then be docked on to the dock manager
+                // Panels get a titlebar and a close button, and can also be
+                // converted to a floating dialog box which can be dragged / resized
+                var solution = new dockspawn.PanelContainer(document.getElementById("solution_window"), dockManager);
+                var properties = new dockspawn.PanelContainer(document.getElementById("properties_window"), dockManager);
+                var toolbox = new dockspawn.PanelContainer(document.getElementById("toolbox_window"), dockManager);
+                var outline = new dockspawn.PanelContainer(document.getElementById("outline_window"), dockManager);
+                var problems = new dockspawn.PanelContainer(document.getElementById("problems_window"), dockManager);
+                var output = new dockspawn.PanelContainer(document.getElementById("output_window"), dockManager);
+                var editor1 = new dockspawn.PanelContainer(document.getElementById("editor1_window"), dockManager);
+                var editor2 = new dockspawn.PanelContainer(document.getElementById("editor2_window"), dockManager);
+                var infovis = new dockspawn.PanelContainer(document.getElementById("infovis"), dockManager);
+
+                // Dock the panels on the dock manager
+                var documentNode = dockManager.context.model.documentManagerNode;
+                var outlineNode = dockManager.dockLeft(documentNode, outline, 0.15);
+                var solutionNode = dockManager.dockFill(outlineNode, solution);
+                var propertiesNode = dockManager.dockDown(outlineNode, properties, 0.6);
+                var outputNode = dockManager.dockDown(documentNode, output, 0.2);
+                var problemsNode = dockManager.dockRight(outputNode, problems, 0.40);
+                var toolboxNode = dockManager.dockRight(documentNode, toolbox, 0.20);
+                var editor1Node = dockManager.dockFill(documentNode, editor1);
+                var editor2Node = dockManager.dockFill(documentNode, editor2);
+                var infovisNode = dockManager.dockFill(documentNode, infovis);
+			}
+              var panels = dockManager.getPanels();
+              var viewPanels = [];
+              var isView = [];
+                panels.forEach(function(d) {
+                    viewPanels.push({title : d.title, id:d.elementContent.id});
+                    isView.push(d.elementContent.id);
+                });
+                
+        $("#windows").kendoMultiSelectBox({
+            dataTextField: "title",
+            dataValueField: "id",
+            dataSource: viewPanels,
+            value: isView
+        });
 			// Initialize infovis (for dock tree visualization)
 			// InitDebugTreeVis(dockManager);
         }
-    </script>
 
+
+    </script>
+ 
 </body>
 </html>
