@@ -234,6 +234,16 @@
                         console.log('onClosePanel: ' + self + panel);
                          localStorage['lastState'] = dockManager.saveState();
                          updateVisiblePanels();
+                   },
+                   onHideDialog:function(self, dialog){
+                         console.log('onHideDialog: ' + self + dialog);
+                         localStorage['lastState'] = dockManager.saveState();
+                         // updateVisiblePanels();
+                   },
+                   onShowDialog:function(self, dialog){
+                          console.log('onShowDialog: ' + self + dialog);
+                          localStorage['lastState'] = dockManager.saveState();
+                          // updateVisiblePanels();
                    }
                 
             });

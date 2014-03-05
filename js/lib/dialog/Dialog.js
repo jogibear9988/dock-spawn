@@ -100,6 +100,7 @@ dockspawn.Dialog.prototype.hide = function()
     this.elementDialog.style.zIndex = 0;
     this.elementDialog.style.display = 'none';
     this.isHidden = true;
+    this.dockManager.notifyOnHideDialog(this);   
 };
 
 dockspawn.Dialog.prototype.show = function()
@@ -107,4 +108,5 @@ dockspawn.Dialog.prototype.show = function()
     this.elementDialog.style.zIndex = 1000;
     this.elementDialog.style.display = 'block';
     this.isHidden = false;
+    this.dockManager.notifyOnShowDialog(this);   
 };

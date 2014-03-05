@@ -427,6 +427,7 @@ dockspawn.Dialog.prototype.hide = function()
     this.elementDialog.style.zIndex = 0;
     this.elementDialog.style.display = 'none';
     this.isHidden = true;
+    this.dockManager.notifyOnHideDialog(this);   
 };
 
 dockspawn.Dialog.prototype.show = function()
@@ -434,6 +435,7 @@ dockspawn.Dialog.prototype.show = function()
     this.elementDialog.style.zIndex = 1000;
     this.elementDialog.style.display = 'block';
     this.isHidden = false;
+    this.dockManager.notifyOnShowDialog(this);   
 };
 dockspawn.DraggableContainer = function(dialog, delegate, topLevelElement, dragHandle)
 {
@@ -1230,6 +1232,28 @@ dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
     });
 };
 
+dockspawn.DockManager.prototype.notifyOnHideDialog = function(dialog)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onHideDialog) {
+            listener.onHideDialog(self, dialog); 
+        }
+    });
+};
+
+
+dockspawn.DockManager.prototype.notifyOnShowDialog = function(dialog)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onShowDialog) {
+            listener.onShowDialog(self, dialog); 
+        }
+    });
+};
+
+
 dockspawn.DockManager.prototype.notifyOnChangeDialogPosition = function(dialog, x, y)
 {
     var self = this;
@@ -1282,12 +1306,10 @@ dockspawn.DockManager.prototype.updatePanels = function(ids)
     var self = this;
      this.context.model.dialogs.forEach(function(dialog) {
        if(ids.contains(dialog.panel.elementContent.id)){
-           dialog.show();
-            self.notifyOnClosePanel(dialog.panel);   
+             dialog.show();
         }
         else{
              dialog.hide();
-             self.notifyOnClosePanel(dialog.panel); 
         }
     });
     return panels;
