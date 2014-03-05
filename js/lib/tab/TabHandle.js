@@ -79,9 +79,10 @@ dockspawn.TabHandle.prototype.onCloseButtonClicked = function()
     // If the page contains a panel element, undock it and destroy it
     if (this.parent.container.containerType == "panel")
     {
-        this.undockInitiator.enabled = false;
-        var panel = this.parent.container;
-        panel.performUndock();
+        this.parent.container.close();
+        // this.undockInitiator.enabled = false;
+        // var panel = this.parent.container;
+        // panel.performUndock();
     }
 };
 

@@ -83,9 +83,10 @@ dockspawn.TabHandle.prototype.onCloseButtonClicked = function()
     // If the page contains a panel element, undock it and destroy it
     if (this.parent.container.containerType == "panel")
     {
-        this.undockInitiator.enabled = false;
-        var panel = this.parent.container;
-        panel.performUndock();
+        this.parent.container.close();
+        // this.undockInitiator.enabled = false;
+        // var panel = this.parent.container;
+        // panel.performUndock();
     }
 };
 
@@ -333,6 +334,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
         this.position = {x: 0, y: 0};
+
     this.dockManager.notifyOnCreateDialog(this);
 
 };
@@ -362,6 +364,7 @@ dockspawn.Dialog.prototype._initialize = function()
 
     this.mouseDownHandler = new dockspawn.EventHandler(this.elementDialog, 'mousedown', this.onMouseDown.bind(this));
     this.resize(this.panel.elementPanel.clientWidth, this.panel.elementPanel.clientHeight);
+    this.isHidden = false;
     this.bringToFront();
 };
 
@@ -417,6 +420,20 @@ dockspawn.Dialog.prototype.setTitleIcon = function(iconName)
 dockspawn.Dialog.prototype.bringToFront = function()
 {
     this.elementDialog.style.zIndex = this.zIndexCounter++;
+};
+
+dockspawn.Dialog.prototype.hide = function()
+{
+    this.elementDialog.style.zIndex = 0;
+    this.elementDialog.style.display = 'none';
+    this.isHidden = true;
+};
+
+dockspawn.Dialog.prototype.show = function()
+{
+    this.elementDialog.style.zIndex = 1000;
+    this.elementDialog.style.display = 'block';
+    this.isHidden = false;
 };
 dockspawn.DraggableContainer = function(dialog, delegate, topLevelElement, dragHandle)
 {
@@ -1246,6 +1263,45 @@ dockspawn.DockManager.prototype.getPanels = function()
     this.context.model.dialogs.forEach(function(dialog) {
         //TODO: check visible
         panels.push(dialog.panel);
+    });
+
+    return panels;
+};
+
+dockspawn.DockManager.prototype.updatePanels = function(ids)
+{
+     var panels = [];
+    //all visible nodes
+    this._allPanels(this.context.model.rootNode, panels);
+    //only remove
+    panels.forEach(function(panel) {
+        if(!ids.contains(panel.elementContent.id)){
+           panel.close();  
+       }
+    });
+
+     this.context.model.dialogs.forEach(function(dialog) {
+       if(ids.contains(dialog.panel.elementContent.id)){
+           dialog.show();  
+        }
+        else{
+             dialog.hide();  
+        }
+    });
+    return panels;
+};
+
+dockspawn.DockManager.prototype.getVisiblePanels = function()
+{
+    var panels = [];
+    //all visible nodes
+    this._allPanels(this.context.model.rootNode, panels);
+
+    //all visible
+    this.context.model.dialogs.forEach(function(dialog) {
+        if(!dialog.isHidden){
+            panels.push(dialog.panel);
+        }
     });
 
     return panels;
@@ -2339,6 +2395,7 @@ dockspawn.PanelContainer = function(elementContent, dockManager, title)
     this.iconName = "icon-circle-arrow-right";
     this.minimumAllowedChildNodes = 0;
     this._floatingDialog = undefined;
+    this.isDialog = false;
     this._initialize();
 };
 
@@ -2446,6 +2503,7 @@ dockspawn.PanelContainer.prototype.destroy = function()
  */
 dockspawn.PanelContainer.prototype.performUndockToDialog = function(e, dragOffset)
 {
+     this.isDialog = true;
     this.undockInitiator.enabled = false;
     return this.dockManager.requestUndockToDialog(this, e, dragOffset);
 };
@@ -2456,12 +2514,14 @@ dockspawn.PanelContainer.prototype.performUndockToDialog = function(e, dragOffse
  */
 dockspawn.PanelContainer.prototype.performUndock = function()
 {
+   
     this.undockInitiator.enabled = false;
     this.dockManager.requestUndock(this);
 };
 
 dockspawn.PanelContainer.prototype.prepareForDocking = function()
 {
+    this.isDialog = false;
     this.undockInitiator.enabled = true;
 };
 
@@ -2545,18 +2605,23 @@ dockspawn.PanelContainer.prototype.performLayout = function(children)
 
 dockspawn.PanelContainer.prototype.onCloseButtonClicked = function(e)
 {
-    //TODO: hide
-    if (this.floatingDialog)
-        this.floatingDialog.destroy();
+   this.close();
+};
+
+dockspawn.PanelContainer.prototype.close = function(e){
+     //TODO: hide
+    if (this.isDialog){
+        this.floatingDialog.hide();
+        this.floatingDialog.setPosition(0, 0);
+    }
     else
     {
-        this.dockManager.notifyOnClosePanel(this);
-         // var dialog = new dockspawn.Dialog(this, this.dockManager);
-         // this.floatingDialog = dialog;
         this.performUndockToDialog();
-        // this.destroy();
+        this.floatingDialog.hide();
+        this.floatingDialog.setPosition(0, 0);
     }
-};
+     this.dockManager.notifyOnClosePanel(this);
+}
 
 dockspawn.VerticalDockContainer = function(dockManager, childContainers)
 {
@@ -2767,8 +2832,12 @@ dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
         if (containerType == "panel"){
             container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
             removeNode(container.elementPanel);
+            container.isDialog = true;
             var dialog = new dockspawn.Dialog(container, this.dockManager);
             dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
+            dialog.isHidden = dialogInfo.isHidden;
+            if(dialog.isHidden)
+                dialog.hide();
             dialogs.push(dialog);
         }
 
@@ -2820,6 +2889,7 @@ dockspawn.DockGraphSerializer.prototype._buildDialogsInfo = function(dialogs)
         panelInfo.state = panelState;
         panelInfo.children = [];
         panelInfo.position = dialog.getPosition();
+        panelInfo.isHidden = dialog.isHidden;
         dialogsInfo.push(panelInfo)
     })
     return dialogsInfo;
@@ -3007,6 +3077,16 @@ Array.prototype.remove = function(value) {
       return this.splice(idx, 1); // The second parameter is the number of elements to remove.
   }
   return false;
+}
+
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }
 
 })();

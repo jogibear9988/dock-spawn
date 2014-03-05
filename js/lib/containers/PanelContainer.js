@@ -12,6 +12,7 @@ dockspawn.PanelContainer = function(elementContent, dockManager, title)
     this.iconName = "icon-circle-arrow-right";
     this.minimumAllowedChildNodes = 0;
     this._floatingDialog = undefined;
+    this.isDialog = false;
     this._initialize();
 };
 
@@ -119,6 +120,7 @@ dockspawn.PanelContainer.prototype.destroy = function()
  */
 dockspawn.PanelContainer.prototype.performUndockToDialog = function(e, dragOffset)
 {
+     this.isDialog = true;
     this.undockInitiator.enabled = false;
     return this.dockManager.requestUndockToDialog(this, e, dragOffset);
 };
@@ -129,12 +131,14 @@ dockspawn.PanelContainer.prototype.performUndockToDialog = function(e, dragOffse
  */
 dockspawn.PanelContainer.prototype.performUndock = function()
 {
+   
     this.undockInitiator.enabled = false;
     this.dockManager.requestUndock(this);
 };
 
 dockspawn.PanelContainer.prototype.prepareForDocking = function()
 {
+    this.isDialog = false;
     this.undockInitiator.enabled = true;
 };
 
@@ -218,15 +222,20 @@ dockspawn.PanelContainer.prototype.performLayout = function(children)
 
 dockspawn.PanelContainer.prototype.onCloseButtonClicked = function(e)
 {
-    //TODO: hide
-    if (this.floatingDialog)
-        this.floatingDialog.destroy();
+   this.close();
+};
+
+dockspawn.PanelContainer.prototype.close = function(e){
+     //TODO: hide
+    if (this.isDialog){
+        this.floatingDialog.hide();
+        this.floatingDialog.setPosition(0, 0);
+    }
     else
     {
-        this.dockManager.notifyOnClosePanel(this);
-         // var dialog = new dockspawn.Dialog(this, this.dockManager);
-         // this.floatingDialog = dialog;
         this.performUndockToDialog();
-        // this.destroy();
+        this.floatingDialog.hide();
+        this.floatingDialog.setPosition(0, 0);
     }
-};
+     this.dockManager.notifyOnClosePanel(this);
+}

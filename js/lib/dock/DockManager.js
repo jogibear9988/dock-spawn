@@ -423,6 +423,45 @@ dockspawn.DockManager.prototype.getPanels = function()
     return panels;
 };
 
+dockspawn.DockManager.prototype.updatePanels = function(ids)
+{
+     var panels = [];
+    //all visible nodes
+    this._allPanels(this.context.model.rootNode, panels);
+    //only remove
+    panels.forEach(function(panel) {
+        if(!ids.contains(panel.elementContent.id)){
+           panel.close();  
+       }
+    });
+
+     this.context.model.dialogs.forEach(function(dialog) {
+       if(ids.contains(dialog.panel.elementContent.id)){
+           dialog.show();  
+        }
+        else{
+             dialog.hide();  
+        }
+    });
+    return panels;
+};
+
+dockspawn.DockManager.prototype.getVisiblePanels = function()
+{
+    var panels = [];
+    //all visible nodes
+    this._allPanels(this.context.model.rootNode, panels);
+
+    //all visible
+    this.context.model.dialogs.forEach(function(dialog) {
+        if(!dialog.isHidden){
+            panels.push(dialog.panel);
+        }
+    });
+
+    return panels;
+};
+
 dockspawn.DockManager.prototype._allPanels = function(node, panels)
 {
      var self = this;

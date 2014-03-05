@@ -92,8 +92,12 @@ dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
         if (containerType == "panel"){
             container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
             removeNode(container.elementPanel);
+            container.isDialog = true;
             var dialog = new dockspawn.Dialog(container, this.dockManager);
             dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
+            dialog.isHidden = dialogInfo.isHidden;
+            if(dialog.isHidden)
+                dialog.hide();
             dialogs.push(dialog);
         }
 

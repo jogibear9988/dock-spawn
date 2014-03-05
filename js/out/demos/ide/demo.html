@@ -65,6 +65,7 @@
         ui = kendo.ui,
         DropDownList = ui.DropDownList,
         SELECT = "select",
+        CHANGED = "changed",
         SELECTED = "k-state-selected";
 
     var MultiSelectBox = DropDownList.extend({
@@ -98,6 +99,7 @@
                  return;
             }
             that._select(li);
+              that.trigger(SELECT, {item: li})
         },
 
         _select: function(li) {
@@ -168,7 +170,7 @@
                     idx = that._index(item);
 
                     that.select(idx > -1 ? idx : 0);
-
+                  
                 });
 
             }
@@ -230,6 +232,8 @@
                    },
                    onClosePanel:function(self, panel){
                         console.log('onClosePanel: ' + self + panel);
+                         localStorage['lastState'] = dockManager.saveState();
+                         updateVisiblePanels();
                    }
                 
             });
@@ -263,16 +267,22 @@
                 var editor2Node = dockManager.dockFill(documentNode, editor2);
                 var infovisNode = dockManager.dockFill(documentNode, infovis);
 			}
-              var panels = dockManager.getPanels();
+              //datasource
               var viewPanels = [];
-              var isView = [];
-                panels.forEach(function(d) {
+                dockManager.getPanels().forEach(function(d) {
                     viewPanels.push({title : d.title, id:d.elementContent.id});
                     //TODO: if d is visible
+                   
+                });
+                //visible
+            var isView = [];
+                dockManager.getVisiblePanels().forEach(function(d) {
                     isView.push(d.elementContent.id);
                 });
+                 
+                  
                 
-        $("#windows").kendoMultiSelectBox({
+        var windows = $("#windows").kendoMultiSelectBox({
             dataTextField: "title",
             dataValueField: "id",
             dataSource: viewPanels,
@@ -280,8 +290,16 @@
             select: function(e){
                 // $("#windows").data("kendoMultiSelectBox").value()
                 console.log(this.value());
+                dockManager.updatePanels(this.value().split(','));
             }
         });
+            function  updateVisiblePanels(){
+                 var isView = [];
+                dockManager.getVisiblePanels().forEach(function(d) {
+                    isView.push(d.elementContent.id);
+                });
+               $("#windows").data('kendoMultiSelectBox').value(isView);
+            }
 			// Initialize infovis (for dock tree visualization)
 			// InitDebugTreeVis(dockManager);
         }

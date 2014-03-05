@@ -7,6 +7,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
         this.position = {x: 0, y: 0};
+
     this.dockManager.notifyOnCreateDialog(this);
 
 };
@@ -36,6 +37,7 @@ dockspawn.Dialog.prototype._initialize = function()
 
     this.mouseDownHandler = new dockspawn.EventHandler(this.elementDialog, 'mousedown', this.onMouseDown.bind(this));
     this.resize(this.panel.elementPanel.clientWidth, this.panel.elementPanel.clientHeight);
+    this.isHidden = false;
     this.bringToFront();
 };
 
@@ -91,4 +93,18 @@ dockspawn.Dialog.prototype.setTitleIcon = function(iconName)
 dockspawn.Dialog.prototype.bringToFront = function()
 {
     this.elementDialog.style.zIndex = this.zIndexCounter++;
+};
+
+dockspawn.Dialog.prototype.hide = function()
+{
+    this.elementDialog.style.zIndex = 0;
+    this.elementDialog.style.display = 'none';
+    this.isHidden = true;
+};
+
+dockspawn.Dialog.prototype.show = function()
+{
+    this.elementDialog.style.zIndex = 1000;
+    this.elementDialog.style.display = 'block';
+    this.isHidden = false;
 };

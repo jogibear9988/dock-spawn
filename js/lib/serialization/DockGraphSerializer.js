@@ -43,6 +43,7 @@ dockspawn.DockGraphSerializer.prototype._buildDialogsInfo = function(dialogs)
         panelInfo.state = panelState;
         panelInfo.children = [];
         panelInfo.position = dialog.getPosition();
+        panelInfo.isHidden = dialog.isHidden;
         dialogsInfo.push(panelInfo)
     })
     return dialogsInfo;
