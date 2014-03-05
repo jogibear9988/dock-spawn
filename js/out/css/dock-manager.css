@@ -180,8 +180,8 @@
 
 .tab-handle {
 	position: relative;
-	background-color: #05B; 
-	color:#ccf;
+	background-color: #808080; 
+	color:#D5D5D5;
 	height: 22px;
 	float: left;
 	overflow: hidden;
@@ -189,12 +189,12 @@
 	box-shadow: 0px 5px 20px #000;
 }
 .tab-handle:hover {
-	background-color: #F90;
+	background-color: #ffcc00;
 	color:#400;
 }
 
 .tab-handle-selected {
-	background-color: #F90;
+	background-color: #ffcc00;
 	color:#400;
 }
 
@@ -222,7 +222,7 @@
 }
 
 .tab-handle-content-seperator {
-	background-color: #F90; 
+	background-color: #ffcc00; 
 	height: 4px;
 }
 

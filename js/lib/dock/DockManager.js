@@ -434,13 +434,15 @@ dockspawn.DockManager.prototype.updatePanels = function(ids)
            panel.close();  
        }
     });
-
+    var self = this;
      this.context.model.dialogs.forEach(function(dialog) {
        if(ids.contains(dialog.panel.elementContent.id)){
-           dialog.show();  
+           dialog.show();
+            self.notifyOnClosePanel(dialog.panel);   
         }
         else{
-             dialog.hide();  
+             dialog.hide();
+             self.notifyOnClosePanel(dialog.panel); 
         }
     });
     return panels;
