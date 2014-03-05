@@ -218,11 +218,15 @@ dockspawn.PanelContainer.prototype.performLayout = function(children)
 
 dockspawn.PanelContainer.prototype.onCloseButtonClicked = function(e)
 {
+    //TODO: hide
     if (this.floatingDialog)
         this.floatingDialog.destroy();
     else
     {
-        this.performUndock();
-        this.destroy();
+        this.dockManager.notifyOnClosePanel(this);
+         // var dialog = new dockspawn.Dialog(this, this.dockManager);
+         // this.floatingDialog = dialog;
+        this.performUndockToDialog();
+        // this.destroy();
     }
 };

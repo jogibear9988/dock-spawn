@@ -23,7 +23,7 @@
         <div class="demo-header-title">Dock Spawn IDE Demo [Javascript]</div>
         <div class="demo-header-description">Pull a panel out from it's title bar and dock it elsewhere</div>
         <div style="padding: 15px; float: left;"><a href="javascript:refresh()" style="text-decoration: none; color: white;">Refresh</a></div>
-         <div style="padding: 15px;"><input id="windows" /></div>
+         <div style="padding-top: 10px;"><input id="windows" /></div>
     </div>
     <div id="my_dock_manager" class="my-dock-manager"></div>
     <div id="solution_window" caption="Solution Explorer" icon="icon-circle-arrow-right" class="solution-window">
@@ -227,6 +227,9 @@
                     onResumeLayout:function(self){
                         console.log('onResumeLayout: ' +self);
                          localStorage['lastState'] = dockManager.saveState();
+                   },
+                   onClosePanel:function(self, panel){
+                        console.log('onClosePanel: ' + self + panel);
                    }
                 
             });
@@ -265,6 +268,7 @@
               var isView = [];
                 panels.forEach(function(d) {
                     viewPanels.push({title : d.title, id:d.elementContent.id});
+                    //TODO: if d is visible
                     isView.push(d.elementContent.id);
                 });
                 
@@ -272,7 +276,11 @@
             dataTextField: "title",
             dataValueField: "id",
             dataSource: viewPanels,
-            value: isView
+            value: isView,
+            select: function(e){
+                // $("#windows").data("kendoMultiSelectBox").value()
+                console.log(this.value());
+            }
         });
 			// Initialize infovis (for dock tree visualization)
 			// InitDebugTreeVis(dockManager);

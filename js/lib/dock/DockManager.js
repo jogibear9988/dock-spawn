@@ -262,15 +262,16 @@ dockspawn.DockManager.prototype.requestUndockToDialog = function(container, even
     // Create a new dialog window for the undocked panel
     var dialog = new dockspawn.Dialog(node.container, this);
 
+    if(event != undefined){
     // Adjust the relative position
-    var dialogWidth = dialog.elementDialog.clientWidth;
-    if (dragOffset.x > dialogWidth)
-        dragOffset.x = 0.75 * dialogWidth;
-    dialog.setPosition(
-        event.clientX - dragOffset.x,
-        event.clientY - dragOffset.y);
-    dialog.draggable.onMouseDown(event);
-
+        var dialogWidth = dialog.elementDialog.clientWidth;
+        if (dragOffset.x > dialogWidth)
+            dragOffset.x = 0.75 * dialogWidth;
+        dialog.setPosition(
+            event.clientX - dragOffset.x,
+            event.clientY - dragOffset.y);
+        dialog.draggable.onMouseDown(event);
+    }
     return dialog;
 };
 
@@ -363,6 +364,17 @@ dockspawn.DockManager.prototype.notifyOnUnDock = function(dockNode)
 	});
 };
 
+dockspawn.DockManager.prototype.notifyOnClosePanel = function(panel)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onClosePanel) {
+            listener.onClosePanel(self, panel); 
+        }
+    });
+};
+
+ 
 dockspawn.DockManager.prototype.notifyOnCreateDialog = function(dialog)
 {
     var self = this;
