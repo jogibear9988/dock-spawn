@@ -10,6 +10,7 @@ dockspawn.PanelContainer = function(elementContent, dockManager, title)
     this.title = title;
     this.containerType = "panel";
     this.iconName = "icon-circle-arrow-right";
+    this.iconTemplate = null;
     this.minimumAllowedChildNodes = 0;
     this._floatingDialog = undefined;
     this.isDialog = false;
@@ -206,8 +207,23 @@ dockspawn.PanelContainer.prototype.setTitleIcon = function(iconName)
     this._updateTitle();
 };
 
+dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
+{
+    this.iconTemplate = iconTemplate;
+};
+
+dockspawn.PanelContainer.prototype.setCloseIconTemplate = function(closeIconTemplate)
+{
+    this.elementButtonClose.innerHTML = closeIconTemplate;
+};
+
 dockspawn.PanelContainer.prototype._updateTitle = function()
 {
+    if(this.iconTemplate != null)
+    {
+        this.elementTitleText.innerHTML = this.iconTemplate(this.iconName) + this.title;
+        return;
+    }
     this.elementTitleText.innerHTML = '<i class="' + this.iconName + '"></i> ' + this.title;
 };
 
