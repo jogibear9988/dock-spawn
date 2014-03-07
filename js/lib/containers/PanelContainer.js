@@ -210,11 +210,12 @@ dockspawn.PanelContainer.prototype.setTitleIcon = function(iconName)
 dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
 {
     this.iconTemplate = iconTemplate;
+    this._updateTitle();
 };
 
 dockspawn.PanelContainer.prototype.setCloseIconTemplate = function(closeIconTemplate)
 {
-    this.elementButtonClose.innerHTML = closeIconTemplate;
+    this.elementButtonClose.innerHTML = closeIconTemplate();
 };
 
 dockspawn.PanelContainer.prototype._updateTitle = function()
