@@ -85,15 +85,16 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
 dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
 {
     var dialogs = [];
+    var self = this;
     dialogsInfo.forEach(function(dialogInfo) {
         var containerType = dialogInfo.containerType;
         var containerState = dialogInfo.state;
         var container;
         if (containerType == "panel"){
-            container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+            container = new dockspawn.PanelContainer.loadFromState(containerState, self.dockManager);
             removeNode(container.elementPanel);
             container.isDialog = true;
-            var dialog = new dockspawn.Dialog(container, this.dockManager);
+            var dialog = new dockspawn.Dialog(container, self.dockManager);
             dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
             dialog.isHidden = dialogInfo.isHidden;
             if(dialog.isHidden)
