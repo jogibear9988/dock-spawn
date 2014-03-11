@@ -246,13 +246,14 @@ dockspawn.PanelContainer.prototype.close = function(e){
      //TODO: hide
     if (this.isDialog){
         this.floatingDialog.hide();
-        this.floatingDialog.setPosition(0, 0);
+
+        this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
     }
     else
     {
         this.performUndockToDialog();
         this.floatingDialog.hide();
-        this.floatingDialog.setPosition(0, 0);
+        this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
     }
      this.dockManager.notifyOnClosePanel(this);
 }

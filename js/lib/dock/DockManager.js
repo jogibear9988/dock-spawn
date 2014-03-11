@@ -494,6 +494,12 @@ dockspawn.DockManager.prototype._allPanels = function(node, panels)
         panels.push(node.container);
     }
 };
+dockspawn.DockManager.prototype.setDefaultDialogPosition = function(x, y)
+{
+    this.defaultDialogPosition = {x: x, y: y};
+};
+
+
 //typedef void LayoutEngineDockFunction(dockspawn.DockNode referenceNode, dockspawn.DockNode newNode);
 
 /**

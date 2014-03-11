@@ -6,7 +6,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
-        this.position = {x: 0, y: 0};
+        this.position = dockManager.defaultDialogPosition;
 
     this.dockManager.notifyOnCreateDialog(this);
 

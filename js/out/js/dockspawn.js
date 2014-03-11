@@ -333,7 +333,7 @@ dockspawn.Dialog = function(panel, dockManager)
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
-        this.position = {x: 0, y: 0};
+        this.position = dockManager.defaultDialogPosition;
 
     this.dockManager.notifyOnCreateDialog(this);
 
@@ -1341,6 +1341,12 @@ dockspawn.DockManager.prototype._allPanels = function(node, panels)
         panels.push(node.container);
     }
 };
+dockspawn.DockManager.prototype.setDefaultDialogPosition = function(x, y)
+{
+    this.defaultDialogPosition = {x: x, y: y};
+};
+
+
 //typedef void LayoutEngineDockFunction(dockspawn.DockNode referenceNode, dockspawn.DockNode newNode);
 
 /**
@@ -2653,13 +2659,14 @@ dockspawn.PanelContainer.prototype.close = function(e){
      //TODO: hide
     if (this.isDialog){
         this.floatingDialog.hide();
-        this.floatingDialog.setPosition(0, 0);
+
+        this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
     }
     else
     {
         this.performUndockToDialog();
         this.floatingDialog.hide();
-        this.floatingDialog.setPosition(0, 0);
+        this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
     }
      this.dockManager.notifyOnClosePanel(this);
 }
