@@ -213,6 +213,15 @@ dockspawn.DockManager.prototype.dockFill = function(referenceNode, container)
 {
     return this._requestDockContainer(referenceNode, container, this.layoutEngine.dockFill.bind(this.layoutEngine));
 };
+dockspawn.DockManager.prototype.floatDialog = function(container, x, y)
+{
+      var panel = container;
+    removeNode(panel.elementPanel);
+    panel.isDialog = true;
+    var dialog = new dockspawn.Dialog(panel, this);
+    dialog.setPosition(x, y);
+    return dialog;
+};
 
 dockspawn.DockManager.prototype._requestDockDialog = function(referenceNode, dialog, layoutDockFunction)
 {
