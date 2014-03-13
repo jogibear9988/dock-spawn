@@ -38,6 +38,7 @@ dockspawn.TabPage.prototype.destroy = function()
 dockspawn.TabPage.prototype.onSelected = function()
 {
     this.host.onTabPageSelected(this);
+    this.panel.dockManager.notifyOnTabChange(this);
 };
 
 dockspawn.TabPage.prototype.setSelected = function(flag)

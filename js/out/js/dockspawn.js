@@ -259,9 +259,6 @@ dockspawn.TabHost.prototype.onTabPageSelected = function(page)
         zIndex += zIndexDelta;
     });
 
-    // If a callback is defined, then notify it of this event
-    //if (this.onTabChanged)
-    //    this.onTabChanged(this, page);
 };
 
 dockspawn.TabPage = function(host, container)
@@ -302,6 +299,7 @@ dockspawn.TabPage.prototype.destroy = function()
 dockspawn.TabPage.prototype.onSelected = function()
 {
     this.host.onTabPageSelected(this);
+    this.panel.dockManager.notifyOnTabChange(this);
 };
 
 dockspawn.TabPage.prototype.setSelected = function(flag)
@@ -1260,6 +1258,16 @@ dockspawn.DockManager.prototype.notifyOnChangeDialogPosition = function(dialog, 
     this.layoutEventListeners.forEach(function(listener) { 
         if (listener.onChangeDialogPosition) {
             listener.onChangeDialogPosition(self, dialog, x, y); 
+        }
+    });
+};
+
+dockspawn.DockManager.prototype.notifyOnTabChange = function(tabpage)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onTabChanged) {
+            listener.onTabChanged(self, tabpage); 
         }
     });
 };
@@ -2619,7 +2627,7 @@ dockspawn.PanelContainer.prototype.setTitleIcon = function(iconName)
     this.iconName = iconName;
     this._updateTitle();
     if (this.onTitleChanged)
-        this.onTitleChanged(this, title);
+        this.onTitleChanged(this, this.title);
 };
 
 dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
@@ -2627,7 +2635,7 @@ dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
     this.iconTemplate = iconTemplate;
     this._updateTitle();
     if (this.onTitleChanged)
-        this.onTitleChanged(this, title);
+        this.onTitleChanged(this, this.title);
 };
 
 dockspawn.PanelContainer.prototype.setCloseIconTemplate = function(closeIconTemplate)

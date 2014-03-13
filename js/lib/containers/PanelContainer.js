@@ -206,7 +206,7 @@ dockspawn.PanelContainer.prototype.setTitleIcon = function(iconName)
     this.iconName = iconName;
     this._updateTitle();
     if (this.onTitleChanged)
-        this.onTitleChanged(this, title);
+        this.onTitleChanged(this, this.title);
 };
 
 dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
@@ -214,7 +214,7 @@ dockspawn.PanelContainer.prototype.setTitleIconTemplate = function(iconTemplate)
     this.iconTemplate = iconTemplate;
     this._updateTitle();
     if (this.onTitleChanged)
-        this.onTitleChanged(this, title);
+        this.onTitleChanged(this, this.title);
 };
 
 dockspawn.PanelContainer.prototype.setCloseIconTemplate = function(closeIconTemplate)

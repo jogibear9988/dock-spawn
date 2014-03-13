@@ -417,6 +417,16 @@ dockspawn.DockManager.prototype.notifyOnChangeDialogPosition = function(dialog, 
     });
 };
 
+dockspawn.DockManager.prototype.notifyOnTabChange = function(tabpage)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onTabChanged) {
+            listener.onTabChanged(self, tabpage); 
+        }
+    });
+};
+
 dockspawn.DockManager.prototype.saveState = function()
 {
     var serializer = new dockspawn.DockGraphSerializer();

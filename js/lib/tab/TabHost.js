@@ -148,7 +148,4 @@ dockspawn.TabHost.prototype.onTabPageSelected = function(page)
         zIndex += zIndexDelta;
     });
 
-    // If a callback is defined, then notify it of this event
-    //if (this.onTabChanged)
-    //    this.onTabChanged(this, page);
 };
