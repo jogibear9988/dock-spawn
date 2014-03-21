@@ -111,8 +111,9 @@ dockspawn.DraggableContainer.prototype._stopDragging = function(event)
 dockspawn.DraggableContainer.prototype.onMouseMove = function(event)
 {
     var currentMousePosition = new Point(event.pageX, event.pageY);
-    var dx = Math.floor(currentMousePosition.x - this.previousMousePosition.x);
-    var dy = Math.floor(currentMousePosition.y - this.previousMousePosition.y);
+
+    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
     this._performDrag(dx, dy);
     this.previousMousePosition = currentMousePosition;
 };

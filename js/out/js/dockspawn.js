@@ -553,8 +553,9 @@ dockspawn.DraggableContainer.prototype._stopDragging = function(event)
 dockspawn.DraggableContainer.prototype.onMouseMove = function(event)
 {
     var currentMousePosition = new Point(event.pageX, event.pageY);
-    var dx = Math.floor(currentMousePosition.x - this.previousMousePosition.x);
-    var dy = Math.floor(currentMousePosition.y - this.previousMousePosition.y);
+
+    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
     this._performDrag(dx, dy);
     this.previousMousePosition = currentMousePosition;
 };
@@ -697,13 +698,13 @@ dockspawn.ResizableContainer.prototype.onMouseMoved = function(handle, e)
 //    window.requestLayoutFrame(() {
     this.dockManager.suspendLayout();
     var currentMousePosition = new Point(e.pageX, e.pageY);
-    var dx = Math.floor(currentMousePosition.x - this.previousMousePosition.x);
-    var dy = Math.floor(currentMousePosition.y - this.previousMousePosition.y);
+    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
     this._performDrag(handle, dx, dy);
     this.previousMousePosition = currentMousePosition;
     this.readyToProcessNextResize = true;
-    this.dockManager.resumeLayout();
-//    });
+    if(this.dialog.panel)
+        this.dockManager.resumeLayout(this.dialog.panel);
 };
 
 dockspawn.ResizableContainer.prototype.onMouseDown = function(handle, event)
@@ -878,6 +879,27 @@ dockspawn.DockManager.prototype.initialize = function()
     this.layoutEngine = new dockspawn.DockLayoutEngine(this);
 
     this.rebuildLayout(this.context.model.rootNode);
+};
+
+dockspawn.DockManager.prototype.checkXBounds = function(currentMousePosition, previousMousePosition){
+   var dx = Math.floor(currentMousePosition.x - previousMousePosition.x);
+     if(currentMousePosition.x + dx < 0 || currentMousePosition.x + dx > this.element.offsetWidth)
+     {
+        previousMousePosition.x = currentMousePosition.x;
+         currentMousePosition.x =  previousMousePosition.x;
+        dx = 0;
+     }
+     return dx;
+};
+
+dockspawn.DockManager.prototype.checkYBounds = function(currentMousePosition, previousMousePosition){
+    var dy = Math.floor(currentMousePosition.y - previousMousePosition.y);
+     if(currentMousePosition.y + dy < 50 || currentMousePosition.y + dy > this.element.offsetHeight)
+     {
+        previousMousePosition.y = currentMousePosition.y;
+        dy = 0;
+     }
+     return dy;
 };
 
 dockspawn.DockManager.prototype.rebuildLayout = function(node)
@@ -1195,11 +1217,11 @@ dockspawn.DockManager.prototype.suspendLayout = function()
 	});
 };
 
-dockspawn.DockManager.prototype.resumeLayout = function()
+dockspawn.DockManager.prototype.resumeLayout = function(panel)
 {
     var self = this;
     this.layoutEventListeners.forEach(function(listener) { 
-		if (listener.onResumeLayout) listener.onResumeLayout(self); 
+		if (listener.onResumeLayout) listener.onResumeLayout(self, panel); 
 	});
 };
 
@@ -2737,10 +2759,17 @@ dockspawn.SplitterBar.prototype.onMouseMoved = function(e)
     dockManager.suspendLayout();
     var dx = e.pageX - this.previousMouseEvent.pageX;
     var dy = e.pageY - this.previousMouseEvent.pageY;
-    this._performDrag(dx, dy);
+    if (this.stackedVertical) {
+        var top = dy + getPixels(this.ghoustBarElement.style.marginTop);
+        this.ghoustBarElement.style.marginTop = top + "px";
+    } else {
+        var left = dx + getPixels(this.ghoustBarElement.style.marginLeft);
+        this.ghoustBarElement.style.marginLeft = left + "px";
+    }
+    this.ddx += dx;
+    this.ddy += dy;
     this.previousMouseEvent = e;
     this.readyToProcessNextDrag = true;
-    dockManager.resumeLayout();
 };
 
 dockspawn.SplitterBar.prototype._performDrag = function(dx, dy)
@@ -2781,6 +2810,26 @@ dockspawn.SplitterBar.prototype._performDrag = function(dx, dy)
 
 dockspawn.SplitterBar.prototype._startDragging = function(e)
 {
+    this.ghoustBarElement = document.createElement('div');
+    this.ddx = 0;
+    this.ddy = 0;
+    if (this.stackedVertical)
+        this.ghoustBarElement.style.width = this.barElement.style.height;
+    else
+        this.ghoustBarElement.style.height = this.barElement.style.height;
+
+    this.ghoustBarElement.classList.add(this.stackedVertical ? "splitbar-horizontal-ghoust" : "splitbar-vertical-ghoust");
+    if (this.stackedVertical) {
+        this.ghoustBarElement.style.top = this.barElement.offsetTop + "px";
+        this.ghoustBarElement.style.marginTop = 0;
+    } else {
+        this.ghoustBarElement.style.left = this.barElement.offsetLeft + "px";
+        this.ghoustBarElement.style.marginLeft = 0;
+    }
+
+    this.ghoustBarElement.style.zIndex = 2000;
+    this.barElement.parentNode.appendChild(this.ghoustBarElement);
+
     disableGlobalTextSelection();
     if (this.mouseMovedHandler)
     {
@@ -2799,6 +2848,14 @@ dockspawn.SplitterBar.prototype._startDragging = function(e)
 
 dockspawn.SplitterBar.prototype._stopDragging = function(e)
 {
+    removeNode(this.ghoustBarElement);
+
+    this._performDrag(this.ddx, this.ddy);
+    var dockManager = this.previousContainer.dockManager;
+    dockManager.resumeLayout();
+    this.ddx = 0;
+    this.ddy = 0;
+    
     enableGlobalTextSelection();
     document.body.classList.remove("disable-selection");
     if (this.mouseMovedHandler)

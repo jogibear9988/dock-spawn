@@ -30,10 +30,17 @@ dockspawn.SplitterBar.prototype.onMouseMoved = function(e)
     dockManager.suspendLayout();
     var dx = e.pageX - this.previousMouseEvent.pageX;
     var dy = e.pageY - this.previousMouseEvent.pageY;
-    this._performDrag(dx, dy);
+    if (this.stackedVertical) {
+        var top = dy + getPixels(this.ghoustBarElement.style.marginTop);
+        this.ghoustBarElement.style.marginTop = top + "px";
+    } else {
+        var left = dx + getPixels(this.ghoustBarElement.style.marginLeft);
+        this.ghoustBarElement.style.marginLeft = left + "px";
+    }
+    this.ddx += dx;
+    this.ddy += dy;
     this.previousMouseEvent = e;
     this.readyToProcessNextDrag = true;
-    dockManager.resumeLayout();
 };
 
 dockspawn.SplitterBar.prototype._performDrag = function(dx, dy)
@@ -74,6 +81,26 @@ dockspawn.SplitterBar.prototype._performDrag = function(dx, dy)
 
 dockspawn.SplitterBar.prototype._startDragging = function(e)
 {
+    this.ghoustBarElement = document.createElement('div');
+    this.ddx = 0;
+    this.ddy = 0;
+    if (this.stackedVertical)
+        this.ghoustBarElement.style.width = this.barElement.style.height;
+    else
+        this.ghoustBarElement.style.height = this.barElement.style.height;
+
+    this.ghoustBarElement.classList.add(this.stackedVertical ? "splitbar-horizontal-ghoust" : "splitbar-vertical-ghoust");
+    if (this.stackedVertical) {
+        this.ghoustBarElement.style.top = this.barElement.offsetTop + "px";
+        this.ghoustBarElement.style.marginTop = 0;
+    } else {
+        this.ghoustBarElement.style.left = this.barElement.offsetLeft + "px";
+        this.ghoustBarElement.style.marginLeft = 0;
+    }
+
+    this.ghoustBarElement.style.zIndex = 2000;
+    this.barElement.parentNode.appendChild(this.ghoustBarElement);
+
     disableGlobalTextSelection();
     if (this.mouseMovedHandler)
     {
@@ -92,6 +119,14 @@ dockspawn.SplitterBar.prototype._startDragging = function(e)
 
 dockspawn.SplitterBar.prototype._stopDragging = function(e)
 {
+    removeNode(this.ghoustBarElement);
+
+    this._performDrag(this.ddx, this.ddy);
+    var dockManager = this.previousContainer.dockManager;
+    dockManager.resumeLayout();
+    this.ddx = 0;
+    this.ddy = 0;
+    
     enableGlobalTextSelection();
     document.body.classList.remove("disable-selection");
     if (this.mouseMovedHandler)

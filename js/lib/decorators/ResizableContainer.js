@@ -129,13 +129,13 @@ dockspawn.ResizableContainer.prototype.onMouseMoved = function(handle, e)
 //    window.requestLayoutFrame(() {
     this.dockManager.suspendLayout();
     var currentMousePosition = new Point(e.pageX, e.pageY);
-    var dx = Math.floor(currentMousePosition.x - this.previousMousePosition.x);
-    var dy = Math.floor(currentMousePosition.y - this.previousMousePosition.y);
+    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
     this._performDrag(handle, dx, dy);
     this.previousMousePosition = currentMousePosition;
     this.readyToProcessNextResize = true;
-    this.dockManager.resumeLayout();
-//    });
+    if(this.dialog.panel)
+        this.dockManager.resumeLayout(this.dialog.panel);
 };
 
 dockspawn.ResizableContainer.prototype.onMouseDown = function(handle, event)

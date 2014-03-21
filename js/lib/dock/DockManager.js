@@ -30,6 +30,27 @@ dockspawn.DockManager.prototype.initialize = function()
     this.rebuildLayout(this.context.model.rootNode);
 };
 
+dockspawn.DockManager.prototype.checkXBounds = function(currentMousePosition, previousMousePosition){
+   var dx = Math.floor(currentMousePosition.x - previousMousePosition.x);
+     if(currentMousePosition.x + dx < 0 || currentMousePosition.x + dx > this.element.offsetWidth)
+     {
+        previousMousePosition.x = currentMousePosition.x;
+         currentMousePosition.x =  previousMousePosition.x;
+        dx = 0;
+     }
+     return dx;
+};
+
+dockspawn.DockManager.prototype.checkYBounds = function(currentMousePosition, previousMousePosition){
+    var dy = Math.floor(currentMousePosition.y - previousMousePosition.y);
+     if(currentMousePosition.y + dy < 50 || currentMousePosition.y + dy > this.element.offsetHeight)
+     {
+        previousMousePosition.y = currentMousePosition.y;
+        dy = 0;
+     }
+     return dy;
+};
+
 dockspawn.DockManager.prototype.rebuildLayout = function(node)
 {
     var self = this;
@@ -345,11 +366,11 @@ dockspawn.DockManager.prototype.suspendLayout = function()
 	});
 };
 
-dockspawn.DockManager.prototype.resumeLayout = function()
+dockspawn.DockManager.prototype.resumeLayout = function(panel)
 {
     var self = this;
     this.layoutEventListeners.forEach(function(listener) { 
-		if (listener.onResumeLayout) listener.onResumeLayout(self); 
+		if (listener.onResumeLayout) listener.onResumeLayout(self, panel); 
 	});
 };
 
