@@ -2969,6 +2969,11 @@ dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
             removeNode(container.elementPanel);
             container.isDialog = true;
             var dialog = new dockspawn.Dialog(container, self.dockManager);
+            if(dialogInfo.position.left > document.body.clientWidth ||
+                dialogInfo.position.top > document.body.clientHeight - 70){
+                dialogInfo.position.left = 20;
+                dialogInfo.position.top = 70;
+            }
             dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
             dialog.isHidden = dialogInfo.isHidden;
             if(dialog.isHidden)
