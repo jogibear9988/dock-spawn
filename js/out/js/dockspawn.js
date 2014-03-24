@@ -554,8 +554,8 @@ dockspawn.DraggableContainer.prototype.onMouseMove = function(event)
 {
     var currentMousePosition = new Point(event.pageX, event.pageY);
 
-    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
-    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
+    var dx = this.dockManager.checkXBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
     this._performDrag(dx, dy);
     this.previousMousePosition = currentMousePosition;
 };
@@ -698,8 +698,8 @@ dockspawn.ResizableContainer.prototype.onMouseMoved = function(handle, e)
 //    window.requestLayoutFrame(() {
     this.dockManager.suspendLayout();
     var currentMousePosition = new Point(e.pageX, e.pageY);
-    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
-    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
+    var dx = this.dockManager.checkXBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
     this._performDrag(handle, dx, dy);
     this.previousMousePosition = currentMousePosition;
     this.readyToProcessNextResize = true;
@@ -881,20 +881,23 @@ dockspawn.DockManager.prototype.initialize = function()
     this.rebuildLayout(this.context.model.rootNode);
 };
 
-dockspawn.DockManager.prototype.checkXBounds = function(currentMousePosition, previousMousePosition){
+dockspawn.DockManager.prototype.checkXBounds = function(container, currentMousePosition, previousMousePosition){
    var dx = Math.floor(currentMousePosition.x - previousMousePosition.x);
-     if(currentMousePosition.x + dx < 0 || currentMousePosition.x + dx > this.element.offsetWidth)
+   leftBounds = currentMousePosition.x + dx < 0 || (container.offsetLeft + container.offsetWidth + dx - 40 ) < 0;
+   rightBounds = currentMousePosition.x + dx > this.element.offsetWidth || (container.offsetLeft + dx + 40) > this.element.offsetWidth; 
+     if(leftBounds || rightBounds)
      {
         previousMousePosition.x = currentMousePosition.x;
-         currentMousePosition.x =  previousMousePosition.x;
         dx = 0;
      }
      return dx;
 };
 
-dockspawn.DockManager.prototype.checkYBounds = function(currentMousePosition, previousMousePosition){
+dockspawn.DockManager.prototype.checkYBounds = function(container, currentMousePosition, previousMousePosition){
     var dy = Math.floor(currentMousePosition.y - previousMousePosition.y);
-     if(currentMousePosition.y + dy < 50 || currentMousePosition.y + dy > this.element.offsetHeight)
+     topBounds = container.offsetTop + dy < this.element.offsetTop;
+     bottomBounds = currentMousePosition.y + dy > this.element.offsetHeight ||  (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20); 
+     if(topBounds || bottomBounds)
      {
         previousMousePosition.y = currentMousePosition.y;
         dy = 0;

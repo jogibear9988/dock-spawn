@@ -129,8 +129,8 @@ dockspawn.ResizableContainer.prototype.onMouseMoved = function(handle, e)
 //    window.requestLayoutFrame(() {
     this.dockManager.suspendLayout();
     var currentMousePosition = new Point(e.pageX, e.pageY);
-    var dx = this.dockManager.checkXBounds(currentMousePosition, this.previousMousePosition);
-    var dy = this.dockManager.checkYBounds(currentMousePosition, this.previousMousePosition);
+    var dx = this.dockManager.checkXBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
+    var dy = this.dockManager.checkYBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
     this._performDrag(handle, dx, dy);
     this.previousMousePosition = currentMousePosition;
     this.readyToProcessNextResize = true;
