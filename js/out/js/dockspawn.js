@@ -2817,7 +2817,7 @@ dockspawn.SplitterBar.prototype._startDragging = function(e)
     this.ddx = 0;
     this.ddy = 0;
     if (this.stackedVertical)
-        this.ghoustBarElement.style.width = this.barElement.style.height;
+        this.ghoustBarElement.style.width = this.barElement.style.width;
     else
         this.ghoustBarElement.style.height = this.barElement.style.height;
 
