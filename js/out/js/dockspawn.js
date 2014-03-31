@@ -28,7 +28,11 @@ dockspawn.TabHandle = function(parent)
 
     // Set the close button text (font awesome)
     var closeIcon = "icon-remove-sign";
-    this.elementCloseButton.innerHTML = '<i class="' + closeIcon + '"></i>';
+    if(this.parent.container instanceof dockspawn.PanelContainer &&  this.parent.container.dockManager.closeTabIconTemplate){
+         this.elementCloseButton.innerHTML = this.parent.container.dockManager.closeTabIconTemplate();
+    } else{
+        this.elementCloseButton.innerHTML = '<i class="' + closeIcon + '"></i>';
+    }
 
     this._bringToFront(this.elementBase);
 
@@ -184,12 +188,32 @@ dockspawn.TabHost.prototype.resize = function(width, height)
     this.hostElement.style.height = height + "px";
 
     var tabHeight = this.tabListElement.clientHeight;
+    this.resizeTabListElement(width, height);
     var separatorHeight = this.separatorElement.clientHeight;
     var contentHeight = height - tabHeight - separatorHeight;
     this.contentElement.style.height = contentHeight + "px";
 
     if (this.activeTab)
         this.activeTab.resize(width, contentHeight);
+};
+
+dockspawn.TabHost.prototype.resizeTabListElement = function(width, height){
+    if(!this.tabListElement.childNodes) return;
+    var tabListWidth = 0;
+    var tabHandles =  this.tabListElement.childNodes;
+
+    for (var i = 0; i <  tabHandles.length; i++) {
+        tabHandles[i].style.width = ""; //clear
+        tabListWidth += tabHandles[i].clientWidth;
+    }
+
+    var scaleMultiplier = width / tabListWidth;
+    if(scaleMultiplier > 1) return;
+    for (var i = 0; i < tabHandles.length; i++)
+    {
+         var newSize = scaleMultiplier * tabHandles[i].clientWidth;
+         tabHandles[i].style.width = newSize + "px";
+    }
 };
 
 dockspawn.TabHost.prototype.performLayout = function(children)
@@ -1392,7 +1416,9 @@ dockspawn.DockManager.prototype.setDefaultDialogPosition = function(x, y)
 {
     this.defaultDialogPosition = {x: x, y: y};
 };
-
+dockspawn.DockManager.prototype.setCloseTabIconTemplate = function(template){
+    this.closeTabIconTemplate = template;
+}
 
 //typedef void LayoutEngineDockFunction(dockspawn.DockNode referenceNode, dockspawn.DockNode newNode);
 

@@ -541,7 +541,9 @@ dockspawn.DockManager.prototype.setDefaultDialogPosition = function(x, y)
 {
     this.defaultDialogPosition = {x: x, y: y};
 };
-
+dockspawn.DockManager.prototype.setCloseTabIconTemplate = function(template){
+    this.closeTabIconTemplate = template;
+}
 
 //typedef void LayoutEngineDockFunction(dockspawn.DockNode referenceNode, dockspawn.DockNode newNode);
 

@@ -24,7 +24,11 @@ dockspawn.TabHandle = function(parent)
 
     // Set the close button text (font awesome)
     var closeIcon = "icon-remove-sign";
-    this.elementCloseButton.innerHTML = '<i class="' + closeIcon + '"></i>';
+    if(this.parent.container instanceof dockspawn.PanelContainer &&  this.parent.container.dockManager.closeTabIconTemplate){
+         this.elementCloseButton.innerHTML = this.parent.container.dockManager.closeTabIconTemplate();
+    } else{
+        this.elementCloseButton.innerHTML = '<i class="' + closeIcon + '"></i>';
+    }
 
     this._bringToFront(this.elementBase);
 
