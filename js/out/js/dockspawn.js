@@ -188,7 +188,12 @@ dockspawn.TabHost.prototype.resize = function(width, height)
     this.hostElement.style.height = height + "px";
 
     var tabHeight = this.tabListElement.clientHeight;
-    this.resizeTabListElement(width, height);
+    if (this.timeoutPerform) //lazy check
+        clearTimeout(this.timeoutPerform);
+    var self = this;
+    this.timeoutPerform = setTimeout(function () {
+        self.resizeTabListElement(width, height);
+    }, 100);
     var separatorHeight = this.separatorElement.clientHeight;
     var contentHeight = height - tabHeight - separatorHeight;
     this.contentElement.style.height = contentHeight + "px";
@@ -198,22 +203,25 @@ dockspawn.TabHost.prototype.resize = function(width, height)
 };
 
 dockspawn.TabHost.prototype.resizeTabListElement = function(width, height){
-    if(!this.tabListElement.childNodes) return;
+    if(this.pages.length == 0) return;
     var tabListWidth = 0;
-    var tabHandles =  this.tabListElement.childNodes;
-
-    for (var i = 0; i <  tabHandles.length; i++) {
-        tabHandles[i].style.width = ""; //clear
-        tabListWidth += tabHandles[i].clientWidth;
-    }
-
+    this.pages.forEach(function(page){
+        var handle = page.handle;
+        handle.elementBase.style.width = ""; //clear
+        handle.elementText.style.width = "";
+        tabListWidth += handle.elementBase.clientWidth;
+    });
     var scaleMultiplier = width / tabListWidth;
-    if(scaleMultiplier > 1) return;
-    for (var i = 0; i < tabHandles.length; i++)
-    {
-         var newSize = scaleMultiplier * tabHandles[i].clientWidth;
-         tabHandles[i].style.width = newSize + "px";
-    }
+    if(scaleMultiplier > 1.2) return; //1.1 - with a reserve
+    var self = this;
+    this.pages.forEach(function(page){
+        var handle = page.handle;
+         var newSize = scaleMultiplier * handle.elementBase.clientWidth;
+         handle.elementBase.style.width = newSize + "px";
+         if(self.tabStripDirection == dockspawn.TabHost.DIRECTION_TOP){
+             handle.elementText.style.width = newSize - handle.elementCloseButton.clientWidth - 20 + "px";
+         }
+    });
 };
 
 dockspawn.TabHost.prototype.performLayout = function(children)
