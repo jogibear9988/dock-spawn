@@ -212,14 +212,16 @@ dockspawn.TabHost.prototype.resizeTabListElement = function(width, height){
         tabListWidth += handle.elementBase.clientWidth;
     });
     var scaleMultiplier = width / tabListWidth;
-    if(scaleMultiplier > 1.2) return; //1.1 - with a reserve
+    if(scaleMultiplier > 1.2) return; //with a reserve
     var self = this;
-    this.pages.forEach(function(page){
+    this.pages.forEach(function(page, index){
         var handle = page.handle;
          var newSize = scaleMultiplier * handle.elementBase.clientWidth;
+         if(index == self.pages.length - 1)
+            newSize = newSize - 5;
          handle.elementBase.style.width = newSize + "px";
          if(self.tabStripDirection == dockspawn.TabHost.DIRECTION_TOP){
-             handle.elementText.style.width = newSize - handle.elementCloseButton.clientWidth - 20 + "px";
+             handle.elementText.style.width = newSize - handle.elementCloseButton.clientWidth - 16 + "px";
          }
     });
 };
