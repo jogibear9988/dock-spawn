@@ -23,12 +23,14 @@ dockspawn.DockGraphDeserializer.prototype._buildGraph = function(nodeInfo)
     childrenInfo.forEach(function(childInfo)
     {
         var childNode = self._buildGraph(childInfo);
-        children.push(childNode);
+        if(childNode != null)
+            children.push(childNode);
     });
 
     // Build the container owned by this node
     var container = this._createContainer(nodeInfo, children);
-
+    if(container == null)
+        return null;
     // Build the node for this container and attach it's children
     var node = new dockspawn.DockNode(container);
     node.children = children;
@@ -52,6 +54,8 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function(nodeInfo, 
 
     if (containerType == "panel"){
         container = new dockspawn.PanelContainer.loadFromState(containerState, this.dockManager);
+        if(!container.prepareForDocking)
+            return null;
          container.prepareForDocking();
          removeNode(container.elementPanel);
     }
@@ -92,19 +96,21 @@ dockspawn.DockGraphDeserializer.prototype._buildDialogs = function(dialogsInfo)
         var container;
         if (containerType == "panel"){
             container = new dockspawn.PanelContainer.loadFromState(containerState, self.dockManager);
-            removeNode(container.elementPanel);
-            container.isDialog = true;
-            var dialog = new dockspawn.Dialog(container, self.dockManager);
-            if(dialogInfo.position.left > document.body.clientWidth ||
-                dialogInfo.position.top > document.body.clientHeight - 70){
-                dialogInfo.position.left = 20;
-                dialogInfo.position.top = 70;
+            if (container.prepareForDocking) {
+                removeNode(container.elementPanel);
+                container.isDialog = true;
+                var dialog = new dockspawn.Dialog(container, self.dockManager);
+                if(dialogInfo.position.left > document.body.clientWidth ||
+                    dialogInfo.position.top > document.body.clientHeight - 70){
+                    dialogInfo.position.left = 20;
+                    dialogInfo.position.top = 70;
+                }
+                dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
+                dialog.isHidden = dialogInfo.isHidden;
+                if(dialog.isHidden)
+                    dialog.hide();
+                dialogs.push(dialog);
             }
-            dialog.setPosition(dialogInfo.position.left, dialogInfo.position.top);
-            dialog.isHidden = dialogInfo.isHidden;
-            if(dialog.isHidden)
-                dialog.hide();
-            dialogs.push(dialog);
         }
 
     });
