@@ -20,6 +20,12 @@ dockspawn.TabHandle = function(parent)
 
     var panel = parent.container;
     var title = panel.getRawTitle();
+    var that = this;
+    this.undockListener = {
+        onDockEnabled:function(e){ that.undockEnabled(e.state)} 
+    };
+    panel.addListener(this.undockListener);
+
     this.elementText.innerHTML = title;
 
     // Set the close button text (font awesome)
@@ -41,6 +47,11 @@ dockspawn.TabHandle = function(parent)
     this.zIndexCounter = 1000;
 };
 
+dockspawn.TabHandle.prototype.undockEnabled = function(state)
+{
+      this.undockInitiator.enabled = state;
+};
+
 dockspawn.TabHandle.prototype.updateTitle = function()
 {
     if (this.parent.container instanceof dockspawn.PanelContainer)
@@ -53,8 +64,12 @@ dockspawn.TabHandle.prototype.updateTitle = function()
 
 dockspawn.TabHandle.prototype.destroy = function()
 {
+    var panel = this.parent.container;
+    panel.removeListener(this.undockListener);
+
     this.mouseClickHandler.cancel();
     this.closeButtonHandler.cancel();
+
     removeNode(this.elementBase);
     removeNode(this.elementCloseButton);
     delete this.elementBase;

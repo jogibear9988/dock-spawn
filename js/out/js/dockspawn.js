@@ -24,6 +24,12 @@ dockspawn.TabHandle = function(parent)
 
     var panel = parent.container;
     var title = panel.getRawTitle();
+    var that = this;
+    this.undockListener = {
+        onDockEnabled:function(e){ that.undockEnabled(e.state)} 
+    };
+    panel.addListener(this.undockListener);
+
     this.elementText.innerHTML = title;
 
     // Set the close button text (font awesome)
@@ -45,6 +51,11 @@ dockspawn.TabHandle = function(parent)
     this.zIndexCounter = 1000;
 };
 
+dockspawn.TabHandle.prototype.undockEnabled = function(state)
+{
+      this.undockInitiator.enabled = state;
+};
+
 dockspawn.TabHandle.prototype.updateTitle = function()
 {
     if (this.parent.container instanceof dockspawn.PanelContainer)
@@ -57,8 +68,12 @@ dockspawn.TabHandle.prototype.updateTitle = function()
 
 dockspawn.TabHandle.prototype.destroy = function()
 {
+    var panel = this.parent.container;
+    panel.removeListener(this.undockListener);
+
     this.mouseClickHandler.cancel();
     this.closeButtonHandler.cancel();
+
     removeNode(this.elementBase);
     removeNode(this.elementCloseButton);
     delete this.elementBase;
@@ -463,16 +478,22 @@ dockspawn.Dialog.prototype.hide = function()
 {
     this.elementDialog.style.zIndex = 0;
     this.elementDialog.style.display = 'none';
-    this.isHidden = true;
-    this.dockManager.notifyOnHideDialog(this);   
+     if(!this.isHidden)
+    {
+        this.isHidden = true;
+        this.dockManager.notifyOnHideDialog(this); 
+    } 
 };
 
 dockspawn.Dialog.prototype.show = function()
 {
     this.elementDialog.style.zIndex = 1000;
     this.elementDialog.style.display = 'block';
-    this.isHidden = false;
-    this.dockManager.notifyOnShowDialog(this);   
+    if(this.isHidden)
+    {
+        this.isHidden = false;
+        this.dockManager.notifyOnShowDialog(this);   
+    } 
 };
 dockspawn.DraggableContainer = function(dialog, delegate, topLevelElement, dragHandle)
 {
@@ -911,7 +932,7 @@ dockspawn.DockManager.prototype.initialize = function()
     this.resize(this.element.clientWidth, this.element.clientHeight);
     this.dockWheel = new dockspawn.DockWheel(this);
     this.layoutEngine = new dockspawn.DockLayoutEngine(this);
-
+    this._undockEnabled = true;
     this.rebuildLayout(this.context.model.rootNode);
 };
 
@@ -1372,6 +1393,14 @@ dockspawn.DockManager.prototype.getPanels = function()
 
     return panels;
 };
+
+dockspawn.DockManager.prototype.undockEnabled = function(state)
+{
+    this._undockEnabled = state;
+    this.getPanels().forEach(function(panel){
+        panel.canUndock(state); 
+    });
+}
 
 dockspawn.DockManager.prototype.updatePanels = function(ids)
 {
@@ -2510,7 +2539,29 @@ dockspawn.PanelContainer = function(elementContent, dockManager, title)
     this.minimumAllowedChildNodes = 0;
     this._floatingDialog = undefined;
     this.isDialog = false;
+    this._canUndock = dockManager._undockEnabled;
+    this.eventListeners = [];
     this._initialize();
+};
+
+dockspawn.PanelContainer.prototype.canUndock = function(state){
+    this._canUndock = state;
+    this.undockInitiator.enabled = state;
+    this.eventListeners.forEach(function(listener) { 
+        if (listener.onDockEnabled) {
+            listener.onDockEnabled({self: this, state: state}); 
+        }
+    });
+
+};
+
+dockspawn.PanelContainer.prototype.addListener = function(listener){
+    this.eventListeners.push(listener);
+};
+
+dockspawn.DockManager.prototype.removeListener = function(listener)
+{
+    this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
 };
 
 Object.defineProperty(dockspawn.PanelContainer.prototype, "floatingDialog", {
@@ -2638,7 +2689,7 @@ dockspawn.PanelContainer.prototype.performUndock = function()
 dockspawn.PanelContainer.prototype.prepareForDocking = function()
 {
     this.isDialog = false;
-    this.undockInitiator.enabled = true;
+    this.undockInitiator.enabled = this.canUndock;
 };
 
 Object.defineProperty(dockspawn.PanelContainer.prototype, "width", {

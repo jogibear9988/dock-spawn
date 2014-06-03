@@ -26,7 +26,7 @@ dockspawn.DockManager.prototype.initialize = function()
     this.resize(this.element.clientWidth, this.element.clientHeight);
     this.dockWheel = new dockspawn.DockWheel(this);
     this.layoutEngine = new dockspawn.DockLayoutEngine(this);
-
+    this._undockEnabled = true;
     this.rebuildLayout(this.context.model.rootNode);
 };
 
@@ -487,6 +487,14 @@ dockspawn.DockManager.prototype.getPanels = function()
 
     return panels;
 };
+
+dockspawn.DockManager.prototype.undockEnabled = function(state)
+{
+    this._undockEnabled = state;
+    this.getPanels().forEach(function(panel){
+        panel.canUndock(state); 
+    });
+}
 
 dockspawn.DockManager.prototype.updatePanels = function(ids)
 {

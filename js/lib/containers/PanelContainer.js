@@ -14,7 +14,29 @@ dockspawn.PanelContainer = function(elementContent, dockManager, title)
     this.minimumAllowedChildNodes = 0;
     this._floatingDialog = undefined;
     this.isDialog = false;
+    this._canUndock = dockManager._undockEnabled;
+    this.eventListeners = [];
     this._initialize();
+};
+
+dockspawn.PanelContainer.prototype.canUndock = function(state){
+    this._canUndock = state;
+    this.undockInitiator.enabled = state;
+    this.eventListeners.forEach(function(listener) { 
+        if (listener.onDockEnabled) {
+            listener.onDockEnabled({self: this, state: state}); 
+        }
+    });
+
+};
+
+dockspawn.PanelContainer.prototype.addListener = function(listener){
+    this.eventListeners.push(listener);
+};
+
+dockspawn.DockManager.prototype.removeListener = function(listener)
+{
+    this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
 };
 
 Object.defineProperty(dockspawn.PanelContainer.prototype, "floatingDialog", {
@@ -142,7 +164,7 @@ dockspawn.PanelContainer.prototype.performUndock = function()
 dockspawn.PanelContainer.prototype.prepareForDocking = function()
 {
     this.isDialog = false;
-    this.undockInitiator.enabled = true;
+    this.undockInitiator.enabled = this.canUndock;
 };
 
 Object.defineProperty(dockspawn.PanelContainer.prototype, "width", {
