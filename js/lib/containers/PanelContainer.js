@@ -34,7 +34,7 @@ dockspawn.PanelContainer.prototype.addListener = function(listener){
     this.eventListeners.push(listener);
 };
 
-dockspawn.DockManager.prototype.removeListener = function(listener)
+dockspawn.PanelContainer.prototype.removeListener = function(listener)
 {
     this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
 };
@@ -129,6 +129,17 @@ dockspawn.PanelContainer.prototype._initialize = function()
     this.undockInitiator = new dockspawn.UndockInitiator(this.elementTitle, this.performUndockToDialog.bind(this));
     delete this.floatingDialog;
 };
+
+
+dockspawn.PanelContainer.prototype.hideCloseButton = function(state){
+     this.elementButtonClose.style.display = state ? 'none' : 'block';
+     this.eventListeners.forEach(function(listener) { 
+        if (listener.onHideCloseButton) {
+            listener.onHideCloseButton({self: this, state: state}); 
+        }
+    });
+};
+
 
 dockspawn.PanelContainer.prototype.destroy = function()
 {

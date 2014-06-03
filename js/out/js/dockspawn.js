@@ -26,7 +26,8 @@ dockspawn.TabHandle = function(parent)
     var title = panel.getRawTitle();
     var that = this;
     this.undockListener = {
-        onDockEnabled:function(e){ that.undockEnabled(e.state)} 
+        onDockEnabled:function(e){ that.undockEnabled(e.state)},
+        onHideCloseButton: function(e){that.hideCloseButton(e.state)} 
     };
     panel.addListener(this.undockListener);
 
@@ -54,6 +55,11 @@ dockspawn.TabHandle = function(parent)
 dockspawn.TabHandle.prototype.undockEnabled = function(state)
 {
       this.undockInitiator.enabled = state;
+};
+
+dockspawn.TabHandle.prototype.hideCloseButton = function(state)
+{
+      this.elementCloseButton.style.display = state ? 'none' : 'block';
 };
 
 dockspawn.TabHandle.prototype.updateTitle = function()
@@ -1400,7 +1406,20 @@ dockspawn.DockManager.prototype.undockEnabled = function(state)
     this.getPanels().forEach(function(panel){
         panel.canUndock(state); 
     });
-}
+};
+
+dockspawn.DockManager.prototype.lockDockState = function(state)
+{
+    this.undockEnabled(!state); // false - not enabled
+    this.hideCloseButton(state); //true - hide
+};
+
+dockspawn.DockManager.prototype.hideCloseButton = function(state)
+{
+    this.getPanels().forEach(function(panel){
+        panel.hideCloseButton(state); 
+    });
+};
 
 dockspawn.DockManager.prototype.updatePanels = function(ids)
 {
@@ -2559,7 +2578,7 @@ dockspawn.PanelContainer.prototype.addListener = function(listener){
     this.eventListeners.push(listener);
 };
 
-dockspawn.DockManager.prototype.removeListener = function(listener)
+dockspawn.PanelContainer.prototype.removeListener = function(listener)
 {
     this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
 };
@@ -2654,6 +2673,17 @@ dockspawn.PanelContainer.prototype._initialize = function()
     this.undockInitiator = new dockspawn.UndockInitiator(this.elementTitle, this.performUndockToDialog.bind(this));
     delete this.floatingDialog;
 };
+
+
+dockspawn.PanelContainer.prototype.hideCloseButton = function(state){
+     this.elementButtonClose.style.display = state ? 'none' : 'block';
+     this.eventListeners.forEach(function(listener) { 
+        if (listener.onHideCloseButton) {
+            listener.onHideCloseButton({self: this, state: state}); 
+        }
+    });
+};
+
 
 dockspawn.PanelContainer.prototype.destroy = function()
 {

@@ -22,7 +22,8 @@ dockspawn.TabHandle = function(parent)
     var title = panel.getRawTitle();
     var that = this;
     this.undockListener = {
-        onDockEnabled:function(e){ that.undockEnabled(e.state)} 
+        onDockEnabled:function(e){ that.undockEnabled(e.state)},
+        onHideCloseButton: function(e){that.hideCloseButton(e.state)} 
     };
     panel.addListener(this.undockListener);
 
@@ -50,6 +51,11 @@ dockspawn.TabHandle = function(parent)
 dockspawn.TabHandle.prototype.undockEnabled = function(state)
 {
       this.undockInitiator.enabled = state;
+};
+
+dockspawn.TabHandle.prototype.hideCloseButton = function(state)
+{
+      this.elementCloseButton.style.display = state ? 'none' : 'block';
 };
 
 dockspawn.TabHandle.prototype.updateTitle = function()

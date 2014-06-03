@@ -494,7 +494,20 @@ dockspawn.DockManager.prototype.undockEnabled = function(state)
     this.getPanels().forEach(function(panel){
         panel.canUndock(state); 
     });
-}
+};
+
+dockspawn.DockManager.prototype.lockDockState = function(state)
+{
+    this.undockEnabled(!state); // false - not enabled
+    this.hideCloseButton(state); //true - hide
+};
+
+dockspawn.DockManager.prototype.hideCloseButton = function(state)
+{
+    this.getPanels().forEach(function(panel){
+        panel.hideCloseButton(state); 
+    });
+};
 
 dockspawn.DockManager.prototype.updatePanels = function(ids)
 {
