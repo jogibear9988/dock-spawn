@@ -56,15 +56,7 @@ dockspawn.TabHost.prototype._createDefaultTabPage = function(tabHost, container)
 
 dockspawn.TabHost.prototype.setActiveTab = function(container)
 {
-    var self = this;
-    this.pages.forEach(function(page)
-    {
-        if (page.container === container)
-        {
-            self.onTabPageSelected(page);
-            return;
-        }
-    });
+    if(this.pages.length > 0) { this.onTabPageSelected(this.pages[0]) };
 };
 
 dockspawn.TabHost.prototype.resize = function(width, height)
