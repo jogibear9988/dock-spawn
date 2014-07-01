@@ -58,14 +58,23 @@ dockspawn.TabHost.prototype.onMoveTab = function(e){
     this.tabListElement;
     var index =  Array.prototype.slice.call(this.tabListElement.childNodes).indexOf(e.self.elementBase);
 
-    var leftTab =this.tabListElement.childNodes[index - 1];
-    var rightTab =this.tabListElement.childNodes[index + 1];
-    var currentTab = this.tabListElement.childNodes[index ];
-    var elementToDelete  = e.state === "left" ? currentTab : rightTab;
-    this.tabListElement.removeChild(elementToDelete);
-    this.tabListElement.insertBefore(elementToDelete, e.state === "left" ? leftTab : currentTab);
-
     this.change(/*host*/this, /*handle*/e.self, e.state, index);
+};
+
+dockspawn.TabHost.prototype.performTabsLayout = function(indexes){
+    this.pages = this.pages.orderByIndexes(indexes);
+    
+    var items = this.tabListElement.childNodes;
+    var itemsArr = [];
+    for (var i in items) {
+        if (items[i].nodeType == 1) { // get rid of the whitespace text nodes
+            itemsArr.push(items[i]);
+        }
+    }
+    itemsArr = itemsArr.orderByIndexes(indexes);
+    for (i = 0; i < itemsArr.length; ++i) {
+        this.tabListElement.appendChild(itemsArr[i]);
+    }
 };
 
 dockspawn.TabHost.prototype.addListener = function(listener){

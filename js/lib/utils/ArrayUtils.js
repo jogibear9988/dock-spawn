@@ -15,3 +15,11 @@ Array.prototype.contains = function(obj) {
     }
     return false;
 }
+
+Array.prototype.orderByIndexes = function(indexes){
+  var sortedArray = [];
+  for (var i = 0; i < indexes.length; i++) {
+        sortedArray.push(this[indexes[i]]);
+    }
+  return sortedArray;
+};

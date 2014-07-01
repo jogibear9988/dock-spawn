@@ -77,7 +77,7 @@ dockspawn.TabHandle.prototype.onMouseDown = function(e)
         this.mouseUpHandler.cancel();
         delete this.mouseUpHandler;
     }
-    this.elementBase.classList.add("tab-handle-dragged");
+    this.stargDragPosition = e.clientX;
     this.mouseMoveHandler = new dockspawn.EventHandler(this.elementBase, 'mousemove', this.onMouseMove.bind(this));
     this.mouseUpHandler = new dockspawn.EventHandler(window, 'mouseup', this.onMouseUp.bind(this)); 
 };
@@ -86,11 +86,15 @@ dockspawn.TabHandle.prototype.onMouseUp = function(e)
 {
     if(this.undockInitiator.enabled)
         this.undockInitiator.setThresholdPixels(10, true);
-    this.elementBase.classList.remove("tab-handle-dragged");
+    if(this.elementBase){
+         this.elementBase.classList.remove("tab-handle-dragged");
+    }
+    this.dragged = false;
     this.mouseMoveHandler.cancel();
     this.mouseUpHandler.cancel();
     delete this.mouseMoveHandler;
     delete this.mouseUpHandler;
+
 };
 
 dockspawn.TabHandle.prototype.generateMoveTabEvent = function(event, pos){
@@ -106,10 +110,15 @@ dockspawn.TabHandle.prototype.moveTabEvent = function(that, state){
             listener.onMoveTab({self: that, state: state}); 
         }
     });
+
 };
 
 dockspawn.TabHandle.prototype.onMouseMove = function(e)
 {
+    if(Math.abs(this.stargDragPosition  -  e.clientX) < 10)
+        return;
+    this.elementBase.classList.add("tab-handle-dragged");
+   this.dragged = true; 
    this.prev = this.current;
    this.current = e.clientX;
    this.direction =  this.current - this.prev;
@@ -140,6 +149,7 @@ dockspawn.TabHandle.prototype.destroy = function()
     panel.removeListener(this.undockListener);
 
     this.mouseClickHandler.cancel();
+    this.mouseUpHandler.cancel();
     this.closeButtonHandler.cancel();
 
     removeNode(this.elementBase);

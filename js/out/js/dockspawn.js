@@ -81,7 +81,7 @@ dockspawn.TabHandle.prototype.onMouseDown = function(e)
         this.mouseUpHandler.cancel();
         delete this.mouseUpHandler;
     }
-    this.elementBase.classList.add("tab-handle-dragged");
+    this.stargDragPosition = e.clientX;
     this.mouseMoveHandler = new dockspawn.EventHandler(this.elementBase, 'mousemove', this.onMouseMove.bind(this));
     this.mouseUpHandler = new dockspawn.EventHandler(window, 'mouseup', this.onMouseUp.bind(this)); 
 };
@@ -90,11 +90,15 @@ dockspawn.TabHandle.prototype.onMouseUp = function(e)
 {
     if(this.undockInitiator.enabled)
         this.undockInitiator.setThresholdPixels(10, true);
-    this.elementBase.classList.remove("tab-handle-dragged");
+    if(this.elementBase){
+         this.elementBase.classList.remove("tab-handle-dragged");
+    }
+    this.dragged = false;
     this.mouseMoveHandler.cancel();
     this.mouseUpHandler.cancel();
     delete this.mouseMoveHandler;
     delete this.mouseUpHandler;
+
 };
 
 dockspawn.TabHandle.prototype.generateMoveTabEvent = function(event, pos){
@@ -110,10 +114,15 @@ dockspawn.TabHandle.prototype.moveTabEvent = function(that, state){
             listener.onMoveTab({self: that, state: state}); 
         }
     });
+
 };
 
 dockspawn.TabHandle.prototype.onMouseMove = function(e)
 {
+    if(Math.abs(this.stargDragPosition  -  e.clientX) < 10)
+        return;
+    this.elementBase.classList.add("tab-handle-dragged");
+   this.dragged = true; 
    this.prev = this.current;
    this.current = e.clientX;
    this.direction =  this.current - this.prev;
@@ -144,6 +153,7 @@ dockspawn.TabHandle.prototype.destroy = function()
     panel.removeListener(this.undockListener);
 
     this.mouseClickHandler.cancel();
+    this.mouseUpHandler.cancel();
     this.closeButtonHandler.cancel();
 
     removeNode(this.elementBase);
@@ -260,14 +270,23 @@ dockspawn.TabHost.prototype.onMoveTab = function(e){
     this.tabListElement;
     var index =  Array.prototype.slice.call(this.tabListElement.childNodes).indexOf(e.self.elementBase);
 
-    var leftTab =this.tabListElement.childNodes[index - 1];
-    var rightTab =this.tabListElement.childNodes[index + 1];
-    var currentTab = this.tabListElement.childNodes[index ];
-    var elementToDelete  = e.state === "left" ? currentTab : rightTab;
-    this.tabListElement.removeChild(elementToDelete);
-    this.tabListElement.insertBefore(elementToDelete, e.state === "left" ? leftTab : currentTab);
-
     this.change(/*host*/this, /*handle*/e.self, e.state, index);
+};
+
+dockspawn.TabHost.prototype.performTabsLayout = function(indexes){
+    this.pages = this.pages.orderByIndexes(indexes);
+    
+    var items = this.tabListElement.childNodes;
+    var itemsArr = [];
+    for (var i in items) {
+        if (items[i].nodeType == 1) { // get rid of the whitespace text nodes
+            itemsArr.push(items[i]);
+        }
+    }
+    itemsArr = itemsArr.orderByIndexes(indexes);
+    for (i = 0; i < itemsArr.length; ++i) {
+        this.tabListElement.appendChild(itemsArr[i]);
+    }
 };
 
 dockspawn.TabHost.prototype.addListener = function(listener){
@@ -1693,11 +1712,14 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
 };
 
 dockspawn.DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
+    var N = node.children.length;
     var nodeIndexToDelete  = state === "left" ? index : index + 1;
-    var value = node.children.splice(nodeIndexToDelete, 1)[0];
-
-    node.children.splice(state === "left" ? index - 1 : index, 0, value);
-
+    var indexes = Array.apply(null, {length: N}).map(Number.call, Number)
+    var indexValue = indexes.splice(nodeIndexToDelete, 1)[0]; //remove element
+    indexes.splice(state === "left" ? index - 1 : index, 0, indexValue); //insert
+   
+    node.children = node.children.orderByIndexes(indexes); //apply
+    node.container.tabHost.performTabsLayout(indexes);
     this.dockManager.notifyOnTabsReorder(node);
 };
 
@@ -3489,5 +3511,13 @@ Array.prototype.contains = function(obj) {
     }
     return false;
 }
+
+Array.prototype.orderByIndexes = function(indexes){
+  var sortedArray = [];
+  for (var i = 0; i < indexes.length; i++) {
+        sortedArray.push(this[indexes[i]]);
+    }
+  return sortedArray;
+};
 
 })();

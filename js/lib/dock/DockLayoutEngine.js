@@ -92,11 +92,14 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
 };
 
 dockspawn.DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
+    var N = node.children.length;
     var nodeIndexToDelete  = state === "left" ? index : index + 1;
-    var value = node.children.splice(nodeIndexToDelete, 1)[0];
-
-    node.children.splice(state === "left" ? index - 1 : index, 0, value);
-
+    var indexes = Array.apply(null, {length: N}).map(Number.call, Number)
+    var indexValue = indexes.splice(nodeIndexToDelete, 1)[0]; //remove element
+    indexes.splice(state === "left" ? index - 1 : index, 0, indexValue); //insert
+   
+    node.children = node.children.orderByIndexes(indexes); //apply
+    node.container.tabHost.performTabsLayout(indexes);
     this.dockManager.notifyOnTabsReorder(node);
 };
 
