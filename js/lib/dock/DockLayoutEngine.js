@@ -56,7 +56,11 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
                 // parent node is not a root node
                 grandParent.addChildAfter(parentNode, otherChild);
                 parentNode.detachFromParent();
+                var width =parentNode.container.containerElement.clientWidth;
+                var height = parentNode.container.containerElement.clientHeight;
                 parentNode.container.destroy();
+                
+                otherChild.container.resize(width, height);
                 grandParent.performLayout();
             }
             else
@@ -85,6 +89,15 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
     this.dockManager.invalidate();
    
 	this.dockManager.notifyOnUnDock(node);
+};
+
+dockspawn.DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
+    var nodeIndexToDelete  = state === "left" ? index : index + 1;
+    var value = node.children.splice(nodeIndexToDelete, 1)[0];
+
+    node.children.splice(state === "left" ? index - 1 : index, 0, value);
+
+    this.dockManager.notifyOnTabsReorder(node);
 };
 
 dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newNode, direction, insertBeforeReference)

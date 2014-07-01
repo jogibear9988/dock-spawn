@@ -29,6 +29,7 @@ dockspawn.TabHandle = function(parent)
         onDockEnabled:function(e){ that.undockEnabled(e.state)},
         onHideCloseButton: function(e){that.hideCloseButton(e.state)} 
     };
+    this.eventListeners = [];
     panel.addListener(this.undockListener);
 
     this.elementText.innerHTML = title;
@@ -45,11 +46,20 @@ dockspawn.TabHandle = function(parent)
 
     this.undockInitiator = new dockspawn.UndockInitiator(this.elementBase, undockHandler);
     this.undockInitiator.enabled = true;
-
-    this.mouseClickHandler = new dockspawn.EventHandler(this.elementBase, 'click', this.onMouseClicked.bind(this));                     // Button click handler for the tab handle
+    this.mouseClickHandler = new dockspawn.EventHandler(this.elementBase, 'click', this.onMouseClicked.bind(this));                    
+    this.mouseDownHandler = new dockspawn.EventHandler(this.elementBase, 'mousedown', this.onMouseDown.bind(this));
     this.closeButtonHandler = new dockspawn.EventHandler(this.elementCloseButton, 'mousedown', this.onCloseButtonClicked.bind(this));   // Button click handler for the close button
-
+    this.moveThreshold = 10;
     this.zIndexCounter = 1000;
+};
+
+dockspawn.TabHandle.prototype.addListener = function(listener){
+    this.eventListeners.push(listener);
+};
+
+dockspawn.TabHandle.prototype.removeListener = function(listener)
+{
+    this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
 };
 
 dockspawn.TabHandle.prototype.undockEnabled = function(state)
@@ -57,9 +67,65 @@ dockspawn.TabHandle.prototype.undockEnabled = function(state)
       this.undockInitiator.enabled = state;
 };
 
+dockspawn.TabHandle.prototype.onMouseDown = function(e)
+{
+    if(this.undockInitiator.enabled)
+        this.undockInitiator.setThresholdPixels(40, false);
+    if (this.mouseMoveHandler)
+    {
+        this.mouseMoveHandler.cancel();
+        delete this.mouseMoveHandler;
+    }
+    if (this.mouseUpHandler)
+    {
+        this.mouseUpHandler.cancel();
+        delete this.mouseUpHandler;
+    }
+    this.elementBase.classList.add("tab-handle-dragged");
+    this.mouseMoveHandler = new dockspawn.EventHandler(this.elementBase, 'mousemove', this.onMouseMove.bind(this));
+    this.mouseUpHandler = new dockspawn.EventHandler(window, 'mouseup', this.onMouseUp.bind(this)); 
+};
+
+dockspawn.TabHandle.prototype.onMouseUp = function(e)
+{
+    if(this.undockInitiator.enabled)
+        this.undockInitiator.setThresholdPixels(10, true);
+    this.elementBase.classList.remove("tab-handle-dragged");
+    this.mouseMoveHandler.cancel();
+    this.mouseUpHandler.cancel();
+    delete this.mouseMoveHandler;
+    delete this.mouseUpHandler;
+};
+
+dockspawn.TabHandle.prototype.generateMoveTabEvent = function(event, pos){
+    var contain = pos > event.rect.left && pos < event.rect.right;
+    var m = Math.abs(event.bound - pos);
+    if(m < this.moveThreshold && contain) 
+        this.moveTabEvent(this, event.state);
+};
+
+dockspawn.TabHandle.prototype.moveTabEvent = function(that, state){
+    that.eventListeners.forEach(function(listener) { 
+        if (listener.onMoveTab) {
+            listener.onMoveTab({self: that, state: state}); 
+        }
+    });
+};
+
+dockspawn.TabHandle.prototype.onMouseMove = function(e)
+{
+   this.prev = this.current;
+   this.current = e.clientX;
+   this.direction =  this.current - this.prev;
+   var tabRect = this.elementBase.getBoundingClientRect();
+   var event = this.direction < 0 ? {state: "left", bound: tabRect.left, rect:tabRect} : 
+    {state: "right", bound: tabRect.right, rect:tabRect};
+   if(this.direction !== 0) this.generateMoveTabEvent(event, this.current);
+};
+
 dockspawn.TabHandle.prototype.hideCloseButton = function(state)
 {
-      this.elementCloseButton.style.display = state ? 'none' : 'block';
+    this.elementCloseButton.style.display = state ? 'none' : 'block';
 };
 
 dockspawn.TabHandle.prototype.updateTitle = function()
@@ -152,6 +218,11 @@ dockspawn.TabHost = function(tabStripDirection, displayCloseButton)
     this.tabStripDirection = tabStripDirection;
     this.displayCloseButton = displayCloseButton;           // Indicates if the close button next to the tab handle should be displayed
     this.pages = [];
+    var that = this;
+     that.eventListeners = [];
+    this.tabHandleListener = {
+        onMoveTab :function(e){ that.onMoveTab(e)},
+    };
     this.hostElement = document.createElement('div');       // The main tab host DOM element
     this.tabListElement = document.createElement('div');    // Hosts the tab handles
     this.separatorElement = document.createElement('div');  // A seperator line between the tabs and content
@@ -184,6 +255,37 @@ dockspawn.TabHost.DIRECTION_TOP = 0;
 dockspawn.TabHost.DIRECTION_BOTTOM = 1;
 dockspawn.TabHost.DIRECTION_LEFT = 2;
 dockspawn.TabHost.DIRECTION_RIGHT = 3;
+
+dockspawn.TabHost.prototype.onMoveTab = function(e){
+    this.tabListElement;
+    var index =  Array.prototype.slice.call(this.tabListElement.childNodes).indexOf(e.self.elementBase);
+
+    var leftTab =this.tabListElement.childNodes[index - 1];
+    var rightTab =this.tabListElement.childNodes[index + 1];
+    var currentTab = this.tabListElement.childNodes[index ];
+    var elementToDelete  = e.state === "left" ? currentTab : rightTab;
+    this.tabListElement.removeChild(elementToDelete);
+    this.tabListElement.insertBefore(elementToDelete, e.state === "left" ? leftTab : currentTab);
+
+    this.change(/*host*/this, /*handle*/e.self, e.state, index);
+};
+
+dockspawn.TabHost.prototype.addListener = function(listener){
+    this.eventListeners.push(listener);
+};
+
+dockspawn.TabHost.prototype.removeListener = function(listener)
+{
+    this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
+};
+
+dockspawn.TabHost.prototype.change = function(host, handle, state, index){
+    this.eventListeners.forEach(function(listener) { 
+        if (listener.onChange) {
+            listener.onChange({host: host, handle: handle, state: state, index: index}); 
+        }
+    });
+};
 
 dockspawn.TabHost.prototype._createDefaultTabPage = function(tabHost, container)
 {
@@ -244,6 +346,7 @@ dockspawn.TabHost.prototype.performLayout = function(children)
     // Destroy all existing tab pages
     this.pages.forEach(function(tab)
     {
+        tab.handle.removeListener(this.tabHandleListener);
         tab.destroy();
     });
     this.pages.length = 0;
@@ -263,6 +366,7 @@ dockspawn.TabHost.prototype.performLayout = function(children)
         childPanels.forEach(function(child)
         {
             var page = self.createTabPage(self, child);
+            page.handle.addListener(self.tabHandleListener);
             self.pages.push(page);
 
             // Restore the active selected tab
@@ -1187,6 +1291,11 @@ dockspawn.DockManager.prototype._requestDockContainer = function(referenceNode, 
     return newNode;
 };
 
+dockspawn.DockManager.prototype._requestTabReorder = function(container, e){
+    var node = this._findNodeFromContainer(container);
+     this.layoutEngine.reorderTabs(node, e.handle, e.state, e.index);
+};
+
 /**
  * Undocks a panel and converts it into a floating dialog window
  * It is assumed that only leaf nodes (panels) can be undocked
@@ -1290,6 +1399,17 @@ dockspawn.DockManager.prototype.notifyOnDock = function(dockNode)
 		}
 	});
 };
+
+dockspawn.DockManager.prototype.notifyOnTabsReorder = function(dockNode)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onTabsReorder) {
+            listener.onTabsReorder(self, dockNode); 
+        }
+    });
+};
+
 
 dockspawn.DockManager.prototype.notifyOnUnDock = function(dockNode)
 {
@@ -1537,7 +1657,11 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
                 // parent node is not a root node
                 grandParent.addChildAfter(parentNode, otherChild);
                 parentNode.detachFromParent();
+                var width =parentNode.container.containerElement.clientWidth;
+                var height = parentNode.container.containerElement.clientHeight;
                 parentNode.container.destroy();
+                
+                otherChild.container.resize(width, height);
                 grandParent.performLayout();
             }
             else
@@ -1566,6 +1690,15 @@ dockspawn.DockLayoutEngine.prototype.undock = function(node)
     this.dockManager.invalidate();
    
 	this.dockManager.notifyOnUnDock(node);
+};
+
+dockspawn.DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
+    var nodeIndexToDelete  = state === "left" ? index : index + 1;
+    var value = node.children.splice(nodeIndexToDelete, 1)[0];
+
+    node.children.splice(state === "left" ? index - 1 : index, 0, value);
+
+    this.dockManager.notifyOnTabsReorder(node);
 };
 
 dockspawn.DockLayoutEngine.prototype._performDock = function(referenceNode, newNode, direction, insertBeforeReference)
@@ -2142,6 +2275,13 @@ dockspawn.FillDockContainer = function(dockManager, tabStripDirection)
     this.element.classList.add("dock-container");
     this.element.classList.add("dock-container-fill");
     this.tabHost = new dockspawn.TabHost(this.tabOrientation);
+    var that = this;
+    this.tabHostListener = {
+        onChange :function(e){ 
+            that.dockManager._requestTabReorder(that, e);
+        }
+    };
+    this.tabHost.addListener(this.tabHostListener);
     this.element.appendChild(this.tabHost.hostElement);
 }
 
@@ -3235,6 +3375,7 @@ dockspawn.UndockInitiator = function(element, listener, thresholdPixels)
     this.listener = listener;
     this.thresholdPixels = thresholdPixels;
     this._enabled = false;
+    this.horizontalChange = true;
 };
 
 Object.defineProperty(dockspawn.UndockInitiator.prototype, "enabled", {
@@ -3271,7 +3412,10 @@ Object.defineProperty(dockspawn.UndockInitiator.prototype, "enabled", {
         }
     }
 });
-
+dockspawn.UndockInitiator.prototype.setThresholdPixels = function(thresholdPixels, horizontalChange){
+     this.horizontalChange = horizontalChange;
+     this.thresholdPixels = thresholdPixels;
+};
 dockspawn.UndockInitiator.prototype.onMouseDown = function(e)
 {
     // Make sure we dont do this on floating dialogs
@@ -3310,7 +3454,7 @@ dockspawn.UndockInitiator.prototype.onMouseUp = function(e)
 dockspawn.UndockInitiator.prototype.onMouseMove = function(e)
 {
     var position = new Point(e.pageX, e.pageY);
-    var dx = position.x - this.dragStartPosition.x;
+    var dx = this.horizontalChange ? position.x - this.dragStartPosition.x : 10;
     var dy = position.y - this.dragStartPosition.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
 

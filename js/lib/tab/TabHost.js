@@ -16,6 +16,11 @@ dockspawn.TabHost = function(tabStripDirection, displayCloseButton)
     this.tabStripDirection = tabStripDirection;
     this.displayCloseButton = displayCloseButton;           // Indicates if the close button next to the tab handle should be displayed
     this.pages = [];
+    var that = this;
+     that.eventListeners = [];
+    this.tabHandleListener = {
+        onMoveTab :function(e){ that.onMoveTab(e)},
+    };
     this.hostElement = document.createElement('div');       // The main tab host DOM element
     this.tabListElement = document.createElement('div');    // Hosts the tab handles
     this.separatorElement = document.createElement('div');  // A seperator line between the tabs and content
@@ -48,6 +53,37 @@ dockspawn.TabHost.DIRECTION_TOP = 0;
 dockspawn.TabHost.DIRECTION_BOTTOM = 1;
 dockspawn.TabHost.DIRECTION_LEFT = 2;
 dockspawn.TabHost.DIRECTION_RIGHT = 3;
+
+dockspawn.TabHost.prototype.onMoveTab = function(e){
+    this.tabListElement;
+    var index =  Array.prototype.slice.call(this.tabListElement.childNodes).indexOf(e.self.elementBase);
+
+    var leftTab =this.tabListElement.childNodes[index - 1];
+    var rightTab =this.tabListElement.childNodes[index + 1];
+    var currentTab = this.tabListElement.childNodes[index ];
+    var elementToDelete  = e.state === "left" ? currentTab : rightTab;
+    this.tabListElement.removeChild(elementToDelete);
+    this.tabListElement.insertBefore(elementToDelete, e.state === "left" ? leftTab : currentTab);
+
+    this.change(/*host*/this, /*handle*/e.self, e.state, index);
+};
+
+dockspawn.TabHost.prototype.addListener = function(listener){
+    this.eventListeners.push(listener);
+};
+
+dockspawn.TabHost.prototype.removeListener = function(listener)
+{
+    this.eventListeners.splice(this.eventListeners.indexOf(listener), 1);
+};
+
+dockspawn.TabHost.prototype.change = function(host, handle, state, index){
+    this.eventListeners.forEach(function(listener) { 
+        if (listener.onChange) {
+            listener.onChange({host: host, handle: handle, state: state, index: index}); 
+        }
+    });
+};
 
 dockspawn.TabHost.prototype._createDefaultTabPage = function(tabHost, container)
 {
@@ -108,6 +144,7 @@ dockspawn.TabHost.prototype.performLayout = function(children)
     // Destroy all existing tab pages
     this.pages.forEach(function(tab)
     {
+        tab.handle.removeListener(this.tabHandleListener);
         tab.destroy();
     });
     this.pages.length = 0;
@@ -127,6 +164,7 @@ dockspawn.TabHost.prototype.performLayout = function(children)
         childPanels.forEach(function(child)
         {
             var page = self.createTabPage(self, child);
+            page.handle.addListener(self.tabHandleListener);
             self.pages.push(page);
 
             // Restore the active selected tab

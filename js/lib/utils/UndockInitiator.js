@@ -13,6 +13,7 @@ dockspawn.UndockInitiator = function(element, listener, thresholdPixels)
     this.listener = listener;
     this.thresholdPixels = thresholdPixels;
     this._enabled = false;
+    this.horizontalChange = true;
 };
 
 Object.defineProperty(dockspawn.UndockInitiator.prototype, "enabled", {
@@ -49,7 +50,10 @@ Object.defineProperty(dockspawn.UndockInitiator.prototype, "enabled", {
         }
     }
 });
-
+dockspawn.UndockInitiator.prototype.setThresholdPixels = function(thresholdPixels, horizontalChange){
+     this.horizontalChange = horizontalChange;
+     this.thresholdPixels = thresholdPixels;
+};
 dockspawn.UndockInitiator.prototype.onMouseDown = function(e)
 {
     // Make sure we dont do this on floating dialogs
@@ -88,7 +92,7 @@ dockspawn.UndockInitiator.prototype.onMouseUp = function(e)
 dockspawn.UndockInitiator.prototype.onMouseMove = function(e)
 {
     var position = new Point(e.pageX, e.pageY);
-    var dx = position.x - this.dragStartPosition.x;
+    var dx = this.horizontalChange ? position.x - this.dragStartPosition.x : 10;
     var dy = position.y - this.dragStartPosition.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
 

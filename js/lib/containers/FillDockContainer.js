@@ -18,6 +18,13 @@ dockspawn.FillDockContainer = function(dockManager, tabStripDirection)
     this.element.classList.add("dock-container");
     this.element.classList.add("dock-container-fill");
     this.tabHost = new dockspawn.TabHost(this.tabOrientation);
+    var that = this;
+    this.tabHostListener = {
+        onChange :function(e){ 
+            that.dockManager._requestTabReorder(that, e);
+        }
+    };
+    this.tabHost.addListener(this.tabHostListener);
     this.element.appendChild(this.tabHost.hostElement);
 }
 

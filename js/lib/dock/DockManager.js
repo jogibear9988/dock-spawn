@@ -283,6 +283,11 @@ dockspawn.DockManager.prototype._requestDockContainer = function(referenceNode, 
     return newNode;
 };
 
+dockspawn.DockManager.prototype._requestTabReorder = function(container, e){
+    var node = this._findNodeFromContainer(container);
+     this.layoutEngine.reorderTabs(node, e.handle, e.state, e.index);
+};
+
 /**
  * Undocks a panel and converts it into a floating dialog window
  * It is assumed that only leaf nodes (panels) can be undocked
@@ -386,6 +391,17 @@ dockspawn.DockManager.prototype.notifyOnDock = function(dockNode)
 		}
 	});
 };
+
+dockspawn.DockManager.prototype.notifyOnTabsReorder = function(dockNode)
+{
+    var self = this;
+    this.layoutEventListeners.forEach(function(listener) { 
+        if (listener.onTabsReorder) {
+            listener.onTabsReorder(self, dockNode); 
+        }
+    });
+};
+
 
 dockspawn.DockManager.prototype.notifyOnUnDock = function(dockNode)
 {
