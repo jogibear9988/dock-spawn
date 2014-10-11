@@ -1,0 +1,29 @@
+{
+  "name": "dock-spawn",
+  "version": "1.0.0",
+  "description": "Panel docking library similar to Visual Studio docking.",
+  "author": "Chad Engler <chad@pantherdev.com>",
+  "homepage": "https://github.com/englercj/dock-spawn",
+  "main": "./src/index",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/englercj/dock-spawn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/englercj/dock-spawn/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "browserify": "^6.0.3",
+    "gulp": "^3.8.8",
+    "gulp-jshint": "^1.8.5",
+    "gulp-util": "^3.0.1",
+    "jshint-summary": "^0.4.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.0.0"
+  }
+}
