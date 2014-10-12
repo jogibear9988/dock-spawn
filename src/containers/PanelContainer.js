@@ -82,7 +82,7 @@ PanelContainer.prototype.loadState = function(state)
     // this.resize(this.width, this.height);
 };
 
-PanelContainer.prototype.setActiveChild = function(child)
+PanelContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
@@ -280,7 +280,7 @@ PanelContainer.prototype.getRawTitle = function()
     return this.elementTitleText.innerHTML;
 };
 
-PanelContainer.prototype.performLayout = function(children)
+PanelContainer.prototype.performLayout = function(/*children*/)
 {
 };
 

@@ -34,7 +34,7 @@ DraggableContainer.prototype.loadState = function(state)
     this.delegate.loadState(state);
 };
 
-DraggableContainer.prototype.setActiveChild = function(child)
+DraggableContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 

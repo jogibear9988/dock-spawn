@@ -24,7 +24,7 @@ function TabPage(host, container)
 
 module.exports = TabPage;
 
-TabPage.prototype.onTitleChanged = function(sender, title)
+TabPage.prototype.onTitleChanged = function(/*sender, title*/)
 {
     this.handle.updateTitle();
 };

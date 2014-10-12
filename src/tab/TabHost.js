@@ -107,7 +107,7 @@ TabHost.prototype._createDefaultTabPage = function(tabHost, container)
     return new TabPage(tabHost, container);
 };
 
-TabHost.prototype.setActiveTab = function(container)
+TabHost.prototype.setActiveTab = function(/*container*/)
 {
     if (this.pages.length > 0) {
         this.onTabPageSelected(this.pages[0]);
@@ -134,7 +134,7 @@ TabHost.prototype.resize = function(width, height)
         this.activeTab.resize(width, contentHeight);
 };
 
-TabHost.prototype.resizeTabListElement = function(width, height){
+TabHost.prototype.resizeTabListElement = function(width/*, height*/) {
     if(this.pages.length === 0) return;
     var tabListWidth = 0;
     this.pages.forEach(function(page){

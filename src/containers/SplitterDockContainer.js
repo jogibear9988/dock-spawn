@@ -32,7 +32,7 @@ SplitterDockContainer.prototype.performLayout = function(childContainers)
     this.splitterPanel.performLayout(childContainers);
 };
 
-SplitterDockContainer.prototype.setActiveChild = function(child)
+SplitterDockContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 

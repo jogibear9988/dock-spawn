@@ -64,7 +64,9 @@ DockManager.prototype.checkXBounds = function(container, currentMousePosition, p
 DockManager.prototype.checkYBounds = function(container, currentMousePosition, previousMousePosition){
     var dy = Math.floor(currentMousePosition.y - previousMousePosition.y);
     var topBounds = container.offsetTop + dy < this.element.offsetTop;
-    var bottomBounds = currentMousePosition.y + dy > this.element.offsetHeight ||  (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20);
+    var bottomBounds =
+        currentMousePosition.y + dy > this.element.offsetHeight ||
+        (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20);
 
     if (topBounds || bottomBounds)
     {

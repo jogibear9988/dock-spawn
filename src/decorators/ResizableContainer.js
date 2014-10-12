@@ -23,7 +23,7 @@ function ResizableContainer(dialog, delegate, topLevelElement)
 
 module.exports = ResizableContainer;
 
-ResizableContainer.prototype.setActiveChild = function(child)
+ResizableContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
