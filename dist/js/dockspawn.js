@@ -390,7 +390,7 @@ PanelContainer.prototype.loadState = function(state)
     // this.resize(this.width, this.height);
 };
 
-PanelContainer.prototype.setActiveChild = function(child)
+PanelContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
@@ -588,7 +588,7 @@ PanelContainer.prototype.getRawTitle = function()
     return this.elementTitleText.innerHTML;
 };
 
-PanelContainer.prototype.performLayout = function(children)
+PanelContainer.prototype.performLayout = function(/*children*/)
 {
 };
 
@@ -648,7 +648,7 @@ SplitterDockContainer.prototype.performLayout = function(childContainers)
     this.splitterPanel.performLayout(childContainers);
 };
 
-SplitterDockContainer.prototype.setActiveChild = function(child)
+SplitterDockContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
@@ -749,7 +749,7 @@ DraggableContainer.prototype.loadState = function(state)
     this.delegate.loadState(state);
 };
 
-DraggableContainer.prototype.setActiveChild = function(child)
+DraggableContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
@@ -873,7 +873,7 @@ function ResizableContainer(dialog, delegate, topLevelElement)
 
 module.exports = ResizableContainer;
 
-ResizableContainer.prototype.setActiveChild = function(child)
+ResizableContainer.prototype.setActiveChild = function(/*child*/)
 {
 };
 
@@ -1138,7 +1138,7 @@ var PanelContainer = require('../containers/PanelContainer'),
 function Dialog(panel, dockManager)
 {
     this.panel = panel;
-    this.zIndexCounter = 1000;
+    this.zIndexCounter = 100;
     this.dockManager = dockManager;
     this.eventListener = dockManager;
     this._initialize();
@@ -1657,7 +1657,9 @@ DockManager.prototype.checkXBounds = function(container, currentMousePosition, p
 DockManager.prototype.checkYBounds = function(container, currentMousePosition, previousMousePosition){
     var dy = Math.floor(currentMousePosition.y - previousMousePosition.y);
     var topBounds = container.offsetTop + dy < this.element.offsetTop;
-    var bottomBounds = currentMousePosition.y + dy > this.element.offsetHeight ||  (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20);
+    var bottomBounds =
+        currentMousePosition.y + dy > this.element.offsetHeight ||
+        (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20);
 
     if (topBounds || bottomBounds)
     {
@@ -3420,7 +3422,7 @@ TabHost.prototype._createDefaultTabPage = function(tabHost, container)
     return new TabPage(tabHost, container);
 };
 
-TabHost.prototype.setActiveTab = function(container)
+TabHost.prototype.setActiveTab = function(/*container*/)
 {
     if (this.pages.length > 0) {
         this.onTabPageSelected(this.pages[0]);
@@ -3447,7 +3449,7 @@ TabHost.prototype.resize = function(width, height)
         this.activeTab.resize(width, contentHeight);
 };
 
-TabHost.prototype.resizeTabListElement = function(width, height){
+TabHost.prototype.resizeTabListElement = function(width/*, height*/) {
     if(this.pages.length === 0) return;
     var tabListWidth = 0;
     this.pages.forEach(function(page){
@@ -3569,7 +3571,7 @@ function TabPage(host, container)
 
 module.exports = TabPage;
 
-TabPage.prototype.onTitleChanged = function(sender, title)
+TabPage.prototype.onTitleChanged = function(/*sender, title*/)
 {
     this.handle.updateTitle();
 };

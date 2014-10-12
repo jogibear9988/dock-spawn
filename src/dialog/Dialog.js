@@ -7,7 +7,7 @@ var PanelContainer = require('../containers/PanelContainer'),
 function Dialog(panel, dockManager)
 {
     this.panel = panel;
-    this.zIndexCounter = 1000;
+    this.zIndexCounter = 100;
     this.dockManager = dockManager;
     this.eventListener = dockManager;
     this._initialize();
