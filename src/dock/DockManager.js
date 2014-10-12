@@ -377,6 +377,24 @@ DockManager.prototype._findNodeFromContainer = function(container)
     throw new Error('Cannot find dock node belonging to the element');
 };
 
+DockManager.prototype.findNodeFromContainerElement = function(containerElm) {
+    //this.context.model.rootNode.debugDumpTree();
+
+    var stack = [];
+    stack.push(this.context.model.rootNode);
+
+    while (stack.length > 0)
+    {
+        var topNode = stack.pop();
+
+        if (topNode.container.containerElement === containerElm)
+            return topNode;
+        [].push.apply(stack, topNode.children);
+    }
+
+    throw new Error('Cannot find dock node belonging to the element');
+};
+
 DockManager.prototype.addLayoutListener = function(listener)
 {
     this.layoutEventListeners.push(listener);
