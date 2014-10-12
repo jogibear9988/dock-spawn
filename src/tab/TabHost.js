@@ -217,7 +217,7 @@ TabHost.prototype.onTabPageSelected = function(page)
 
     // adjust the zIndex of the tabs to have proper shadow/depth effect
     var zIndexDelta = 1;
-    var zIndex = 1000;
+    var zIndex = 100;
     this.pages.forEach(function(tabPage)
     {
         tabPage.handle.setZIndex(zIndex);

@@ -52,7 +52,7 @@ function TabHandle(parent)
     this.closeButtonHandler = new EventHandler(this.elementCloseButton, 'mousedown', this.onCloseButtonClicked.bind(this));
 
     this.moveThreshold = 10;
-    this.zIndexCounter = 1000;
+    this.zIndexCounter = 100;
 }
 
 module.exports = TabHandle;

@@ -118,7 +118,7 @@ Dialog.prototype.hide = function()
 
 Dialog.prototype.show = function()
 {
-    this.elementDialog.style.zIndex = 1000;
+    this.elementDialog.style.zIndex = 100;
     this.elementDialog.style.display = 'block';
     if(this.isHidden)
     {
