@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     path = require('path'),
 
     index = './src/index.js',
-    outdir = './out/js',
+    outdir = './dist/js',
     bundle = 'dockspawn',
     outfile = 'dockspawn.js';
 
