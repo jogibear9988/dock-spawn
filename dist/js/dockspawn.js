@@ -1249,7 +1249,7 @@ Dialog.prototype.hide = function()
 
 Dialog.prototype.show = function()
 {
-    this.elementDialog.style.zIndex = 1000;
+    this.elementDialog.style.zIndex = 100;
     this.elementDialog.style.display = 'block';
     if(this.isHidden)
     {
@@ -3145,7 +3145,7 @@ function TabHandle(parent)
     this.closeButtonHandler = new EventHandler(this.elementCloseButton, 'mousedown', this.onCloseButtonClicked.bind(this));
 
     this.moveThreshold = 10;
-    this.zIndexCounter = 1000;
+    this.zIndexCounter = 100;
 }
 
 module.exports = TabHandle;
@@ -3532,7 +3532,7 @@ TabHost.prototype.onTabPageSelected = function(page)
 
     // adjust the zIndex of the tabs to have proper shadow/depth effect
     var zIndexDelta = 1;
-    var zIndex = 1000;
+    var zIndex = 100;
     this.pages.forEach(function(tabPage)
     {
         tabPage.handle.setZIndex(zIndex);
