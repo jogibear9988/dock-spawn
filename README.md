@@ -15,4 +15,15 @@ in the root folder run:
 
 then run gulp:
 
-./node_modules/.bin/gulp
+    ./node_modules/.bin/gulp
+
+All dist file are generated in dist.
+
+## Develop
+The dev mode is useful to build automatically the project when file are modified.
+
+    ./node_modules/.bin/gulp dev
+
+## Run JSHint
+
+    ./node_modules/.bin/gulp jshint
