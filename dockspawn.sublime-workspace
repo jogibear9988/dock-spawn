@@ -1,0 +1,1115 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ret",
+				"return"
+			],
+			[
+				"icon",
+				"iconTemplate"
+			],
+			[
+				"pa",
+				"panel"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"unde",
+				"undefined"
+			],
+			[
+				"dock",
+				"dockManager"
+			],
+			[
+				"root",
+				"rootNode"
+			],
+			[
+				"W",
+				"width"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "js/lib/splitter/SplitterPanel.js",
+			"settings":
+			{
+				"buffer_size": 6657,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/serialization/DockGraphDeserializer.js",
+			"settings":
+			{
+				"buffer_size": 4293,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/George.TK-CHEL/AppData/Local/Temp/AGShell_20140409.log",
+			"settings":
+			{
+				"buffer_size": 7537,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/Projects/WebMap/.hgignore",
+			"settings":
+			{
+				"buffer_size": 521,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Windows/System32/drivers/etc/hosts",
+			"settings":
+			{
+				"buffer_size": 869,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/tab/TabHost.js",
+			"settings":
+			{
+				"buffer_size": 6239,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/out/css/dock-manager.css",
+			"settings":
+			{
+				"buffer_size": 5084,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/Projects/WebMap/MapK/MapK.csproj",
+			"settings":
+			{
+				"buffer_size": 218286,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/lib/containers/PanelContainer.js",
+			"settings":
+			{
+				"buffer_size": 8431,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/out/js/dist/Leaflet.fullscreen.js",
+			"settings":
+			{
+				"buffer_size": 4233,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/George.TK-CHEL/AppData/Roaming/Sublime Text 2/Packages/sublime-jslint/README.md",
+			"settings":
+			{
+				"buffer_size": 3916,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/out/js/dist/[Finished in 0.1s]",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "",
+			"file": "/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockLayoutEngine.js",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "- (void)setRawValue:(NSData *)rawData {\n    uint16_t raw;\n    [rawData getBytes:&raw length:2];\n\n    self.value = [NSNumber numberWithUnsignedShort:raw];\n}",
+			"settings":
+			{
+				"buffer_size": 155,
+				"line_ending": "Unix",
+				"name": "- (void)setRawValue:(NSData *)rawData {"
+			}
+		},
+		{
+			"file": "/E/Projects/WebMap/MapK/Scripts/bootstrap/css/bootstrap_custom.css",
+			"settings":
+			{
+				"buffer_size": 119924,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nJsFormat:\n--------\n\n  JsFormat v1.2.0 changelog:\n  \n  - future maintainability release. No functionality should be impacted\n\n  JsFormat v1.1.0 changelog:\n  - Added support for .jsbeautifyrc files. Allows for per-project settings without constantly having to change the JsFormat uset settings.\n  For more info, check out the relevant section of the documentation: https://github.com/jdc0589/JsFormat#jsbeautifyrc-files\n",
+			"settings":
+			{
+				"buffer_size": 469,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "article,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nnav,\nsection,\nsummary {\n  display: block;\n}\n\n\nimg {\n  vertical-align: middle;\n}\n\n.img-responsive {\n  display: block;\n  height: auto;\n  max-width: 100%;\n}\n\n.img-rounded {\n  border-radius: 6px;\n}\n\n.img-thumbnail {\n  display: inline-block;\n  height: auto;\n  max-width: 100%;\n  padding: 4px;\n  line-height: 1.428571429;\n  background-color: #ffffff;\n  border: 1px solid #dddddd;\n  border-radius: 4px;\n  -webkit-transition: all 0.2s ease-in-out;\n          transition: all 0.2s ease-in-out;\n}\n\n.img-circle {\n  border-radius: 50%;\n}\n\nhr {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  border: 0;\n  border-top: 1px solid #eeeeee;\n}\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  border: 0;\n}\n\np {\n  margin: 0 0 10px;\n}\n\n.lead {\n  margin-bottom: 20px;\n  font-size: 16.099999999999998px;\n  font-weight: 200;\n  line-height: 1.4;\n}\n\n@media (min-width: 768px) {\n  .lead {\n    font-size: 21px;\n  }\n}\n\nbody {\n  margin: 0;\n}\n\na:focus {\n  outline: thin dotted;\n}\n\na:active,\na:hover {\n  outline: 0;\n}\n\n.navbar {\n    display: none;\n  }\n\n*,\n*:before,\n*:after {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.caret {\n  display: inline-block;\n  width: 0;\n  height: 0;\n  margin-left: 2px;\n  vertical-align: middle;\n  border-top: 4px solid #000000;\n  border-right: 4px solid transparent;\n  border-bottom: 0 dotted;\n  border-left: 4px solid transparent;\n  content: \"\";\n}\n\n.dropdown {\n  position: relative;\n}\n\n.dropdown-toggle:focus {\n  outline: 0;\n}\n\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  list-style: none;\n  background-color: #ffffff;\n  border: 1px solid #cccccc;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 4px;\n  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n  background-clip: padding-box;\n}\n\n.dropdown-menu.pull-right {\n  right: 0;\n  left: auto;\n}\n\n.dropdown-menu .divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n\n.dropdown-menu > li > a {\n  display: block;\n  padding: 3px 20px;\n  clear: both;\n  font-weight: normal;\n  line-height: 1.428571429;\n  color: #333333;\n  white-space: nowrap;\n}\n\n.dropdown-menu > li > a:hover,\n.dropdown-menu > li > a:focus {\n  color: #ffffff;\n  text-decoration: none;\n  background-color: #428bca;\n}\n\n.dropdown-menu > .active > a,\n.dropdown-menu > .active > a:hover,\n.dropdown-menu > .active > a:focus {\n  color: #ffffff;\n  text-decoration: none;\n  background-color: #428bca;\n  outline: 0;\n}\n\n.dropdown-menu > .disabled > a,\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  color: #999999;\n}\n\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n  background-image: none;\n  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);\n}\n\n.open > .dropdown-menu {\n  display: block;\n}\n\n.open > a {\n  outline: 0;\n}\n\n.dropdown-header {\n  display: block;\n  padding: 3px 20px;\n  font-size: 12px;\n  line-height: 1.428571429;\n  color: #999999;\n}\n\n.dropdown-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 990;\n}\n\n.pull-right > .dropdown-menu {\n  right: 0;\n  left: auto;\n}\n\n.dropup .caret,\n.navbar-fixed-bottom .dropdown .caret {\n  border-top: 0 dotted;\n  border-bottom: 4px solid #000000;\n  content: \"\";\n}\n\n.dropup .dropdown-menu,\n.navbar-fixed-bottom .dropdown .dropdown-menu {\n  top: auto;\n  bottom: 100%;\n  margin-bottom: 1px;\n}\n\n@media (min-width: 768px) {\n  .navbar-right .dropdown-menu {\n    right: 0;\n    left: auto;\n  }\n}\n\n.btn-default .caret {\n  border-top-color: #333333;\n}\n\n.btn-primary .caret,\n.btn-success .caret,\n.btn-warning .caret,\n.btn-danger .caret,\n.btn-info .caret {\n  border-top-color: #fff;\n}\n\n.dropup .btn-default .caret {\n  border-bottom-color: #333333;\n}\n\n.dropup .btn-primary .caret,\n.dropup .btn-success .caret,\n.dropup .btn-warning .caret,\n.dropup .btn-danger .caret,\n.dropup .btn-info .caret {\n  border-bottom-color: #fff;\n}\n\n.btn-group,\n.btn-group-vertical {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n}\n\n.btn-group > .btn,\n.btn-group-vertical > .btn {\n  position: relative;\n  float: left;\n}\n\n.btn-group > .btn:hover,\n.btn-group-vertical > .btn:hover,\n.btn-group > .btn:focus,\n.btn-group-vertical > .btn:focus,\n.btn-group > .btn:active,\n.btn-group-vertical > .btn:active,\n.btn-group > .btn.active,\n.btn-group-vertical > .btn.active {\n  z-index: 2;\n}\n\n.btn-group > .btn:focus,\n.btn-group-vertical > .btn:focus {\n  outline: none;\n}\n\n.btn-group .btn + .btn,\n.btn-group .btn + .btn-group,\n.btn-group .btn-group + .btn,\n.btn-group .btn-group + .btn-group {\n  margin-left: -1px;\n}\n\n.btn-toolbar:before,\n.btn-toolbar:after {\n  display: table;\n  content: \" \";\n}\n\n.btn-toolbar:after {\n  clear: both;\n}\n\n.btn-toolbar:before,\n.btn-toolbar:after {\n  display: table;\n  content: \" \";\n}\n\n.btn-toolbar:after {\n  clear: both;\n}\n\n.btn-toolbar .btn-group {\n  float: left;\n}\n\n.btn-toolbar > .btn + .btn,\n.btn-toolbar > .btn-group + .btn,\n.btn-toolbar > .btn + .btn-group,\n.btn-toolbar > .btn-group + .btn-group {\n  margin-left: 5px;\n}\n\n.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {\n  border-radius: 0;\n}\n\n.btn-group > .btn:first-child {\n  margin-left: 0;\n}\n\n.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.btn-group > .btn:last-child:not(:first-child),\n.btn-group > .dropdown-toggle:not(:first-child) {\n  border-bottom-left-radius: 0;\n  border-top-left-radius: 0;\n}\n\n.btn-group > .btn-group {\n  float: left;\n}\n\n.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n\n.btn-group > .btn-group:first-child > .btn:last-child,\n.btn-group > .btn-group:first-child > .dropdown-toggle {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.btn-group > .btn-group:last-child > .btn:first-child {\n  border-bottom-left-radius: 0;\n  border-top-left-radius: 0;\n}\n\n.btn-group .dropdown-toggle:active,\n.btn-group.open .dropdown-toggle {\n  outline: 0;\n}\n\n.btn-group-xs > .btn {\n  padding: 5px 10px;\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n\n.btn-group-sm > .btn {\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n\n.btn-group-lg > .btn {\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.33;\n  border-radius: 6px;\n}\n\n.btn-group > .btn + .dropdown-toggle {\n  padding-right: 8px;\n  padding-left: 8px;\n}\n\n.btn-group > .btn-lg + .dropdown-toggle {\n  padding-right: 12px;\n  padding-left: 12px;\n}\n\n.btn-group.open .dropdown-toggle {\n  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);\n          box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);\n}\n\n.btn .caret {\n  margin-left: 0;\n}\n\n.btn-lg .caret {\n  border-width: 5px 5px 0;\n  border-bottom-width: 0;\n}\n\n.dropup .btn-lg .caret {\n  border-width: 0 5px 5px;\n}\n\n.btn-group-vertical > .btn,\n.btn-group-vertical > .btn-group {\n  display: block;\n  float: none;\n  width: 100%;\n  max-width: 100%;\n}\n\n.btn-group-vertical > .btn-group:before,\n.btn-group-vertical > .btn-group:after {\n  display: table;\n  content: \" \";\n}\n\n.btn-group-vertical > .btn-group:after {\n  clear: both;\n}\n\n.btn-group-vertical > .btn-group:before,\n.btn-group-vertical > .btn-group:after {\n  display: table;\n  content: \" \";\n}\n\n.btn-group-vertical > .btn-group:after {\n  clear: both;\n}\n\n.btn-group-vertical > .btn-group > .btn {\n  float: none;\n}\n\n.btn-group-vertical > .btn + .btn,\n.btn-group-vertical > .btn + .btn-group,\n.btn-group-vertical > .btn-group + .btn,\n.btn-group-vertical > .btn-group + .btn-group {\n  margin-top: -1px;\n  margin-left: 0;\n}\n\n.btn-group-vertical > .btn:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n\n.btn-group-vertical > .btn:first-child:not(:last-child) {\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n.btn-group-vertical > .btn:last-child:not(:first-child) {\n  border-top-right-radius: 0;\n  border-bottom-left-radius: 4px;\n  border-top-left-radius: 0;\n}\n\n.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n\n.btn-group-vertical > .btn-group:first-child > .btn:last-child,\n.btn-group-vertical > .btn-group:first-child > .dropdown-toggle {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n.btn-group-vertical > .btn-group:last-child > .btn:first-child {\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n}\n\n.btn-group-justified {\n  display: table;\n  width: 100%;\n  border-collapse: separate;\n  table-layout: fixed;\n}\n\n.btn-group-justified .btn {\n  display: table-cell;\n  float: none;\n  width: 1%;\n}\n\n[data-toggle=\"buttons\"] > .btn > input[type=\"radio\"],\n[data-toggle=\"buttons\"] > .btn > input[type=\"checkbox\"] {\n  display: none;\n}\n\n\n.nav {\n  padding-left: 0;\n  margin-bottom: 0;\n  list-style: none;\n}\n\n.nav:before,\n.nav:after {\n  display: table;\n  content: \" \";\n}\n\n.nav:after {\n  clear: both;\n}\n\n.nav:before,\n.nav:after {\n  display: table;\n  content: \" \";\n}\n\n.nav:after {\n  clear: both;\n}\n\n.nav > li {\n  position: relative;\n  display: block;\n}\n\n.nav > li > a {\n  position: relative;\n  display: block;\n  padding: 10px 15px;\n}\n\n.nav > li > a:hover,\n.nav > li > a:focus {\n  text-decoration: none;\n  background-color: #eeeeee;\n}\n\n.nav > li.disabled > a {\n  color: #999999;\n}\n\n.nav > li.disabled > a:hover,\n.nav > li.disabled > a:focus {\n  color: #999999;\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n}\n\n.nav .open > a,\n.nav .open > a:hover,\n.nav .open > a:focus {\n  background-color: #eeeeee;\n  border-color: #428bca;\n}\n\n.nav .nav-divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n\n.nav > li > a > img {\n  max-width: none;\n}\n\n.nav-tabs {\n  border-bottom: 1px solid #dddddd;\n}\n\n.nav-tabs > li {\n  float: left;\n  margin-bottom: -1px;\n}\n\n.nav-tabs > li > a {\n  margin-right: 2px;\n  line-height: 1.428571429;\n  border: 1px solid transparent;\n  border-radius: 4px 4px 0 0;\n}\n\n.nav-tabs > li > a:hover {\n  border-color: #eeeeee #eeeeee #dddddd;\n}\n\n.nav-tabs > li.active > a,\n.nav-tabs > li.active > a:hover,\n.nav-tabs > li.active > a:focus {\n  color: #555555;\n  cursor: default;\n  background-color: #ffffff;\n  border: 1px solid #dddddd;\n  border-bottom-color: transparent;\n}\n\n.nav-tabs.nav-justified {\n  width: 100%;\n  border-bottom: 0;\n}\n\n.nav-tabs.nav-justified > li {\n  float: none;\n}\n\n.nav-tabs.nav-justified > li > a {\n  text-align: center;\n}\n\n@media (min-width: 768px) {\n  .nav-tabs.nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n}\n\n.nav-tabs.nav-justified > li > a {\n  margin-right: 0;\n  border-bottom: 1px solid #dddddd;\n}\n\n.nav-tabs.nav-justified > .active > a {\n  border-bottom-color: #ffffff;\n}\n\n.nav-pills > li {\n  float: left;\n}\n\n.nav-pills > li > a {\n  border-radius: 5px;\n}\n\n.nav-pills > li + li {\n  margin-left: 2px;\n}\n\n.nav-pills > li.active > a,\n.nav-pills > li.active > a:hover,\n.nav-pills > li.active > a:focus {\n  color: #ffffff;\n  background-color: #428bca;\n}\n\n.nav-stacked > li {\n  float: none;\n}\n\n.nav-stacked > li + li {\n  margin-top: 2px;\n  margin-left: 0;\n}\n\n.nav-justified {\n  width: 100%;\n}\n\n.nav-justified > li {\n  float: none;\n}\n\n.nav-justified > li > a {\n  text-align: center;\n}\n\n@media (min-width: 768px) {\n  .nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n}\n\n.nav-tabs-justified {\n  border-bottom: 0;\n}\n\n.nav-tabs-justified > li > a {\n  margin-right: 0;\n  border-bottom: 1px solid #dddddd;\n}\n\n.nav-tabs-justified > .active > a {\n  border-bottom-color: #ffffff;\n}\n\n.tabbable:before,\n.tabbable:after {\n  display: table;\n  content: \" \";\n}\n\n.tabbable:after {\n  clear: both;\n}\n\n.tabbable:before,\n.tabbable:after {\n  display: table;\n  content: \" \";\n}\n\n.tabbable:after {\n  clear: both;\n}\n\n.tab-content > .tab-pane,\n.pill-content > .pill-pane {\n  display: none;\n}\n\n.tab-content > .active,\n.pill-content > .active {\n  display: block;\n}\n\n.nav .caret {\n  border-top-color: #428bca;\n  border-bottom-color: #428bca;\n}\n\n.nav a:hover .caret {\n  border-top-color: #2a6496;\n  border-bottom-color: #2a6496;\n}\n\n.nav-tabs .dropdown-menu {\n  margin-top: -1px;\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n}\n\n.navbar {\n  position: relative;\n  z-index: 1000;\n  min-height: 50px;\n  margin-bottom: 20px;\n  border: 1px solid transparent;\n}\n\n.navbar:before,\n.navbar:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar:after {\n  clear: both;\n}\n\n.navbar:before,\n.navbar:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar:after {\n  clear: both;\n}\n\n@media (min-width: 768px) {\n  .navbar {\n    border-radius: 4px;\n  }\n}\n\n.navbar-header:before,\n.navbar-header:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar-header:after {\n  clear: both;\n}\n\n.navbar-header:before,\n.navbar-header:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar-header:after {\n  clear: both;\n}\n\n@media (min-width: 768px) {\n  .navbar-header {\n    float: left;\n  }\n}\n\n.navbar-collapse {\n  max-height: 340px;\n  padding-right: 15px;\n  padding-left: 15px;\n  overflow-x: visible;\n  border-top: 1px solid transparent;\n  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);\n  -webkit-overflow-scrolling: touch;\n}\n\n.navbar-collapse:before,\n.navbar-collapse:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar-collapse:after {\n  clear: both;\n}\n\n.navbar-collapse:before,\n.navbar-collapse:after {\n  display: table;\n  content: \" \";\n}\n\n.navbar-collapse:after {\n  clear: both;\n}\n\n.navbar-collapse.in {\n  overflow-y: auto;\n}\n\n@media (min-width: 768px) {\n  .navbar-collapse {\n    width: auto;\n    border-top: 0;\n    box-shadow: none;\n  }\n  .navbar-collapse.collapse {\n    display: block !important;\n    height: auto !important;\n    padding-bottom: 0;\n    overflow: visible !important;\n  }\n  .navbar-collapse.in {\n    overflow-y: visible;\n  }\n  .navbar-collapse .navbar-nav.navbar-left:first-child {\n    margin-left: -15px;\n  }\n  .navbar-collapse .navbar-nav.navbar-right:last-child {\n    margin-right: -15px;\n  }\n  .navbar-collapse .navbar-text:last-child {\n    margin-right: 0;\n  }\n}\n\n.container > .navbar-header,\n.container > .navbar-collapse {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n\n@media (min-width: 768px) {\n  .container > .navbar-header,\n  .container > .navbar-collapse {\n    margin-right: 0;\n    margin-left: 0;\n  }\n}\n\n.navbar-static-top {\n  border-width: 0 0 1px;\n}\n\n@media (min-width: 768px) {\n  .navbar-static-top {\n    border-radius: 0;\n  }\n}\n\n.navbar-fixed-top,\n.navbar-fixed-bottom {\n  position: fixed;\n  right: 0;\n  left: 0;\n  border-width: 0 0 1px;\n}\n\n@media (min-width: 768px) {\n  .navbar-fixed-top,\n  .navbar-fixed-bottom {\n    border-radius: 0;\n  }\n}\n\n.navbar-fixed-top {\n  top: 0;\n  z-index: 1030;\n}\n\n.navbar-fixed-bottom {\n  bottom: 0;\n  margin-bottom: 0;\n}\n\n.navbar-brand {\n  float: left;\n  padding: 15px 15px;\n  font-size: 18px;\n  line-height: 20px;\n}\n\n.navbar-brand:hover,\n.navbar-brand:focus {\n  text-decoration: none;\n}\n\n@media (min-width: 768px) {\n  .navbar > .container .navbar-brand {\n    margin-left: -15px;\n  }\n}\n\n.navbar-toggle {\n  position: relative;\n  float: right;\n  padding: 9px 10px;\n  margin-top: 8px;\n  margin-right: 15px;\n  margin-bottom: 8px;\n  background-color: transparent;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n\n.navbar-toggle .icon-bar {\n  display: block;\n  width: 22px;\n  height: 2px;\n  border-radius: 1px;\n}\n\n.navbar-toggle .icon-bar + .icon-bar {\n  margin-top: 4px;\n}\n\n@media (min-width: 768px) {\n  .navbar-toggle {\n    display: none;\n  }\n}\n\n.navbar-nav {\n  margin: 7.5px -15px;\n}\n\n.navbar-nav > li > a {\n  padding-top: 10px;\n  padding-bottom: 10px;\n  line-height: 20px;\n}\n\n@media (max-width: 767px) {\n  .navbar-nav .open .dropdown-menu {\n    position: static;\n    float: none;\n    width: auto;\n    margin-top: 0;\n    background-color: transparent;\n    border: 0;\n    box-shadow: none;\n  }\n  .navbar-nav .open .dropdown-menu > li > a,\n  .navbar-nav .open .dropdown-menu .dropdown-header {\n    padding: 5px 15px 5px 25px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a {\n    line-height: 20px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-nav .open .dropdown-menu > li > a:focus {\n    background-image: none;\n  }\n}\n\n@media (min-width: 768px) {\n  .navbar-nav {\n    float: left;\n    margin: 0;\n  }\n  .navbar-nav > li {\n    float: left;\n  }\n  .navbar-nav > li > a {\n    padding-top: 15px;\n    padding-bottom: 15px;\n  }\n}\n\n@media (min-width: 768px) {\n  .navbar-left {\n    float: left !important;\n  }\n  .navbar-right {\n    float: right !important;\n  }\n}\n\n.navbar-form {\n  padding: 10px 15px;\n  margin-top: 8px;\n  margin-right: -15px;\n  margin-bottom: 8px;\n  margin-left: -15px;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);\n          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);\n}\n\n@media (min-width: 768px) {\n  .navbar-form .form-group {\n    display: inline-block;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .form-control {\n    display: inline-block;\n  }\n  .navbar-form .radio,\n  .navbar-form .checkbox {\n    display: inline-block;\n    padding-left: 0;\n    margin-top: 0;\n    margin-bottom: 0;\n  }\n  .navbar-form .radio input[type=\"radio\"],\n  .navbar-form .checkbox input[type=\"checkbox\"] {\n    float: none;\n    margin-left: 0;\n  }\n}\n\n@media (max-width: 767px) {\n  .navbar-form .form-group {\n    margin-bottom: 5px;\n  }\n}\n\n@media (min-width: 768px) {\n  .navbar-form {\n    width: auto;\n    padding-top: 0;\n    padding-bottom: 0;\n    margin-right: 0;\n    margin-left: 0;\n    border: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n}\n\n.navbar-nav > li > .dropdown-menu {\n  margin-top: 0;\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n}\n\n.navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n.navbar-nav.pull-right > li > .dropdown-menu,\n.navbar-nav > li > .dropdown-menu.pull-right {\n  right: 0;\n  left: auto;\n}\n\n.navbar-btn {\n  margin-top: 8px;\n  margin-bottom: 8px;\n}\n\n.navbar-text {\n  float: left;\n  margin-top: 15px;\n  margin-bottom: 15px;\n}\n\n@media (min-width: 768px) {\n  .navbar-text {\n    margin-right: 15px;\n    margin-left: 15px;\n  }\n}\n\n.navbar-default {\n  background-color: #f8f8f8;\n  border-color: #e7e7e7;\n}\n\n.navbar-default .navbar-brand {\n  color: #777777;\n}\n\n.navbar-default .navbar-brand:hover,\n.navbar-default .navbar-brand:focus {\n  color: #5e5e5e;\n  background-color: transparent;\n}\n\n.navbar-default .navbar-text {\n  color: #777777;\n}\n\n.navbar-default .navbar-nav > li > a {\n  color: #777777;\n}\n\n.navbar-default .navbar-nav > li > a:hover,\n.navbar-default .navbar-nav > li > a:focus {\n  color: #333333;\n  background-color: transparent;\n}\n\n.navbar-default .navbar-nav > .active > a,\n.navbar-default .navbar-nav > .active > a:hover,\n.navbar-default .navbar-nav > .active > a:focus {\n  color: #555555;\n  background-color: #e7e7e7;\n}\n\n.navbar-default .navbar-nav > .disabled > a,\n.navbar-default .navbar-nav > .disabled > a:hover,\n.navbar-default .navbar-nav > .disabled > a:focus {\n  color: #cccccc;\n  background-color: transparent;\n}\n\n.navbar-default .navbar-toggle {\n  border-color: #dddddd;\n}\n\n.navbar-default .navbar-toggle:hover,\n.navbar-default .navbar-toggle:focus {\n  background-color: #dddddd;\n}\n\n.navbar-default .navbar-toggle .icon-bar {\n  background-color: #cccccc;\n}\n\n.navbar-default .navbar-collapse,\n.navbar-default .navbar-form {\n  border-color: #e6e6e6;\n}\n\n.navbar-default .navbar-nav > .dropdown > a:hover .caret,\n.navbar-default .navbar-nav > .dropdown > a:focus .caret {\n  border-top-color: #333333;\n  border-bottom-color: #333333;\n}\n\n.navbar-default .navbar-nav > .open > a,\n.navbar-default .navbar-nav > .open > a:hover,\n.navbar-default .navbar-nav > .open > a:focus {\n  color: #555555;\n  background-color: #e7e7e7;\n}\n\n.navbar-default .navbar-nav > .open > a .caret,\n.navbar-default .navbar-nav > .open > a:hover .caret,\n.navbar-default .navbar-nav > .open > a:focus .caret {\n  border-top-color: #555555;\n  border-bottom-color: #555555;\n}\n\n.navbar-default .navbar-nav > .dropdown > a .caret {\n  border-top-color: #777777;\n  border-bottom-color: #777777;\n}\n\n@media (max-width: 767px) {\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a {\n    color: #777777;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #333333;\n    background-color: transparent;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #555555;\n    background-color: #e7e7e7;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #cccccc;\n    background-color: transparent;\n  }\n}\n\n.navbar-default .navbar-link {\n  color: #777777;\n}\n\n.navbar-default .navbar-link:hover {\n  color: #333333;\n}\n\n.navbar-inverse {\n  background-color: #222222;\n  border-color: #080808;\n}\n\n.navbar-inverse .navbar-brand {\n  color: #999999;\n}\n\n.navbar-inverse .navbar-brand:hover,\n.navbar-inverse .navbar-brand:focus {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.navbar-inverse .navbar-text {\n  color: #999999;\n}\n\n.navbar-inverse .navbar-nav > li > a {\n  color: #999999;\n}\n\n.navbar-inverse .navbar-nav > li > a:hover,\n.navbar-inverse .navbar-nav > li > a:focus {\n  color: #ffffff;\n  background-color: transparent;\n}\n\n.navbar-inverse .navbar-nav > .active > a,\n.navbar-inverse .navbar-nav > .active > a:hover,\n.navbar-inverse .navbar-nav > .active > a:focus {\n  color: #ffffff;\n  background-color: #080808;\n}\n\n.navbar-inverse .navbar-nav > .disabled > a,\n.navbar-inverse .navbar-nav > .disabled > a:hover,\n.navbar-inverse .navbar-nav > .disabled > a:focus {\n  color: #444444;\n  background-color: transparent;\n}\n\n.navbar-inverse .navbar-toggle {\n  border-color: #333333;\n}\n\n.navbar-inverse .navbar-toggle:hover,\n.navbar-inverse .navbar-toggle:focus {\n  background-color: #333333;\n}\n\n.navbar-inverse .navbar-toggle .icon-bar {\n  background-color: #ffffff;\n}\n\n.navbar-inverse .navbar-collapse,\n.navbar-inverse .navbar-form {\n  border-color: #101010;\n}\n\n.navbar-inverse .navbar-nav > .open > a,\n.navbar-inverse .navbar-nav > .open > a:hover,\n.navbar-inverse .navbar-nav > .open > a:focus {\n  color: #ffffff;\n  background-color: #080808;\n}\n\n.navbar-inverse .navbar-nav > .dropdown > a:hover .caret {\n  border-top-color: #ffffff;\n  border-bottom-color: #ffffff;\n}\n\n.navbar-inverse .navbar-nav > .dropdown > a .caret {\n  border-top-color: #999999;\n  border-bottom-color: #999999;\n}\n\n.navbar-inverse .navbar-nav > .open > a .caret,\n.navbar-inverse .navbar-nav > .open > a:hover .caret,\n.navbar-inverse .navbar-nav > .open > a:focus .caret {\n  border-top-color: #ffffff;\n  border-bottom-color: #ffffff;\n}\n\n@media (max-width: 767px) {\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {\n    border-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {\n    color: #999999;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #ffffff;\n    background-color: transparent;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #ffffff;\n    background-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #444444;\n    background-color: transparent;\n  }\n}\n\n.navbar-inverse .navbar-link {\n  color: #999999;\n}\n\n.navbar-inverse .navbar-link:hover {\n  color: #ffffff;\n}",
+			"settings":
+			{
+				"buffer_size": 24517,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Pac",
+				"Package Control: List Packages"
+			],
+			[
+				"Pack",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Packg",
+				"Package Control: Disable Package"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 160.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/E/Projects/DockSpawn/dockspawn.sublime-project",
+		"/E/Projects/DockSpawn/js/lib/tab/TabHost.js",
+		"/E/Projects/DockSpawn/js/lib/tab/TabHandle.js",
+		"/E/Projects/DockSpawn/js/lib/splitter/SplitterBar.js",
+		"/E/Projects/DockSpawn/js/lib/dock/DockManager.js",
+		"/E/Projects/DockSpawn/js/lib/containers/PanelContainer.js",
+		"/E/Projects/DockSpawn/js/lib/tab/TabPage.js",
+		"/E/Projects/DockSpawn/js/lib/serialization/DockGraphDeserializer.js",
+		"/E/Projects/DockSpawn/js/lib/dialog/Dialog.js",
+		"/E/Projects/DockSpawn/js/lib/decorators/DraggableContainer.js",
+		"/E/Projects/DockSpawn/js/lib/serialization/DockGraphSerializer.js",
+		"/E/Projects/DockSpawn/js/out/css/dock-manager.css",
+		"/E/Projects/DockSpawn/js/lib/decorators/ResizableContainer.js",
+		"/E/Projects/DockSpawn/js/out/js/dockspawn.js",
+		"/E/Libs/bootstrap-3.0.0/bootstrap-3.0.0/dist/css/bootstrap.css",
+		"/E/Projects/DockSpawn/js/out/demos/ide/demo.html",
+		"/E/Libs/bootstrap-3.0.0/bootstrap-3.0.0/dist/css/bootstrap_custom.css",
+		"/E/stuff/kendoui.web.2013.2.716/src/js/kendo.dropdownlist.js",
+		"/E/stuff/kendoui.web.2013.2.716/src/js/kendo.selectable.js",
+		"/E/Projects/DockSpawn/js/lib/dock/DockLayoutEngine.js",
+		"/E/Projects/DockSpawn/js/lib/utils/ArrayUtils.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/out/js/dockspawn.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockManager.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dialog/Dialog.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/out/demos/ide/demo.html",
+		"/Volumes/Projects/DockSpawn/js/out/js/dockspawn.js",
+		"/Volumes/Projects/DockSpawn/js/out/demos/ide/demo.html",
+		"/Volumes/Projects/DockSpawn/js/lib/dock/DockManager.js",
+		"/Volumes/Projects/DockSpawn/js/lib/serialization/DockGraphDeserializer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/PanelContainer.js",
+		"/Volumes/Projects/DockSpawn/js/out/css/dock-manager.css",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/SplitterDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/containers/FillDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/splitter/SplitterPanel.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/FillDockContainer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/serialization/DockGraphSerializer.js",
+		"/Volumes/Projects/DockSpawn/js/lib/dock/DockLayoutEngine.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/DockGraphDeserializer.js",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/dock_spawn_demo_ide.html",
+		"/Users/georgebuhanov/Dropbox/Documents/js/out/js/dockspawn.js",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/lib/containers/fill_dock_container.dart",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/lib/dock_spawn.dart",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/dock_spawn_demo_ide.dart.js.deps",
+		"/Users/georgebuhanov/Downloads/coderespawn-dock-spawn-55b3f4b/dart/web/demos/dock_spawn_demo_ide/ide/spawn_ide.dart",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/combine.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/PanelContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/DockGraphSerializer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/splitter/SplitterPanel.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/HorizontalDockContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/containers/VerticalDockContainer.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/serialization/index.js",
+		"/Users/georgebuhanov/Downloads/dock-spawn-master/js/build.bat",
+		"/Users/georgebuhanov/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"tabListElement",
+			"TabHandle",
+			"TabHost",
+			"displayCloseButton",
+			"TabHandle",
+			"handle",
+			"TabHandle",
+			"pages",
+			"tab-handle",
+			"tabListElement",
+			"tab-handle-list-container",
+			"setPosition",
+			"Dialog",
+			"onTabPageSelected",
+			"onTabChanged",
+			"img",
+			"updateTitle",
+			"label",
+			"nav",
+			"_updateTitle",
+			"iconName",
+			"updateVisiblePanels",
+			"_notify",
+			"CHANGE",
+			"_change",
+			"CHANGE",
+			"changed",
+			"onCloseButtonClicked",
+			"isDialog",
+			"floatingDialog",
+			"zIndexCounter",
+			"performUndockToDialog",
+			"setModel",
+			"rebuildLayout",
+			"invalidate",
+			"setModel",
+			"==",
+			"container",
+			"Math.floor",
+			"this.elementTitle",
+			"var original = this.stackedVertical",
+			"if(original === 0)",
+			"+        if(original === 0)\n+            continue;",
+			"childrenInfo.push",
+			"childNodes",
+			"_buildGraphInfo",
+			"this.stateWidth = state.width;",
+			"this.dockManager.notifyOnDock(newNode);",
+			"UndockInitiator",
+			"onMouseDown",
+			"undock",
+			"layoutEngine.undock",
+			"requestUndock",
+			"undock",
+			"this.context.model",
+			"DockManager",
+			"saveState",
+			"saveSta\nsaveSta\nsaveSta\nsaveState",
+			"saveSta\nsaveSta\nsaveState",
+			"saveSta\nsaveSta",
+			"Object",
+			"PanelContainer.loadFromState",
+			"PanelContainer.loadFromState ",
+			"PanelContainer.prototype.resize",
+			"setContainerRatio",
+			"_requestDockContainer",
+			"dockLeft",
+			"loadState",
+			"resize",
+			"dockLeft",
+			"layoutDockFunction",
+			"setContainerRatio",
+			"this.rebuildLayout",
+			"this.rebuildLayout(model.rootNode);\n    this.invalidate();",
+			"setModel",
+			"deserialize",
+			"DockGraphDeserializer",
+			"loadState",
+			"deserialize",
+			"setModel",
+			"_requestDockContainer",
+			"dockLeft",
+			"performLayout",
+			"_performDock",
+			"dockLeft",
+			"loadState",
+			"prototype.loadState",
+			"FillDockContainer",
+			"var original = this.stackedVertical",
+			"prototype.resize",
+			"resize",
+			"clientHeight",
+			"HorizontalDockContainer",
+			"SplitterDockContainer",
+			"SplitterPanel",
+			"childContainers",
+			"containerState",
+			";\n",
+			"dockspawn.FillDockContainer",
+			"prototype.loadState",
+			"this.element.style.height",
+			"layoutEventListeners",
+			"iconName",
+			"HorizontalDockContainer"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "js/lib/splitter/SplitterPanel.js",
+					"settings":
+					{
+						"buffer_size": 6657,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5426,
+								5426
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2566.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "js/lib/serialization/DockGraphDeserializer.js",
+					"settings":
+					{
+						"buffer_size": 4293,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3722,
+								3722
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1440.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/George.TK-CHEL/AppData/Local/Temp/AGShell_20140409.log",
+					"settings":
+					{
+						"buffer_size": 7537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2165.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/E/Projects/WebMap/.hgignore",
+					"settings":
+					{
+						"buffer_size": 521,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								127,
+								127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Windows/System32/drivers/etc/hosts",
+					"settings":
+					{
+						"buffer_size": 869,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/lib/tab/TabHost.js",
+					"settings":
+					{
+						"buffer_size": 6239,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3376,
+								3376
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1320.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "js/out/css/dock-manager.css",
+					"settings":
+					{
+						"buffer_size": 5084,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3990,
+								3990
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3738.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/E/Projects/WebMap/MapK/MapK.csproj",
+					"settings":
+					{
+						"buffer_size": 218286,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 78753.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "js/lib/containers/PanelContainer.js",
+					"settings":
+					{
+						"buffer_size": 8431,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1117,
+								1117
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "js/out/js/dist/Leaflet.fullscreen.js",
+					"settings":
+					{
+						"buffer_size": 4233,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								869,
+								869
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 248.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/C/Users/George.TK-CHEL/AppData/Roaming/Sublime Text 2/Packages/sublime-jslint/README.md",
+					"settings":
+					{
+						"buffer_size": 3916,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								576,
+								576
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "js/out/js/dist/[Finished in 0.1s]",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 12,
+					"file": "/Users/georgebuhanov/Downloads/dock-spawn-master/js/lib/dock/DockLayoutEngine.js",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"settings":
+					{
+						"buffer_size": 155,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								155,
+								155
+							]
+						],
+						"settings":
+						{
+							"auto_name": "- (void)setRawValue:(NSData *)rawData {",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/E/Projects/WebMap/MapK/Scripts/bootstrap/css/bootstrap_custom.css",
+					"settings":
+					{
+						"buffer_size": 119924,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 32086.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"settings":
+					{
+						"buffer_size": 469,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								469,
+								469
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"settings":
+					{
+						"buffer_size": 24517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23111,
+								23111
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 26156.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.736675981463,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 377.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 300.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"des",
+				"lib/serialization/DockGraphDeserializer.js"
+			],
+			[
+				"full",
+				"out/js/dist/Leaflet.fullscreen.js"
+			],
+			[
+				"panec",
+				"lib/containers/PanelContainer.js"
+			],
+			[
+				"",
+				"lib/serialization/DockGraphDeserializer.js"
+			],
+			[
+				"css",
+				"out/css/dock-manager.css"
+			],
+			[
+				"tabhos",
+				"lib/tab/TabHost.js"
+			],
+			[
+				"splitt",
+				"lib/splitter/SplitterPanel.js"
+			],
+			[
+				"tabg",
+				"lib/tab/TabPage.js"
+			],
+			[
+				"dock",
+				"lib/dock/DockManager.js"
+			],
+			[
+				"do",
+				"lib/dock/DockManager.js"
+			],
+			[
+				"pnel",
+				"lib/containers/PanelContainer.js"
+			],
+			[
+				"tabhand",
+				"lib/tab/TabHandle.js"
+			],
+			[
+				"dok",
+				"lib/dock/DockManager.js"
+			],
+			[
+				"splitb",
+				"lib/splitter/SplitterBar.js"
+			],
+			[
+				"splite",
+				"lib/splitter/SplitterPanel.js"
+			],
+			[
+				"tab",
+				"lib/tab/TabHandle.js"
+			],
+			[
+				"tabh",
+				"lib/tab/TabHost.js"
+			],
+			[
+				"dr",
+				"lib/decorators/DraggableContainer.js"
+			],
+			[
+				"res",
+				"lib/decorators/ResizableContainer.js"
+			],
+			[
+				"resi",
+				"lib/decorators/ResizableContainer.js"
+			],
+			[
+				"dialo",
+				"lib/dialog/Dialog.js"
+			],
+			[
+				"ser",
+				"lib/serialization/DockGraphSerializer.js"
+			],
+			[
+				"dragg",
+				"lib/decorators/DraggableContainer.js"
+			],
+			[
+				"p",
+				"lib/containers/PanelContainer.js"
+			],
+			[
+				"demo",
+				"out/demos/ide/demo.html"
+			],
+			[
+				"panel",
+				"lib/containers/PanelContainer.js"
+			],
+			[
+				"dockmange",
+				"lib/dock/DockManager.js"
+			],
+			[
+				"pa",
+				"lib/containers/PanelContainer.js"
+			],
+			[
+				"arra",
+				"/E/Projects/DockSpawn/js/lib/utils/ArrayUtils.js"
+			],
+			[
+				"pane",
+				"/E/Projects/DockSpawn/js/lib/containers/PanelContainer.js"
+			],
+			[
+				"dem",
+				"/E/Projects/DockSpawn/js/out/demos/ide/demo.html"
+			],
+			[
+				"dial",
+				"/E/Projects/DockSpawn/js/lib/dialog/Dialog.js"
+			],
+			[
+				"seri",
+				"lib/serialization/DockGraphSerializer.js"
+			],
+			[
+				"laye",
+				"lib/dock/DockLayoutEngine.js"
+			],
+			[
+				"dockm",
+				"lib/dock/DockManager.js"
+			],
+			[
+				"panelc",
+				"lib/containers/PanelContainer.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 274.0,
+	"status_bar_visible": true
+}
