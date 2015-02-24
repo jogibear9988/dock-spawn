@@ -83,6 +83,9 @@ TabHost.prototype.performTabsLayout = function(indexes){
     for (i = 0; i < itemsArr.length; ++i) {
         this.tabListElement.appendChild(itemsArr[i]);
     }
+
+    if (this.activeTab)
+        this.onTabPageSelected(this.activeTab);
 };
 
 TabHost.prototype.addListener = function(listener){
