@@ -101,6 +101,11 @@ DockLayoutEngine.prototype.undock = function(node)
 DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
     var N = node.children.length;
     var nodeIndexToDelete  = state === 'left' ? index : index + 1;
+    if (state == 'right' && nodeIndexToDelete >= node.children.length)
+        return;
+    if (state == 'left' && nodeIndexToDelete == 0)
+        return;
+
     var indexes = Array.apply(null, {length: N}).map(Number.call, Number);
     var indexValue = indexes.splice(nodeIndexToDelete, 1)[0]; //remove element
     indexes.splice(state === 'left' ? index - 1 : index, 0, indexValue); //insert
