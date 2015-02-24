@@ -56,16 +56,19 @@ TabPage.prototype.setSelected = function(flag)
     this.selected = flag;
     this.handle.setSelected(flag);
 
+    if (!this._initContent)
+        this.host.contentElement.appendChild(this.containerElement);
+    this._initContent = true;
     if (this.selected)
     {
-        this.host.contentElement.appendChild(this.containerElement);
+        this.containerElement.style.display = 'block';
         // force a resize again
         var width = this.host.contentElement.clientWidth;
         var height = this.host.contentElement.clientHeight;
         this.container.resize(width, height);
     }
     else {
-        utils.removeNode(this.containerElement);
+        this.containerElement.style.display = 'none';
     }
 };
 
