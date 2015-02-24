@@ -112,7 +112,11 @@ module.exports={
     "gulp-util": "^3.0.1",
     "jshint-summary": "^0.4.0",
     "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.0.0"
+    "watchify": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "^1.1.0",
+    "vinyl-buffer": "^1.0.0"
   }
 }
 
@@ -1362,6 +1366,11 @@ DockLayoutEngine.prototype.undock = function(node)
 DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
     var N = node.children.length;
     var nodeIndexToDelete  = state === 'left' ? index : index + 1;
+    if (state == 'right' && nodeIndexToDelete >= node.children.length)
+        return;
+    if (state == 'left' && nodeIndexToDelete == 0)
+        return;
+
     var indexes = Array.apply(null, {length: N}).map(Number.call, Number);
     var indexValue = indexes.splice(nodeIndexToDelete, 1)[0]; //remove element
     indexes.splice(state === 'left' ? index - 1 : index, 0, indexValue); //insert
@@ -1677,7 +1686,6 @@ DockManager.prototype.rebuildLayout = function(node)
         self.rebuildLayout(child);
     });
     node.performLayout();
-
 };
 
 DockManager.prototype.invalidate = function()
@@ -1855,7 +1863,25 @@ DockManager.prototype.dockFill = function(referenceNode, container)
 };
 DockManager.prototype.floatDialog = function(container, x, y)
 {
-      var panel = container;
+    var retdiag = undefined;
+
+    //check the dialog do not already exist
+    this.context.model.dialogs.forEach(function(dialog) {
+        if (container == dialog.panel) {
+            dialog.show();
+            retdiag = dialog;
+
+        }
+    });
+    if (retdiag)
+        return retdiag;
+    //try to undock just in case
+    try {
+        var node = this._findNodeFromContainer(container);
+        this.layoutEngine.undock(node);
+    } catch (err) {}
+
+    var panel = container;
     utils.removeNode(panel.elementPanel);
     panel.isDialog = true;
     var dialog = new Dialog(panel, this);
@@ -3398,6 +3424,9 @@ TabHost.prototype.performTabsLayout = function(indexes){
     for (i = 0; i < itemsArr.length; ++i) {
         this.tabListElement.appendChild(itemsArr[i]);
     }
+
+    if (this.activeTab)
+        this.onTabPageSelected(this.activeTab);
 };
 
 TabHost.prototype.addListener = function(listener){
@@ -3603,16 +3632,19 @@ TabPage.prototype.setSelected = function(flag)
     this.selected = flag;
     this.handle.setSelected(flag);
 
+    if (!this._initContent)
+        this.host.contentElement.appendChild(this.containerElement);
+    this._initContent = true;
     if (this.selected)
     {
-        this.host.contentElement.appendChild(this.containerElement);
+        this.containerElement.style.display = 'block';
         // force a resize again
         var width = this.host.contentElement.clientWidth;
         var height = this.host.contentElement.clientHeight;
         this.container.resize(width, height);
     }
     else {
-        utils.removeNode(this.containerElement);
+        this.containerElement.style.display = 'none';
     }
 };
 
@@ -3815,3 +3847,4 @@ module.exports = {
 
 },{}]},{},[1])(1)
 });
+
