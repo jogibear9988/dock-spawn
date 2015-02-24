@@ -84,7 +84,6 @@ DockManager.prototype.rebuildLayout = function(node)
         self.rebuildLayout(child);
     });
     node.performLayout();
-
 };
 
 DockManager.prototype.invalidate = function()
@@ -262,7 +261,25 @@ DockManager.prototype.dockFill = function(referenceNode, container)
 };
 DockManager.prototype.floatDialog = function(container, x, y)
 {
-      var panel = container;
+    var retdiag = undefined;
+
+    //check the dialog do not already exist
+    this.context.model.dialogs.forEach(function(dialog) {
+        if (container == dialog.panel) {
+            dialog.show();
+            retdiag = dialog;
+
+        }
+    });
+    if (retdiag)
+        return retdiag;
+    //try to undock just in case
+    try {
+        var node = this._findNodeFromContainer(container);
+        this.layoutEngine.undock(node);
+    } catch (err) {}
+
+    var panel = container;
     utils.removeNode(panel.elementPanel);
     panel.isDialog = true;
     var dialog = new Dialog(panel, this);
