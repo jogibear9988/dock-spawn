@@ -117,6 +117,10 @@
                     console.log('onShowDialog: ', self, dialog);
                     localStorage.setItem(storeKey, dockManager.saveState());
                }
+               onTabsReorder:function(self, dialog){
+                    console.log('onTabsReorder: ', self, dialog);
+                    localStorage.setItem(storeKey, dockManager.saveState());
+               }
             });
 
 
