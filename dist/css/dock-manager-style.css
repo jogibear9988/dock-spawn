@@ -1,0 +1,151 @@
+
+/************* Panel with title bar ************/
+.panel-base {
+}
+
+.panel-titlebar {
+	background-color: #333;
+}
+
+.panel-titlebar-text {
+	font-weight: bold;
+	color:#aaa;
+}
+
+.panel-titlebar-button-close {
+	font-weight: bold;
+	color:#aaa;
+}
+
+.panel-titlebar-button-close:hover {
+	font-weight: bold;
+	color:#fff;
+}
+
+.panel-content {
+	background-color: #FFF;
+}
+
+.panel-content * {
+}
+
+/***************** Floating dialog box ****************/
+.dialog-floating {
+	box-shadow: 5px 5px 20px #000;
+}
+
+/************ Resize decorator ************/
+.resize-handle {
+}
+
+.resize-handle-corner {
+}
+
+.resize-handle-e  {  }
+.resize-handle-w  {  }
+.resize-handle-s  {  }
+.resize-handle-n  {  }
+.resize-handle-ne {  }
+.resize-handle-nw {  }
+.resize-handle-se {  }
+.resize-handle-sw {  }
+
+
+/******************* Dock Manager ********************/
+.dock-container {
+	background-color: #888;
+}
+
+.dock-container-fill {
+
+}
+
+/******************* Document Manager ********************/
+.document-manager {
+	background-color: #666;
+}
+
+
+
+/**************************** Splitter *********************************/
+.splitter-container-horizontal {
+}
+
+.splitter-container-vertical {
+}
+
+.splitbar-horizontal {
+	background-color: #000000;
+}
+
+.splitbar-vertical {
+	background-color: #000000;
+}
+
+.splitbar-horizontal-ghoust{
+	background-color: #ffcc00;
+}
+.splitbar-vertical-ghoust {
+	background-color: #ffcc00;
+}
+
+
+/*************************** Tab Host ********************************/
+.tab-host {
+	background-color: #666;
+}
+
+.tab-content {
+	background-color: #666;
+}
+
+/*.tab-content * {
+    margin: 0px;
+}*/
+
+.tab-handle {
+	background-color: #808080;
+	color:#D5D5D5;
+	box-shadow: 0px 5px 20px #000;
+}
+.tab-handle:hover {
+	background-color: #ffcc00;
+	color:#400;
+}
+
+.tab-handle-selected {
+	background-color: #ffcc00;
+	color:#400;
+}
+
+.tab-handle-text {
+}
+
+.tab-handle-close-button {
+}
+
+.tab-handle-close-button:hover {
+	color:#fff;
+}
+
+.tab-handle-list-container {
+	background-color: #333;
+}
+
+.tab-handle-content-seperator {
+	background-color: #ffcc00;
+}
+
+/*************************** Text Selection **************************/
+.disable-selection {
+}
+
+
+/************************ Misc Utils *************************/
+.full-screen {
+}
+
+.rounded-corner-top {
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}

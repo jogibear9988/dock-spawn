@@ -4,6 +4,8 @@
     <title></title>
     <link rel="stylesheet" href="../../css/font-awesome.css">
     <link rel="stylesheet" href="../../css/dock-manager.css">
+    <link rel="stylesheet" href="../../css/dock-whell.css">
+    <link rel="stylesheet" href="../../css/dock-manager-style.css">
     <link rel="stylesheet" href="demo.css">
     <script src="../../js/dockspawn.js" type="text/javascript"></script>
 
@@ -113,6 +115,10 @@
                },
                onShowDialog:function(self, dialog){
                     console.log('onShowDialog: ', self, dialog);
+                    localStorage.setItem(storeKey, dockManager.saveState());
+               }
+               onTabsReorder:function(self, dialog){
+                    console.log('onTabsReorder: ', self, dialog);
                     localStorage.setItem(storeKey, dockManager.saveState());
                }
             });
