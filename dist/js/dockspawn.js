@@ -532,6 +532,12 @@ PanelContainer.prototype.resize = function(width,  height)
     this._setPanelDimensions(width, height);
     this._cachedWidth = width;
     this._cachedHeight = height;
+    try {
+        if (this.elementContent != undefined && (typeof this.elementContent.resizeHandler == 'function'))
+            this.elementContent.resizeHandler(width, height - this.elementTitle.clientHeight);
+    } catch (err) {
+        console.log("error calling resizeHandler:", err, " elt:", this.elementContent);
+    }
 };
 
 PanelContainer.prototype._setPanelDimensions = function(width, height)
@@ -1868,7 +1874,7 @@ DockManager.prototype.floatDialog = function(container, x, y)
     //check the dialog do not already exist
     this.context.model.dialogs.forEach(function(dialog) {
         if (container == dialog.panel) {
-            dialog.show();
+            dialog.show(x, y);
             retdiag = dialog;
 
         }
