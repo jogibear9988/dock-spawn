@@ -220,6 +220,12 @@ PanelContainer.prototype.resize = function(width,  height)
     this._setPanelDimensions(width, height);
     this._cachedWidth = width;
     this._cachedHeight = height;
+    try {
+        if (this.elementContent != undefined && (typeof this.elementContent.resizeHandler == 'function'))
+            this.elementContent.resizeHandler(width, height - this.elementTitle.clientHeight);
+    } catch (err) {
+        console.log("error calling resizeHandler:", err, " elt:", this.elementContent);
+    }
 };
 
 PanelContainer.prototype._setPanelDimensions = function(width, height)
