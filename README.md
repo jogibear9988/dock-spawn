@@ -27,6 +27,11 @@ then run gulp:
 
 All files are generated in dist.
 
+## Webserver
+To check out the demo you can run the gulp webserver command:
+
+    ./node_modules/.bin/gulp webserver
+
 ## Develop
 The dev mode is useful to rebuild automatically the project when file are modified.
 

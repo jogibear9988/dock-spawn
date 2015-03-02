@@ -10,11 +10,12 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     rename = require("gulp-rename"),
     path = require('path'),
-
+    webserver = require('gulp-webserver'),
     index = './src/index.js',
     outdir = './dist/js',
     bundle = 'dockspawn',
     outfile = 'dockspawn.js';
+    
 
 function rebundle(file) {
     if (file) {
@@ -41,6 +42,18 @@ function createBundler(args) {
 
     return browserify(index, args);
 }
+
+/*****
+ * Webserver, brilliant for getting up-and-running quickly!
+ *****/
+gulp.task('webserver', function() {
+  gulp.src('dist')
+    .pipe(webserver({
+      livereload: true,
+      directoryListing: true,
+      open: 'http://localhost:8000/demos/ide/demo.html'
+    }));
+});
 
 /*****
  * Dev task, incrementally rebuilds the output bundle as the the sources change
