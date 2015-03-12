@@ -72,10 +72,14 @@
             dockManager = new dockspawn.DockManager(divDockManager);
             dockManager.initialize();
 
-            var lastState = localStorage.getItem(storeKey);
-            if (lastState) {
-                dockManager.loadState(lastState);
-            }
+
+// 
+// # Load previous layout via localStorage
+// 
+            var lastState = false; //localStorage.getItem(storeKey);
+            // if (lastState) {
+            //     dockManager.loadState(lastState);
+            // }
 
             // Let the dock manager element fill in the entire screen
             window.onresize = function () {

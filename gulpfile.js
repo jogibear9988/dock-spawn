@@ -51,7 +51,7 @@ gulp.task('webserver', function() {
     .pipe(webserver({
       livereload: true,
       directoryListing: true,
-      open: 'http://localhost:8000/demos/ide/demo.html'
+      open: 'http://localhost:8000/demos/ide/index.html'
     }));
 });
 
