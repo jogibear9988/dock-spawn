@@ -32,17 +32,25 @@
 
    var total_panel_ids = 0;
 
+   var all_active_panels = {}
+
 
   app.controller('ResourcesTree', ['$scope',  '$timeout', 'FetchFileFactory',
     function($scope, $timeout, FetchFileFactory) {
       $scope.fileViewer = 'Please select a file to view its contents';
       var solution_element = document.getElementById("solution_window");
 
-      var addNewPanel = function(file_data_for_panel) {
-        // check if panel already exists and focus it
+      var addNewPanel = function(file_data_for_panel, file_details) {
+        if (file_details.id in all_active_panels) {
+          // TODO: set focus to this id
+          return;
+        }
+        
+        
         if (typeof solution_element !== 'undefined' && typeof dockManager !== 'undefined' && typeof window.documentNode !== 'undefined') {
           total_panel_ids++;
-          $(".container").append('<div id="#panel_'+total_panel_ids+'" data-panel-caption="File" class="editor1-window editor-host">hello world"+"</div>');
+          all_active_panels[file_details.id] = total_panel_ids;
+          $(".container").append('<div id="panel_'+total_panel_ids+'" data-panel-caption="'+file_details.text+'" class="editor1-window editor-host">hello world'+file_data_for_panel+'</div>');
           
               var newPanel = new dockspawn.PanelContainer($('#panel_'+total_panel_ids)[0], dockManager);
               var newNode = dockManager.dockFill(window.documentNode, newPanel);
@@ -72,9 +80,9 @@
  // 
  // # Handle a node being selected in the tree
  // 
-      $scope.nodeSelected = function(e, data) {
-        console.log("NODE SELECTED",e,data)
-        var _l = data.node.li_attr;
+      $scope.nodeSelected = function(e, node_data) {
+        console.log("NODE SELECTED",e,node_data)
+        var _l = node_data.node.li_attr;
         if (_l.isLeaf) {
           FetchFileFactory.fetchFile(_l.base).then(function(data) {
             var _d = data.data;
@@ -84,7 +92,7 @@
               _d = JSON.stringify(_d, undefined, 2);
             }
             $scope.fileViewer = _d;
-           addNewPanel(_d);
+           addNewPanel(_d, node_data.node);
           });
         } else {
  
