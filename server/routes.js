@@ -6,13 +6,14 @@
   var fs = require('fs');
   var path = require('path');
   var yaml = require('js-yaml');
+  var parseString = require('xml2js').parseString;
 
   /* GET home page. */
   router.get('/', function(req, res) {
     res.render('index');
   });
 
-  var current_example = 'SuperTuxBoy';
+  var current_example = 'Caveman.gmx';
 
   /* Serve the Tree */
   router.get('/api/tree', function(req, res) {
@@ -35,14 +36,35 @@
       return yaml.safeLoad(fs.readFileSync(file_path, 'utf8'));
   }
 
+  var parseXMLFile = function(file_path, response) {
+    console.log('Parsing XML file', file_path)
+    fs.readFile(file_path, function(err, xml_data) {
+        
+        parseString(xml_data, function (err, result) {
+          console.dir(result);
+          response.send(JSON.stringify(result)); 
+        }); 
+    });
+    
+
+  }
+
   /* Serve a Resource */
   router.get('/api/resource', function(req, res) {
     var file_path_to_load = req.query.resource;
     var file_extension = path.extname(file_path_to_load);
-    if (file_extension !== ".ey")
+    
+
+    console.log()
+
+    var result_as_json = {}
+    if (file_extension === ".ey")
+      result_as_json = parseEyFile(file_path_to_load)
+    else if (file_extension === ".gmx")
+      return parseXMLFile(file_path_to_load, res)
+    else
       {res.send(fs.readFileSync(file_path_to_load, 'UTF-8')); return;}
 
-    var result_as_json = parseEyFile(file_path_to_load)
     console.log(result_as_json)
     res.send(result_as_json); 
     return;
@@ -65,6 +87,8 @@
     });
   }
 
+
+
 // 
 // # Process node converts normal file into a valid jstree object
 // 
@@ -72,6 +96,17 @@
 
     var s = fs.statSync(path.join(_p, f));
     if (f === 'toc.txt') return null;
+    // 
+    // # Check if it starts with a dot, if so its a hidden file
+    // 
+    if (f.indexOf('.') === 0) return null; 
+
+
+    // 
+    // # Only support .ey files
+    // 
+    // if ((!s.isDirectory()) && f.indexOf('.ey') === -1) return null;
+
     var file_extension = path.extname(f);
     
     return {
