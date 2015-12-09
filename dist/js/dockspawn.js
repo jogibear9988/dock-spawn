@@ -103,20 +103,21 @@ module.exports={
   "bugs": {
     "url": "https://github.com/englercj/dock-spawn/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "browserify": "^6.0.3",
     "gulp": "^3.8.8",
-    "gulp-jshint": "^1.8.5",
-    "gulp-util": "^3.0.1",
-    "jshint-summary": "^0.4.0",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.0.0",
+    "gulp-jshint": "^2.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.3.0",
     "gulp-uglify": "^1.1.0",
-    "vinyl-buffer": "^1.0.0"
+    "gulp-util": "^3.0.7",
+    "gulp-webserver": "^0.9.0",
+    "jshint": "^2.8.0",
+    "jshint-summary": "^0.4.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.0.0"
   }
 }
 
@@ -3457,10 +3458,15 @@ TabHost.prototype._createDefaultTabPage = function(tabHost, container)
     return new TabPage(tabHost, container);
 };
 
-TabHost.prototype.setActiveTab = function(/*container*/)
-{
-    if (this.pages.length > 0) {
-        this.onTabPageSelected(this.pages[0]);
+TabHost.prototype.setActiveTab = function(container) {
+    var currentPage;
+    this.pages.forEach(function(itm) {
+        if (itm.container === container) {
+            currentPage = itm;
+        }
+    });
+    if (this.pages.length > 0 && currentPage) {
+        this.onTabPageSelected(currentPage);
     }
 };
 

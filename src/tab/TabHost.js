@@ -110,10 +110,15 @@ TabHost.prototype._createDefaultTabPage = function(tabHost, container)
     return new TabPage(tabHost, container);
 };
 
-TabHost.prototype.setActiveTab = function(/*container*/)
-{
-    if (this.pages.length > 0) {
-        this.onTabPageSelected(this.pages[0]);
+TabHost.prototype.setActiveTab = function(container) {
+    var currentPage;
+    this.pages.forEach(function(itm) {
+        if (itm.container === container) {
+            currentPage = itm;
+        }
+    });
+    if (this.pages.length > 0 && currentPage) {
+        this.onTabPageSelected(currentPage);
     }
 };
 
