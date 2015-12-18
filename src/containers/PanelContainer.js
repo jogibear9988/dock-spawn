@@ -164,8 +164,9 @@ PanelContainer.prototype.destroy = function()
  */
 PanelContainer.prototype.performUndockToDialog = function(e, dragOffset)
 {
-     this.isDialog = true;
+    this.isDialog = true;
     this.undockInitiator.enabled = false;
+    this.elementContent.style.display = "block";
     return this.dockManager.requestUndockToDialog(this, e, dragOffset);
 };
 
