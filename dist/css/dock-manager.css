@@ -30,6 +30,7 @@
 
 .panel-content {
 	width: 100%;
+    overflow: hidden;
 }
 
 .panel-content * {
@@ -66,6 +67,7 @@
 
 /******************* Dock Manager ********************/
 .dock-container {
+    position: relative;
 }
 
 .dock-container-fill {
@@ -141,6 +143,7 @@
 	width:100%;
 	height:5px;
 	cursor:n-resize;
+	position: relative;
 }
 
 .splitbar-vertical {
@@ -148,6 +151,7 @@
 	height:100%;
 	float:left;
 	cursor:e-resize;
+	position: relative;
 }
 
 .splitbar-horizontal-ghoust{
@@ -165,30 +169,32 @@
 
 
 /*************************** Tab Host ********************************/
-.tab-host {
+.dockspan-tab-host {
+	display: inline-block;
 }
 
-.tab-content {
+.dockspan-tab-content {
 }
 
-.tab-content * {
+.dockspan-tab-content * {
 }
 
-.tab-handle {
+.dockspan-tab-handle {
 	position: relative;
 	height: 22px;
 	float: left;
 	overflow: hidden;
 	pointer: default;
+	padding-right: 16px;
 }
-.tab-handle:hover {
+.dockspan-tab-handle:hover {
         cursor: pointer;
 }
 
-.tab-handle-selected {
+.dockspan-tab-handle-selected {
 }
 
-.tab-handle-text {
+.dockspan-tab-handle-text {
 	margin-top: 3px;
 	margin-left: 6px;
 	margin-right: 6px;
@@ -197,21 +203,23 @@
 	float: left;
 }
 
-.tab-handle-close-button {
+.dockspan-tab-handle-close-button {
 	margin-top: 3px;
 	margin-right: 6px;
 	float: right;
+	position: absolute;
+	right: 0;
 }
 
-.tab-handle-close-button:hover {
+.dockspan-tab-handle-close-button:hover {
 }
 
-.tab-handle-list-container {
+.dockspan-tab-handle-list-container {
 	height: 22px;
 	overflow: hidden;
 }
 
-.tab-handle-content-seperator {
+.dockspan-tab-handle-content-seperator {
 	height: 4px;
 }
 

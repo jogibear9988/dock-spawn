@@ -432,7 +432,7 @@ PanelContainer.prototype._initialize = function()
     this._setPanelDimensions(panelWidth, panelHeight + titleHeight);
 
     // Add the panel to the body
-    document.body.appendChild(this.elementPanel);
+    //document.body.appendChild(this.elementPanel);
 
     this.closeButtonClickedHandler =
         new EventHandler(this.elementButtonClose, 'click', this.onCloseButtonClicked.bind(this));
@@ -477,10 +477,11 @@ PanelContainer.prototype.destroy = function()
  */
 PanelContainer.prototype.performUndockToDialog = function(e, dragOffset)
 {
-    this.isDialog = true;
-    this.undockInitiator.enabled = false;
-    this.elementContent.style.display = "block";
-    return this.dockManager.requestUndockToDialog(this, e, dragOffset);
+     this.isDialog = true;
+     this.undockInitiator.enabled = false;
+     this.elementContent.style.display = "block";
+     this.elementPanel.style.position = "";
+     return this.dockManager.requestUndockToDialog(this, e, dragOffset);
 };
 
 /**
@@ -610,17 +611,18 @@ PanelContainer.prototype.onCloseButtonClicked = function()
 };
 
 PanelContainer.prototype.close = function() {
-     //TODO: hide
     if (this.isDialog) {
         this.floatingDialog.hide();
 
         this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
+        this.floatingDialog.remove();
     }
     else
     {
         this.performUndockToDialog();
         this.floatingDialog.hide();
         this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
+        this.floatingDialog.remove();
     }
      this.dockManager.notifyOnClosePanel(this);
 };
@@ -738,6 +740,7 @@ function DraggableContainer(dialog, delegate, topLevelElement, dragHandle)
     this.topLevelElement = topLevelElement;
     this.containerType = delegate.containerType;
     this.mouseDownHandler = new EventHandler(dragHandle, 'mousedown', this.onMouseDown.bind(this));
+    this.touchDownHandler = new EventHandler(dragHandle, 'pointerdown', this.onMouseDown.bind(this));
     this.topLevelElement.style.marginLeft = topLevelElement.offsetLeft + 'px';
     this.topLevelElement.style.marginTop = topLevelElement.offsetTop + 'px';
     this.minimumAllowedChildNodes = delegate.minimumAllowedChildNodes;
@@ -797,6 +800,10 @@ DraggableContainer.prototype.removeDecorator = function()
         this.mouseDownHandler.cancel();
         delete this.mouseDownHandler;
     }
+    if (this.touchDownHandler) {
+        this.touchDownHandler.cancel();
+        delete this.touchDownHandler;
+    }
 };
 
 DraggableContainer.prototype.onMouseDown = function(event)
@@ -808,14 +815,24 @@ DraggableContainer.prototype.onMouseDown = function(event)
         this.mouseMoveHandler.cancel();
         delete this.mouseMoveHandler;
     }
+    if (this.touchMoveHandler) {
+        this.touchMoveHandler.cancel();
+        delete this.touchMoveHandler;
+    }
     if (this.mouseUpHandler)
     {
         this.mouseUpHandler.cancel();
         delete this.mouseUpHandler;
     }
+    if (this.touchUpHandler) {
+        this.touchUpHandler.cancel();
+        delete this.touchUpHandler;
+    }
 
     this.mouseMoveHandler = new EventHandler(window, 'mousemove', this.onMouseMove.bind(this));
+    this.touchMoveHandler = new EventHandler(window, 'touchmove', this.onMouseMove.bind(this));
     this.mouseUpHandler = new EventHandler(window, 'mouseup', this.onMouseUp.bind(this));
+    this.touchUpHandler = new EventHandler(window, 'touchend', this.onMouseUp.bind(this));
 };
 
 DraggableContainer.prototype.onMouseUp = function(event)
@@ -823,8 +840,12 @@ DraggableContainer.prototype.onMouseUp = function(event)
     this._stopDragging(event);
     this.mouseMoveHandler.cancel();
     delete this.mouseMoveHandler;
+    this.touchMoveHandler.cancel();
+    delete this.touchMoveHandler;
     this.mouseUpHandler.cancel();
     delete this.mouseUpHandler;
+    this.touchUpHandler.cancel();
+    delete this.touchUpHandler;
 };
 
 DraggableContainer.prototype._startDragging = function(event)
@@ -841,8 +862,37 @@ DraggableContainer.prototype._stopDragging = function(event)
     document.body.classList.remove('disable-selection');
 };
 
-DraggableContainer.prototype.onMouseMove = function(event)
-{
+DraggableContainer.prototype._getOffset = function(el) {
+    var _x = 0;
+    var _y = 0;
+    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+};
+
+DraggableContainer.prototype.onMouseMove = function(event) {
+    if (event.touches != null) {
+        for (w in dockManager.dockWheel.wheelItems) {
+            var item = dockManager.dockWheel.wheelItems[w];
+            var offset = this._getOffset(item.element);
+                if (event.touches[0].clientX > offset.left &&
+                    event.touches[0].clientX < (offset.left + item.element.clientWidth) &&
+                    event.touches[0].clientY > offset.top &&
+                    event.touches[0].clientY < (offset.top + item.element.clientHeight)) {
+                    item.onMouseMoved(event);
+                } else {
+                    item.onMouseOut(event);
+                }
+        }
+    }
+
+    if (event.changedTouches != null) { // TouchMove Event
+        event = event.changedTouches[0];
+    }
+
     var currentMousePosition = new Point(event.pageX, event.pageY);
 
     var dx = this.dockManager.checkXBounds(this.topLevelElement, currentMousePosition, this.previousMousePosition);
@@ -931,7 +981,8 @@ ResizableContainer.prototype._buildResizeHandle = function(east, west, north, so
     this.resizeHandles.push(handle);
 
     var self = this;
-    handle.mouseDownHandler = new EventHandler(handle.element, 'mousedown', function(e) { self.onMouseDown(handle, e); });
+    handle.mouseDownHandler = new EventHandler(handle.element, 'mousedown', function (e) { self.onMouseDown(handle, e); });
+    handle.touchDownHandler = new EventHandler(handle.element, 'pointerdown', function (e) { self.onMouseDown(handle, e); });
 };
 
 ResizableContainer.prototype.saveState = function(state)
@@ -990,6 +1041,10 @@ ResizableContainer.prototype.removeDecorator = function()
 
 ResizableContainer.prototype.onMouseMoved = function(handle, e)
 {
+    if (e.changedTouches != null) { // TouchMove Event
+        e = e.changedTouches[0];
+    }
+
     if (!this.readyToProcessNextResize)
         return;
     this.readyToProcessNextResize = false;
@@ -1014,16 +1069,26 @@ ResizableContainer.prototype.onMouseDown = function(handle, event)
         handle.mouseMoveHandler.cancel();
         delete handle.mouseMoveHandler;
     }
+    if (handle.touchMoveHandler) {
+        handle.touchMoveHandler.cancel();
+        delete handle.touchMoveHandler;
+    }
     if (handle.mouseUpHandler)
     {
         handle.mouseUpHandler.cancel();
         delete handle.mouseUpHandler;
     }
+    if (handle.touchUpHandler) {
+        handle.touchUpHandler.cancel();
+        delete handle.touchUpHandler;
+    }
 
     // Create the mouse event handlers
     var self = this;
-    handle.mouseMoveHandler = new EventHandler(window, 'mousemove', function(e) { self.onMouseMoved(handle, e); });
-    handle.mouseUpHandler = new EventHandler(window, 'mouseup', function(e) { self.onMouseUp(handle, e); });
+    handle.mouseMoveHandler = new EventHandler(window, 'mousemove', function (e) { self.onMouseMoved(handle, e); });
+    handle.touchMoveHandler = new EventHandler(window, 'touchmove', function (e) { self.onMouseMoved(handle, e); });
+    handle.mouseUpHandler = new EventHandler(window, 'mouseup', function (e) { self.onMouseUp(handle, e); });
+    handle.touchUpHandler = new EventHandler(window, 'touchend', function (e) { self.onMouseUp(handle, e); });
 
     document.body.classList.add('disable-selection');
 };
@@ -1031,9 +1096,13 @@ ResizableContainer.prototype.onMouseDown = function(handle, event)
 ResizableContainer.prototype.onMouseUp = function(handle)
 {
     handle.mouseMoveHandler.cancel();
+    handle.touchMoveHandler.cancel();
     handle.mouseUpHandler.cancel();
+    handle.touchUpHandler.cancel();
     delete handle.mouseMoveHandler;
+    delete handle.touchMoveHandler;
     delete handle.mouseUpHandler;
+    delete handle.touchUpHandler;
 
     document.body.classList.remove('disable-selection');
 };
@@ -1150,14 +1219,13 @@ var PanelContainer = require('../containers/PanelContainer'),
 function Dialog(panel, dockManager)
 {
     this.panel = panel;
-    this.zIndexCounter = 100;
     this.dockManager = dockManager;
     this.eventListener = dockManager;
     this._initialize();
     this.dockManager.context.model.dialogs.push(this);
-        this.position = dockManager.defaultDialogPosition;
-
+    this.position = dockManager.defaultDialogPosition;
     this.dockManager.notifyOnCreateDialog(this);
+    panel.isDialog = true;
 }
 
 module.exports = Dialog;
@@ -1186,6 +1254,7 @@ Dialog.prototype._initialize = function()
     this.panel.elementTitle.classList.add('rounded-corner-top');
 
     this.mouseDownHandler = new EventHandler(this.elementDialog, 'mousedown', this.onMouseDown.bind(this));
+    this.touchDownHandler = new EventHandler(this.elementDialog, 'pointerdown', this.onMouseDown.bind(this));
     this.resize(this.panel.elementPanel.clientWidth, this.panel.elementPanel.clientHeight);
     this.isHidden = false;
     this.bringToFront();
@@ -1219,6 +1288,10 @@ Dialog.prototype.destroy = function()
         this.mouseDownHandler.cancel();
         delete this.mouseDownHandler;
     }
+    if (this.touchDownHandler) {
+        this.touchDownHandler.cancel();
+        delete this.touchDownHandler;
+    }
     this.elementDialog.classList.remove('rounded-corner-top');
     this.panel.elementTitle.classList.remove('rounded-corner-top');
     utils.removeNode(this.elementDialog);
@@ -1245,7 +1318,7 @@ Dialog.prototype.setTitleIcon = function(iconName)
 
 Dialog.prototype.bringToFront = function()
 {
-    this.elementDialog.style.zIndex = this.zIndexCounter++;
+    this.elementDialog.style.zIndex = this.dockManager.zIndexCounter++;
 };
 
 Dialog.prototype.hide = function()
@@ -1259,9 +1332,13 @@ Dialog.prototype.hide = function()
     }
 };
 
+Dialog.prototype.remove = function () {
+    this.elementDialog.parentNode.removeChild(this.elementDialog);
+};
+
 Dialog.prototype.show = function()
 {
-    this.elementDialog.style.zIndex = 100;
+    this.elementDialog.style.zIndex = 100000;
     this.elementDialog.style.display = 'block';
     if(this.isHidden)
     {
@@ -1368,7 +1445,7 @@ DockLayoutEngine.prototype.undock = function(node)
     }
     this.dockManager.invalidate();
 
-	this.dockManager.notifyOnUnDock(node);
+    this.dockManager.notifyOnUnDock(node);
 };
 
 DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
@@ -1390,6 +1467,8 @@ DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
 
 DockLayoutEngine.prototype._performDock = function(referenceNode, newNode, direction, insertBeforeReference)
 {
+    newNode.container.elementPanel.style.position = "relative";
+
     if (referenceNode.parent && referenceNode.parent.container.containerType === 'fill')
         referenceNode = referenceNode.parent;
 
@@ -1426,7 +1505,7 @@ DockLayoutEngine.prototype._performDock = function(referenceNode, newNode, direc
         }
 
         // Attach the root node to the dock manager's DOM
-		this.dockManager.setRootNode(compositeNode);
+        this.dockManager.setRootNode(compositeNode);
         this.dockManager.rebuildLayout(this.dockManager.context.model.rootNode);
         compositeNode.container.setActiveChild(newNode.container);
         this.dockManager.invalidate();
@@ -1489,7 +1568,7 @@ DockLayoutEngine.prototype._performDock = function(referenceNode, newNode, direc
     newNode.container.resize(containerWidth, containerHeight);
 
     this.dockManager.invalidate();
-	this.dockManager.notifyOnDock(newNode);
+    this.dockManager.notifyOnDock(newNode);
 };
 
 DockLayoutEngine.prototype._forceResizeCompositeContainer = function(container)
@@ -1631,7 +1710,7 @@ function DockManager(element)
         throw new Error('Invalid Dock Manager element provided');
 
     this.element = element;
-    this.context = this.dockWheel = this.layoutEngine = this.mouseMoveHandler = undefined;
+    this.context = this.dockWheel = this.layoutEngine = this.mouseMoveHandler = this.touchMoveHandler = undefined;
     this.layoutEventListeners = [];
 
     this.defaultDialogPosition = new Point(0, 0);
@@ -1639,8 +1718,8 @@ function DockManager(element)
 
 module.exports = DockManager;
 
-DockManager.prototype.initialize = function()
-{
+DockManager.prototype.initialize = function() {
+    this.backgroundContext = this.element.children[0];
     this.context = new DockManagerContext(this);
     var documentNode = new DockNode(this.context.documentManagerView);
     this.context.model.rootNode = documentNode;
@@ -1653,6 +1732,11 @@ DockManager.prototype.initialize = function()
     this.layoutEngine = new DockLayoutEngine(this);
     this._undockEnabled = true;
     this.rebuildLayout(this.context.model.rootNode);
+    this.zIndexCounter = 100000;
+    if (this.backgroundContext != null) {
+        this.context.model.rootNode.container.tabHost.hostElement
+            .insertBefore(this.backgroundContext, this.context.model.rootNode.container.tabHost.hostElement.firstChild);
+    }
 };
 
 DockManager.prototype.checkXBounds = function(container, currentMousePosition, previousMousePosition){
@@ -1754,13 +1838,19 @@ DockManager.prototype.onDialogDragStarted = function(sender, e)
 {
     this.dockWheel.activeNode = this._findNodeOnPoint(e.pageX, e.pageY);
     this.dockWheel.activeDialog = sender;
-    this.dockWheel.showWheel();
+    if (sender.noDocking == null || sender.noDocking !== true)
+        this.dockWheel.showWheel();
     if (this.mouseMoveHandler)
     {
         this.mouseMoveHandler.cancel();
         delete this.mouseMoveHandler;
     }
+    if (this.touchMoveHandler) {
+        this.touchMoveHandler.cancel();
+        delete this.touchMoveHandler;
+    }
     this.mouseMoveHandler = new EventHandler(window, 'mousemove', this.onMouseMoved.bind(this));
+    this.mouseMoveHandler = new EventHandler(window, 'touchmove', this.onMouseMoved.bind(this));
 };
 
 DockManager.prototype.onDialogDragEnded = function(sender)
@@ -1770,6 +1860,10 @@ DockManager.prototype.onDialogDragEnded = function(sender)
         this.mouseMoveHandler.cancel();
         delete this.mouseMoveHandler;
     }
+    if (this.touchMoveHandler) {
+        this.touchMoveHandler.cancel();
+        delete this.touchMoveHandler;
+    }
     this.dockWheel.onDialogDropped(sender);
     this.dockWheel.hideWheel();
     delete this.dockWheel.activeDialog;
@@ -1777,8 +1871,11 @@ DockManager.prototype.onDialogDragEnded = function(sender)
     sender.saveState(sender.elementDialog.offsetLeft, sender.elementDialog.offsetTop);
 };
 
-DockManager.prototype.onMouseMoved = function(e)
-{
+DockManager.prototype.onMouseMoved = function (e) {
+    
+    if (e.changedTouches != null) { // TouchMove Event
+        e = e.changedTouches[0];
+    }
     this.dockWheel.activeNode = this._findNodeOnPoint(e.clientX, e.clientY);
 };
 
@@ -1909,8 +2006,17 @@ DockManager.prototype._requestDockDialog = function(referenceNode, dialog, layou
     return newNode;
 };
 
-DockManager.prototype._requestDockContainer = function(referenceNode, container, layoutDockFunction, ratio)
-{
+DockManager.prototype._checkShowBackgroundContext = function () {
+    if (this.backgroundContext != null) {
+        if (this.context.model.documentManagerNode.children.length > 0) {
+            this.backgroundContext.style.display = "none";
+        } else {
+            this.backgroundContext.style.display = "block";
+        }
+    }
+};
+
+DockManager.prototype._requestDockContainer = function (referenceNode, container, layoutDockFunction, ratio) {
     // Get the active dialog that was dragged on to the dock wheel
     var newNode = new DockNode(container);
     if (container.containerType === 'panel')
@@ -1930,6 +2036,9 @@ DockManager.prototype._requestDockContainer = function(referenceNode, container,
 
     this.rebuildLayout(this.context.model.rootNode);
     this.invalidate();
+
+    this._checkShowBackgroundContext();
+
     return newNode;
 };
 
@@ -1952,6 +2061,27 @@ DockManager.prototype.requestUndockToDialog = function(container, event, dragOff
 
     if(event !== undefined){
     // Adjust the relative position
+        var dialogWidth = dialog.elementDialog.clientWidth;
+        if (dragOffset.x > dialogWidth)
+            dragOffset.x = 0.75 * dialogWidth;
+        dialog.setPosition(
+            event.clientX - dragOffset.x,
+            event.clientY - dragOffset.y);
+        dialog.draggable.onMouseDown(event);
+    }
+    return dialog;
+};
+
+/**
+ * Opens a Elemnt in a Dialog
+ * It is assumed that only leaf nodes (panels) can be undocked
+ */
+DockManager.prototype.openInDialog = function (container, event, dragOffset) {
+    // Create a new dialog window for the undocked panel
+    var dialog = new Dialog(container, this);
+
+    if (event !== undefined) {
+        // Adjust the relative position
         var dialogWidth = dialog.elementDialog.clientWidth;
         if (dragOffset.x > dialogWidth)
             dragOffset.x = 0.75 * dialogWidth;
@@ -2038,26 +2168,27 @@ DockManager.prototype.suspendLayout = function()
 {
     var self = this;
     this.layoutEventListeners.forEach(function(listener) {
-		if (listener.onSuspendLayout) listener.onSuspendLayout(self);
-	});
+        if (listener.onSuspendLayout) listener.onSuspendLayout(self);
+    });
 };
 
 DockManager.prototype.resumeLayout = function(panel)
 {
     var self = this;
     this.layoutEventListeners.forEach(function(listener) {
-		if (listener.onResumeLayout) listener.onResumeLayout(self, panel);
-	});
+        if (listener.onResumeLayout) listener.onResumeLayout(self, panel);
+    });
 };
 
 DockManager.prototype.notifyOnDock = function(dockNode)
 {
+    this._checkShowBackgroundContext();
     var self = this;
     this.layoutEventListeners.forEach(function(listener) {
-		if (listener.onDock) {
-			listener.onDock(self, dockNode);
-		}
-	});
+        if (listener.onDock) {
+            listener.onDock(self, dockNode);
+        }
+    });
 };
 
 DockManager.prototype.notifyOnTabsReorder = function(dockNode)
@@ -2073,16 +2204,17 @@ DockManager.prototype.notifyOnTabsReorder = function(dockNode)
 
 DockManager.prototype.notifyOnUnDock = function(dockNode)
 {
+    this._checkShowBackgroundContext();
     var self = this;
     this.layoutEventListeners.forEach(function(listener) {
-		if (listener.onUndock) {
-			listener.onUndock(self, dockNode);
-		}
-	});
+        if (listener.onUndock) {
+            listener.onUndock(self, dockNode);
+        }
+    });
 };
 
-DockManager.prototype.notifyOnClosePanel = function(panel)
-{
+DockManager.prototype.notifyOnClosePanel = function(panel) {
+    this._checkShowBackgroundContext();
     var self = this;
     this.layoutEventListeners.forEach(function(listener) {
         if (listener.onClosePanel) {
@@ -2400,7 +2532,7 @@ function DockWheel(dockManager)
             self.elementMainWheel.appendChild(self.wheelItems[wheelType].element);
     });
 
-    var zIndex = 100000;
+    var zIndex = 9000000;
     this.elementMainWheel.classList.add('dock-wheel-base');
     this.elementSideWheel.classList.add('dock-wheel-base');
     this.elementMainWheel.style.zIndex = zIndex + 1;
@@ -2446,8 +2578,8 @@ DockWheel.prototype.showWheel = function()
     var element = this.activeNode.container.containerElement;
     var containerWidth = element.clientWidth;
     var containerHeight = element.clientHeight;
-    var baseX = Math.floor(containerWidth / 2) + element.offsetLeft;
-    var baseY = Math.floor(containerHeight / 2) + element.offsetTop;
+    var baseX = Math.floor(containerWidth / 2); // + element.offsetLeft;
+    var baseY = Math.floor(containerHeight / 2); // + element.offsetTop;
     this.elementMainWheel.style.left = baseX + 'px';
     this.elementMainWheel.style.top = baseY + 'px';
 
@@ -2569,6 +2701,9 @@ DockWheel.prototype._getActiveWheelItem = function()
 
 DockWheel.prototype._handleDockRequest = function(wheelItem, dialog)
 {
+    wheelItem.active = false;
+    wheelItem.element.classList.remove(wheelItem.hoverIconClass);
+
     if (!this.activeNode)
         return;
     if (wheelItem.id === 'left') {
@@ -2829,6 +2964,7 @@ function SplitterBar(previousContainer, nextContainer, stackedVertical)
     this.barElement = document.createElement('div');
     this.barElement.classList.add(stackedVertical ? 'splitbar-horizontal' : 'splitbar-vertical');
     this.mouseDownHandler = new EventHandler(this.barElement, 'mousedown', this.onMouseDown.bind(this));
+    this.touchDownHandler = new EventHandler(this.barElement, 'pointerdown', this.onMouseDown.bind(this));
     this.minPanelSize = 50; // TODO: Get from container configuration
     this.readyToProcessNextDrag = true;
 }
@@ -2970,13 +3106,26 @@ SplitterPanel.prototype._buildSplitterDOM = function()
     this._insertContainerIntoPanel(this.childContainers.slice(-1)[0]);
 };
 
-SplitterPanel.prototype.performLayout = function(children)
-{
-    this.removeFromDOM();
+SplitterPanel.prototype.performLayout = function(children) {
+    var containersEqual = this.arraysEqual(this.childContainers, children);
+    if (!containersEqual) {
+        this.removeFromDOM();
 
-    // rebuild
-    this.childContainers = children;
-    this._buildSplitterDOM();
+        // rebuild
+        this.childContainers = children;
+        this._buildSplitterDOM();
+    }
+};
+
+SplitterPanel.prototype.arraysEqual = function(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
 };
 
 SplitterPanel.prototype.removeFromDOM = function()
@@ -3140,10 +3289,10 @@ function TabHandle(parent)
     this.elementBase = document.createElement('div');
     this.elementText = document.createElement('div');
     this.elementCloseButton = document.createElement('div');
-    this.elementBase.classList.add('tab-handle');
+    this.elementBase.classList.add('dockspan-tab-handle');
     this.elementBase.classList.add('disable-selection'); // Disable text selection
-    this.elementText.classList.add('tab-handle-text');
-    this.elementCloseButton.classList.add('tab-handle-close-button');
+    this.elementText.classList.add('dockspan-tab-handle-text');
+    this.elementCloseButton.classList.add('dockspan-tab-handle-close-button');
     this.elementBase.appendChild(this.elementText);
     if (this.parent.host.displayCloseButton)
         this.elementBase.appendChild(this.elementCloseButton);
@@ -3201,20 +3350,30 @@ TabHandle.prototype.undockEnabled = function(state)
 TabHandle.prototype.onMouseDown = function(e)
 {
     if(this.undockInitiator.enabled)
-        this.undockInitiator.setThresholdPixels(40, false);
+        this.undockInitiator.setThresholdPixels(10, false);
     if (this.mouseMoveHandler)
     {
         this.mouseMoveHandler.cancel();
         delete this.mouseMoveHandler;
+    }
+    if (this.touchMoveHandler) {
+        this.touchMoveHandler.cancel();
+        delete this.touchMoveHandler;
     }
     if (this.mouseUpHandler)
     {
         this.mouseUpHandler.cancel();
         delete this.mouseUpHandler;
     }
+    if (this.touchUpHandler) {
+        this.touchUpHandler.cancel();
+        delete this.touchUpHandler;
+    }
     this.stargDragPosition = e.clientX;
     this.mouseMoveHandler = new EventHandler(this.elementBase, 'mousemove', this.onMouseMove.bind(this));
+    this.touchMoveHandler = new EventHandler(this.elementBase, 'touchmove', this.onMouseMove.bind(this));
     this.mouseUpHandler = new EventHandler(window, 'mouseup', this.onMouseUp.bind(this));
+    this.touchUpHandler = new EventHandler(window, 'touchout', this.onMouseUp.bind(this));
 };
 
 TabHandle.prototype.onMouseUp = function()
@@ -3222,14 +3381,17 @@ TabHandle.prototype.onMouseUp = function()
     if(this.undockInitiator.enabled)
         this.undockInitiator.setThresholdPixels(10, true);
     if(this.elementBase){
-         this.elementBase.classList.remove('tab-handle-dragged');
+        this.elementBase.classList.remove('dockspan-tab-handle-dragged');
     }
     this.dragged = false;
     this.mouseMoveHandler.cancel();
+    this.touchMoveHandler.cancel();
     this.mouseUpHandler.cancel();
+    this.touchUpHandler.cancel();
     delete this.mouseMoveHandler;
+    delete this.touchMoveHandler;
     delete this.mouseUpHandler;
-
+    delete this.touchUpHandler;
 };
 
 TabHandle.prototype.generateMoveTabEvent = function(event, pos) {
@@ -3252,15 +3414,18 @@ TabHandle.prototype.onMouseMove = function(e)
 {
     if(Math.abs(this.stargDragPosition  -  e.clientX) < 10)
         return;
-    this.elementBase.classList.add('tab-handle-dragged');
-   this.dragged = true;
-   this.prev = this.current;
-   this.current = e.clientX;
-   this.direction =  this.current - this.prev;
-   var tabRect = this.elementBase.getBoundingClientRect();
-   var event = this.direction < 0 ? {state: 'left', bound: tabRect.left, rect:tabRect} :
-    {state: 'right', bound: tabRect.right, rect:tabRect};
-   if(this.direction !== 0) this.generateMoveTabEvent(event, this.current);
+    if (this.elementBase != null) { //Todo: because of this is null, we need to drag 2 times, needs fix
+        this.elementBase.classList.add('dockspan-tab-handle-dragged');
+        this.dragged = true;
+        this.prev = this.current;
+        this.current = e.clientX;
+        this.direction = this.current - this.prev;
+        var tabRect = this.elementBase.getBoundingClientRect();
+        var event = this.direction < 0
+            ? { state: 'left', bound: tabRect.left, rect: tabRect }
+            : { state: 'right', bound: tabRect.right, rect: tabRect };
+        if (this.direction !== 0) this.generateMoveTabEvent(event, this.current);
+    }
 };
 
 TabHandle.prototype.hideCloseButton = function(state)
@@ -3289,6 +3454,9 @@ TabHandle.prototype.destroy = function()
 
     if (this.mouseUpHandler) {
         this.mouseUpHandler.cancel();
+    }
+    if (this.touchUpHandler) {
+        this.touchUpHandler.cancel();
     }
 
     utils.removeNode(this.elementBase);
@@ -3328,7 +3496,7 @@ TabHandle.prototype.onCloseButtonClicked = function()
 
 TabHandle.prototype.setSelected = function(selected)
 {
-    var selectedClassName = 'tab-handle-selected';
+    var selectedClassName = 'dockspan-tab-handle-selected';
     if (selected)
         this.elementBase.classList.add(selectedClassName);
     else
@@ -3397,10 +3565,10 @@ function TabHost(tabStripDirection, displayCloseButton)
         throw new Error('Only top and bottom tab strip orientations are supported');
     }
 
-    this.hostElement.classList.add('tab-host');
-    this.tabListElement.classList.add('tab-handle-list-container');
-    this.separatorElement.classList.add('tab-handle-content-seperator');
-    this.contentElement.classList.add('tab-content');
+    this.hostElement.classList.add('dockspan-tab-host');
+    this.tabListElement.classList.add('dockspan-tab-handle-list-container');
+    this.separatorElement.classList.add('dockspan-tab-handle-content-seperator');
+    this.contentElement.classList.add('dockspan-tab-content');
 }
 
 module.exports = TabHost;
@@ -3515,15 +3683,20 @@ TabHost.prototype.resizeTabListElement = function(width/*, height*/) {
     });
 };
 
-TabHost.prototype.performLayout = function(children)
-{
-    // Destroy all existing tab pages
+TabHost.prototype.performLayout = function(children) {
+    var self = this;
+    // Destroy all existing tab pages not in children
     this.pages.forEach(function(tab)
     {
-        tab.handle.removeListener(this.tabHandleListener);
-        tab.destroy();
+        if (!children.some((x) => x == tab.container)) {
+            tab.handle.removeListener(this.tabHandleListener);
+            tab.destroy();
+            var index = self.pages.indexOf(tab);
+            if (index > -1) {
+                self.pages.splice(index, 1);
+            }
+        }
     });
-    this.pages.length = 0;
 
     var oldActiveTab = this.activeTab;
     delete this.activeTab;
@@ -3536,12 +3709,19 @@ TabHost.prototype.performLayout = function(children)
     if (childPanels.length > 0)
     {
         // Rebuild new tab pages
-        var self = this;
-        childPanels.forEach(function(child)
-        {
-            var page = self.createTabPage(self, child);
-            page.handle.addListener(self.tabHandleListener);
-            self.pages.push(page);
+        childPanels.forEach(function(child) {
+            var page = null;
+            if (!self.pages.some((x) => {
+                if (x.container == child) {
+                    page = x;
+                    return true;
+                }
+                return false;
+            })) {
+                page = self.createTabPage(self, child);
+                page.handle.addListener(self.tabHandleListener);
+                self.pages.push(page); 
+            }
 
             // Restore the active selected tab
             if (oldActiveTab && page.container === oldActiveTab.container)
@@ -3574,7 +3754,7 @@ TabHost.prototype.onTabPageSelected = function(page)
 
     // adjust the zIndex of the tabs to have proper shadow/depth effect
     var zIndexDelta = 1;
-    var zIndex = 100;
+    var zIndex = 100000;
     this.pages.forEach(function(tabPage)
     {
         tabPage.handle.setZIndex(zIndex);
@@ -3735,13 +3915,23 @@ Object.defineProperty(UndockInitiator.prototype, 'enabled', {
                 this.mouseDownHandler.cancel();
                 delete this.mouseDownHandler;
             }
+            if (this.touchDownHandler) {
+                this.touchDownHandler.cancel();
+                delete this.touchDownHandler;
+            }
 
             this.mouseDownHandler = new EventHandler(this.element, 'mousedown', this.onMouseDown.bind(this));
+            this.touchDownHandler = new EventHandler(this.element, 'pointerdown', this.onMouseDown.bind(this));
         }
         else {
             if (this.mouseDownHandler) {
                 this.mouseDownHandler.cancel();
                 delete this.mouseDownHandler;
+            }
+
+            if (this.touchDownHandler) {
+                this.touchDownHandler.cancel();
+                delete this.touchDownHandler;
             }
 
             if (this.mouseUpHandler) {
@@ -3752,6 +3942,11 @@ Object.defineProperty(UndockInitiator.prototype, 'enabled', {
             if (this.mouseMoveHandler) {
                 this.mouseMoveHandler.cancel();
                 delete this.mouseMoveHandler;
+            }
+
+            if (this.touchMoveHandler) {
+                this.touchMoveHandler.cancel();
+                delete this.touchMoveHandler;
             }
         }
     }
@@ -3775,8 +3970,14 @@ UndockInitiator.prototype.onMouseDown = function (e) {
             delete this.mouseMoveHandler;
         }
 
+        if (this.touchMoveHandler) {
+            this.touchMoveHandler.cancel();
+            delete this.touchMoveHandler;
+        }
+
         this.mouseUpHandler = new EventHandler(window, 'mouseup', this.onMouseUp.bind(this));
         this.mouseMoveHandler = new EventHandler(window, 'mousemove', this.onMouseMove.bind(this));
+        this.touchMoveHandler = new EventHandler(window, 'touchmove', this.onMouseMove.bind(this));
         this.dragStartPosition = new Point(e.pageX, e.pageY);
     }
 };
@@ -3790,6 +3991,11 @@ UndockInitiator.prototype.onMouseUp = function () {
     if (this.mouseMoveHandler) {
         this.mouseMoveHandler.cancel();
         delete this.mouseMoveHandler;
+    }
+
+    if (this.touchMoveHandler) {
+        this.touchMoveHandler.cancel();
+        delete this.touchMoveHandler;
     }
 };
 
@@ -3806,8 +4012,18 @@ UndockInitiator.prototype.onMouseMove = function (e) {
 };
 
 UndockInitiator.prototype._requestUndock = function (e) {
-    var dragOffsetX = this.dragStartPosition.x - this.element.offsetLeft;
-    var dragOffsetY = this.dragStartPosition.y - this.element.offsetTop;
+    var top = 0;
+    var left = 0;
+    var currentElement = this.element;
+    do {
+        top += currentElement.offsetTop || 0;
+        left += currentElement.offsetLeft || 0;
+        currentElement = currentElement.offsetParent;
+    } while (currentElement);
+
+
+    var dragOffsetX = this.dragStartPosition.x - left; //this.element.offsetLeft;
+    var dragOffsetY = this.dragStartPosition.y - top; //this.element.offsetTop;
     var dragOffset = new Point(dragOffsetX, dragOffsetY);
     this.listener(e, dragOffset);
 };

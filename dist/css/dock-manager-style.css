@@ -19,7 +19,7 @@
 
 .panel-titlebar-button-close:hover {
 	font-weight: bold;
-	color:#fff;
+	color:red;
 }
 
 .panel-content {
@@ -91,49 +91,53 @@
 
 
 /*************************** Tab Host ********************************/
-.tab-host {
-	background-color: #666;
+.dockspan-tab-host {
+	background-color: #fff;
 }
 
-.tab-content {
-	background-color: #666;
+.dockspan-tab-content {
+	background-color: #fff;
+}
+
+.dockspan-tab-content > * {
+	background-color: #fff;
 }
 
 /*.tab-content * {
     margin: 0px;
 }*/
 
-.tab-handle {
+.dockspan-tab-handle {
 	background-color: #808080;
 	color:#D5D5D5;
 	box-shadow: 0px 5px 20px #000;
 }
-.tab-handle:hover {
-	background-color: #ffcc00;
-	color:#400;
-}
-
-.tab-handle-selected {
-	background-color: #ffcc00;
-	color:#400;
-}
-
-.tab-handle-text {
-}
-
-.tab-handle-close-button {
-}
-
-.tab-handle-close-button:hover {
+.dockspan-tab-handle:hover {
+    background-color: #008749;
 	color:#fff;
 }
 
-.tab-handle-list-container {
-	background-color: #333;
+.dockspan-tab-handle-selected {
+    background-color: #008749;
+	color:#fff;
 }
 
-.tab-handle-content-seperator {
-	background-color: #ffcc00;
+.dockspan-tab-handle-text {
+}
+
+.dockspan-tab-handle-close-button {
+}
+
+.dockspan-tab-handle-close-button:hover {
+	color:red;
+}
+
+.dockspan-tab-handle-list-container {
+	background-color: #ffffff;
+}
+
+.dockspan-tab-handle-content-seperator {
+	background-color: #008749;
 }
 
 /*************************** Text Selection **************************/
