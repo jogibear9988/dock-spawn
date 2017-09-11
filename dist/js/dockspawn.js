@@ -485,6 +485,17 @@ PanelContainer.prototype.performUndockToDialog = function(e, dragOffset)
 };
 
 /**
+* Closes the panel
+*/
+PanelContainer.prototype.performClose = function (e, dragOffset) {
+    this.isDialog = true;
+    this.undockInitiator.enabled = false;
+    this.elementContent.style.display = "block";
+    this.elementPanel.style.position = "";
+    this.dockManager.requestClose(this, e, dragOffset);
+};
+
+/**
  * Undocks the container and from the layout hierarchy
  * The container would be removed from the DOM
  */
@@ -619,10 +630,7 @@ PanelContainer.prototype.close = function() {
     }
     else
     {
-        this.performUndockToDialog();
-        this.floatingDialog.hide();
-        this.floatingDialog.setPosition(this.dockManager.defaultDialogPosition.x, this.dockManager.defaultDialogPosition.y);
-        this.floatingDialog.remove();
+        this.performClose();
     }
      this.dockManager.notifyOnClosePanel(this);
 };
@@ -1448,6 +1456,66 @@ DockLayoutEngine.prototype.undock = function(node)
     this.dockManager.notifyOnUnDock(node);
 };
 
+DockLayoutEngine.prototype.close = function (node) {
+    var parentNode = node.parent;
+    if (!parentNode)
+        throw new Error('Cannot undock.  panel is not a leaf node');
+
+    //check if closed tab wa sthe active one
+    var activetabClosed = false;
+    if (parentNode.children.length > 0) {
+        if (parentNode.container.tabHost != null) {
+            var activeTab = parentNode.container.tabHost.getActiveTab();
+            activetabClosed = activeTab.panel == node.container;
+        }
+    }
+
+    // Get the position of the node relative to it's siblings
+    var siblingIndex = parentNode.children.indexOf(node);
+
+    // Detach the node from the dock manager's tree hierarchy
+    node.detachFromParent();
+
+    if (parentNode.children.length < parentNode.container.minimumAllowedChildNodes) {
+        // If the child count falls below the minimum threshold, destroy the parent and merge
+        // the children with their grandparents
+        var grandParent = parentNode.parent;
+        for (var i = 0; i < parentNode.children.length; i++) {
+            var otherChild = parentNode.children[i];
+            if (grandParent) {
+                // parent node is not a root node
+                grandParent.addChildAfter(parentNode, otherChild);
+                parentNode.detachFromParent();
+                var width = parentNode.container.containerElement.clientWidth;
+                var height = parentNode.container.containerElement.clientHeight;
+                parentNode.container.destroy();
+
+                otherChild.container.resize(width, height);
+                grandParent.performLayout();
+            } else {
+                // Parent is a root node.
+                // Make the other child the root node
+                parentNode.detachFromParent();
+                parentNode.container.destroy();
+                this.dockManager.setRootNode(otherChild);
+            }
+        }
+    } else {
+        // the node to be removed has 2 or more other siblings. So it is safe to continue
+        // using the parent composite container.
+        parentNode.performLayout();
+
+        if (activetabClosed) {
+            var nextActiveSibling = parentNode.children[Math.max(0, siblingIndex - 1)];
+            if (nextActiveSibling != null)
+                parentNode.container.setActiveChild(nextActiveSibling.container);
+        }
+    }
+    this.dockManager.invalidate();
+
+    this.dockManager.notifyOnUnDock(node);
+};
+
 DockLayoutEngine.prototype.reorderTabs = function(node, handle, state, index){
     var N = node.children.length;
     var nodeIndexToDelete  = state === 'left' ? index : index + 1;
@@ -1966,6 +2034,7 @@ DockManager.prototype.dockFill = function(referenceNode, container)
 {
     return this._requestDockContainer(referenceNode, container, this.layoutEngine.dockFill.bind(this.layoutEngine));
 };
+
 DockManager.prototype.floatDialog = function(container, x, y)
 {
     var retdiag = undefined;
@@ -2070,6 +2139,14 @@ DockManager.prototype.requestUndockToDialog = function(container, event, dragOff
         dialog.draggable.onMouseDown(event);
     }
     return dialog;
+};
+
+/**
+* closes a Panel
+*/
+DockManager.prototype.requestClose = function (container, event, dragOffset) {
+    var node = this._findNodeFromContainer(container);
+    this.layoutEngine.close(node);
 };
 
 /**
@@ -3326,8 +3403,9 @@ function TabHandle(parent)
     this.mouseClickHandler = new EventHandler(this.elementBase, 'click', this.onMouseClicked.bind(this));
     this.mouseDownHandler = new EventHandler(this.elementBase, 'mousedown', this.onMouseDown.bind(this));
     this.closeButtonHandler = new EventHandler(this.elementCloseButton, 'mousedown', this.onCloseButtonClicked.bind(this));
+    this.auxClickHandler = new EventHandler(this.elementBase, 'auxclick', this.onCloseButtonClicked.bind(this));
 
-    this.moveThreshold = 10;
+    this.moveThreshold = 3;
     this.zIndexCounter = 100;
 }
 
@@ -3349,8 +3427,8 @@ TabHandle.prototype.undockEnabled = function(state)
 
 TabHandle.prototype.onMouseDown = function(e)
 {
-    if(this.undockInitiator.enabled)
-        this.undockInitiator.setThresholdPixels(10, false);
+    //if(this.undockInitiator.enabled)
+    //    this.undockInitiator.setThresholdPixels(10, false);
     if (this.mouseMoveHandler)
     {
         this.mouseMoveHandler.cancel();
@@ -3378,8 +3456,8 @@ TabHandle.prototype.onMouseDown = function(e)
 
 TabHandle.prototype.onMouseUp = function()
 {
-    if(this.undockInitiator.enabled)
-        this.undockInitiator.setThresholdPixels(10, true);
+    //if(this.undockInitiator.enabled)
+    //    this.undockInitiator.setThresholdPixels(10, true);
     if(this.elementBase){
         this.elementBase.classList.remove('dockspan-tab-handle-dragged');
     }
@@ -3451,6 +3529,7 @@ TabHandle.prototype.destroy = function()
     this.mouseClickHandler.cancel();
     this.mouseDownHandler.cancel();
     this.closeButtonHandler.cancel();
+    this.auxClickHandler.cancel();
 
     if (this.mouseUpHandler) {
         this.mouseUpHandler.cancel();
@@ -3477,20 +3556,21 @@ TabHandle.prototype._performUndock = function(e, dragOffset)
         return null;
 };
 
-TabHandle.prototype.onMouseClicked = function()
+TabHandle.prototype.onMouseClicked = function(e)
 {
     this.parent.onSelected();
 };
 
-TabHandle.prototype.onCloseButtonClicked = function()
+TabHandle.prototype.onCloseButtonClicked = function(e)
 {
-    // If the page contains a panel element, undock it and destroy it
-    if (this.parent.container.containerType === 'panel')
-    {
-        this.parent.container.close();
-        // this.undockInitiator.enabled = false;
-        // var panel = this.parent.container;
-        // panel.performUndock();
+    if (e.button !== 2) {
+        // If the page contains a panel element, undock it and destroy it
+        if (this.parent.container.containerType === 'panel') {
+            this.parent.container.close();
+            // this.undockInitiator.enabled = false;
+            // var panel = this.parent.container;
+            // panel.performUndock();
+        }
     }
 };
 
@@ -3603,6 +3683,10 @@ TabHost.prototype.performTabsLayout = function(indexes){
 
     if (this.activeTab)
         this.onTabPageSelected(this.activeTab);
+};
+
+TabHost.prototype.getActiveTab = function () {
+    return this.activeTab;
 };
 
 TabHost.prototype.addListener = function(listener){
@@ -3739,7 +3823,7 @@ TabHost.prototype.performLayout = function(children) {
 
 TabHost.prototype._setTabHandlesVisible = function(visible)
 {
-    this.tabListElement.style.display = visible ? 'block' : 'none';
+    this.tabListElement.style.display = visible ? 'flex' : 'none';
     this.separatorElement.style.display = visible ? 'block' : 'none';
 };
 
@@ -3899,7 +3983,7 @@ function UndockInitiator(element, listener, thresholdPixels) {
     this.listener = listener;
     this.thresholdPixels = thresholdPixels;
     this._enabled = false;
-    this.horizontalChange = true;
+    //this.horizontalChange = true;
 }
 
 module.exports = UndockInitiator;
@@ -3952,10 +4036,10 @@ Object.defineProperty(UndockInitiator.prototype, 'enabled', {
     }
 });
 
-UndockInitiator.prototype.setThresholdPixels = function (thresholdPixels, horizontalChange){
-     this.horizontalChange = horizontalChange;
-     this.thresholdPixels = thresholdPixels;
-};
+//UndockInitiator.prototype.setThresholdPixels = function (thresholdPixels, horizontalChange){
+//     this.horizontalChange = horizontalChange;
+//     this.thresholdPixels = thresholdPixels;
+//};
 
 UndockInitiator.prototype.onMouseDown = function (e) {
     // Make sure we dont do this on floating dialogs
@@ -4001,7 +4085,8 @@ UndockInitiator.prototype.onMouseUp = function () {
 
 UndockInitiator.prototype.onMouseMove = function (e) {
     var position = new Point(e.pageX, e.pageY);
-    var dx = this.horizontalChange ? position.x - this.dragStartPosition.x : 10;
+    //var dx = this.horizontalChange ? position.x - this.dragStartPosition.x : 10;
+    var dx = position.x - this.dragStartPosition.x;
     var dy = position.y - this.dragStartPosition.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
 
