@@ -24,6 +24,7 @@
 
 .panel-content {
 	background-color: #FFF;
+    overflow: auto;
 }
 
 .panel-content * {
@@ -113,7 +114,7 @@
 	box-shadow: 0px 5px 20px #000;
 }
 .dockspan-tab-handle:hover {
-    background-color: #008749;
+    background-color: #006729;
 	color:#fff;
 }
 

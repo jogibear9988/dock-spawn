@@ -318,7 +318,7 @@ var EventHandler = require('../utils/EventHandler'),
 /**
  * This dock container wraps the specified element on a panel frame with a title bar and close button
  */
-function PanelContainer(elementContent, dockManager, title)
+    function PanelContainer(elementContent, dockManager, title, hideCloseButton)
 {
     if (!title)
         title = 'Panel';
@@ -333,6 +333,7 @@ function PanelContainer(elementContent, dockManager, title)
     this.isDialog = false;
     this._canUndock = dockManager._undockEnabled;
     this.eventListeners = [];
+    this.hideCloseButton = hideCloseButton;
     this._initialize();
 }
 
@@ -410,13 +411,16 @@ PanelContainer.prototype._initialize = function()
     this.elementTitle = document.createElement('div');
     this.elementTitleText = document.createElement('div');
     this.elementContentHost = document.createElement('div');
-    this.elementButtonClose = document.createElement('div');
+    if (!this.hideCloseButton)
+        this.elementButtonClose = document.createElement('div');
 
     this.elementPanel.appendChild(this.elementTitle);
     this.elementTitle.appendChild(this.elementTitleText);
-    this.elementTitle.appendChild(this.elementButtonClose);
-    this.elementButtonClose.innerHTML = '<i class="fa fa-times"></i>';
-    this.elementButtonClose.classList.add('panel-titlebar-button-close');
+    if (!this.hideCloseButton) {
+        this.elementTitle.appendChild(this.elementButtonClose);
+        this.elementButtonClose.innerHTML = '<i class="fa fa-times"></i>';
+        this.elementButtonClose.classList.add('panel-titlebar-button-close');
+    }
     this.elementPanel.appendChild(this.elementContentHost);
 
     this.elementPanel.classList.add('panel-base');
@@ -434,8 +438,10 @@ PanelContainer.prototype._initialize = function()
     // Add the panel to the body
     //document.body.appendChild(this.elementPanel);
 
-    this.closeButtonClickedHandler =
-        new EventHandler(this.elementButtonClose, 'click', this.onCloseButtonClicked.bind(this));
+    if (!this.hideCloseButton) {
+        this.closeButtonClickedHandler =
+            new EventHandler(this.elementButtonClose, 'click', this.onCloseButtonClicked.bind(this));
+    }
 
     utils.removeNode(this.elementContent);
     this.elementContentHost.appendChild(this.elementContent);
@@ -1245,7 +1251,7 @@ Dialog.prototype.saveState = function(x, y){
 
 Dialog.fromElement = function(id, dockManager)
 {
-    return new Dialog(new PanelContainer(document.getElementById(id), dockManager), dockManager);
+    return new Dialog(new PanelContainer(document.getElementById(id), dockManager, false), dockManager);
 };
 
 Dialog.prototype._initialize = function()
@@ -3044,6 +3050,7 @@ function SplitterBar(previousContainer, nextContainer, stackedVertical)
     this.touchDownHandler = new EventHandler(this.barElement, 'pointerdown', this.onMouseDown.bind(this));
     this.minPanelSize = 50; // TODO: Get from container configuration
     this.readyToProcessNextDrag = true;
+    this.dockSpawnResizedEvent = new CustomEvent("DockSpawnResizedEvent");
 }
 
 module.exports = SplitterBar;
@@ -3108,6 +3115,8 @@ SplitterBar.prototype._performDrag = function(dx, dy)
         this.previousContainer.resize(newPreviousPanelSize, previousHeight);
         this.nextContainer.resize(newNextPanelSize, nextHeight);
     }
+
+    document.dispatchEvent(this.dockSpawnResizedEvent);
 };
 
 SplitterBar.prototype._startDragging = function(e)
