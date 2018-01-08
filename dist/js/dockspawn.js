@@ -1836,11 +1836,11 @@ DockManager.prototype.checkYBounds = function(container, currentMousePosition, p
         currentMousePosition.y + dy > this.element.offsetHeight ||
         (container.offsetTop + dy > this.element.offsetHeight + this.element.offsetTop - 20);
 
-    if (topBounds || bottomBounds)
-    {
-        previousMousePosition.y = currentMousePosition.y;
-        dy = 0;
-    }
+    //if (topBounds || bottomBounds)
+    //{
+    //    previousMousePosition.y = currentMousePosition.y;
+    //    dy = 0;
+    //}
 
     return dy;
 };
@@ -2304,6 +2304,9 @@ DockManager.prototype.notifyOnClosePanel = function(panel) {
             listener.onClosePanel(self, panel);
         }
     });
+    if (this.panelClosedCallback) {
+        this.panelClosedCallback();
+    }
 };
 
 
